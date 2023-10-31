@@ -21,9 +21,9 @@ func main() {
 	// if err := funcs.UserToAdmin(1); err != nil {
 	// 	fmt.Println(err)
 	// }
-	// if err := funcs.CreateCategory(1, "categorytest"); err != nil {
-	// 	fmt.Println(err)
-	// }
+	if err := funcs.CreateCategory(1, "categorytest2"); err != nil {
+		fmt.Println(err)
+	}
 	// if err := funcs.CreateUserType(1, "user"); err != nil {
 	// 	fmt.Println(err)
 	// }

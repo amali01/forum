@@ -34,7 +34,7 @@ func GetCategoryID(category string) (int, error) {
 }
 
 func CreateCategory(userId int, categoryName string) error {
-	if !UserIsAdmin(userId) {
+	if !UserIsType(userId, "admin") {
 		return fmt.Errorf("only admins can create categories")
 	}
 	query := "INSERT INTO category (category) VALUES (?)"

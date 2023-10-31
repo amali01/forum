@@ -46,35 +46,38 @@ func SelectUserID(userName, pwd string) (int, error) {
 	return userID, nil
 }
 
-func UserToAdmin(userID int) error {
-	if UserIsAdmin(userID) {
-		return fmt.Errorf("user is already an admin")
+// this function  changes the usertype to any other type that is in the database
+func ChangeUserType(adminID, userID int, typToBe string) error {
+	if !UserIsType(adminID, "admin") {
+		return fmt.Errorf("only admins")
 	}
-	adminTypeID, err := UserTypeID("admin")
+	typeID, err := UserTypeID(typToBe)
 	if err != nil {
 		return err
 	}
-	
+	if UserIsType(userID, typToBe) {
+		return fmt.Errorf("user is already a %s", typToBe)
+	}
 	query := "UPDATE users SET user_type = ? WHERE u_id = ?"
-	if _, err = DB.Exec(query, adminTypeID, userID); err != nil {
+	if _, err = DB.Exec(query, typeID, userID); err != nil {
 		return err
 	}
 	return nil
 }
 
-func UserIsAdmin(userID int) bool {
+func UserIsType(userID int, typ string) bool {
 	query := "SELECT user_type FROM users WHERE u_id = ?"
 	var userType int
 	if err := DB.QueryRow(query, userID).Scan(&userType); err != nil {
 		return false
 	}
 
-	adminTypeID, err := UserTypeID("admin")
+	typeID, err := UserTypeID(typ)
 	if err != nil {
 		fmt.Println(err)
 		return false
 	}
-	return userType == adminTypeID
+	return userType == typeID
 }
 
 // func CreateUserType(userID int, userType string) error {
@@ -86,4 +89,76 @@ func UserIsAdmin(userID int) bool {
 // 		return err
 // 	}
 // 	return nil
+// }
+
+// func UserToMod(adminID,userID int) error{
+// 	if !UserIsAdmin(adminID) {
+// 		return fmt.Errorf("only admins")
+// 	}
+
+// 	if UserIsMod(userID) {
+// 		return fmt.Errorf("user is already a moderator")
+// 	}
+
+// 	modTypeID, err := UserTypeID("moderator")
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	query := "UPDATE users SET user_type = ? WHERE u_id = ?"
+// 	if _, err = DB.Exec(query, modTypeID, userID); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+// func UserToAdmin(adminID,userID int) error{
+// 	if !UserIsAdmin(adminID) {
+// 		return fmt.Errorf("only admins")
+// 	}
+
+// 	if UserIsAdmin(userID) {
+// 		return fmt.Errorf("user is already an admin")
+// 	}
+
+// 	adminTypeID, err := UserTypeID("admin")
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	query := "UPDATE users SET user_type = ? WHERE u_id = ?"
+// 	if _, err = DB.Exec(query, adminTypeID, userID); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+// func UserIsMod(userID int) bool {
+// 	query := "SELECT user_type FROM users WHERE u_id = ?"
+// 	var userType int
+// 	if err := DB.QueryRow(query, userID).Scan(&userType); err != nil {
+// 		return false
+// 	}
+
+// 	modTypeID, err := UserTypeID("moderator")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return false
+// 	}
+// 	return userType == modTypeID
+// }
+
+// func UserIsAdmin(userID int) bool {
+// 	query := "SELECT user_type FROM users WHERE u_id = ?"
+// 	var userType int
+// 	if err := DB.QueryRow(query, userID).Scan(&userType); err != nil {
+// 		return false
+// 	}
+
+// 	adminTypeID, err := UserTypeID("admin")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return false
+// 	}
+// 	return userType == adminTypeID
 // }
