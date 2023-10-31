@@ -50,13 +50,13 @@ func UserToAdmin(userID int) error {
 	if UserIsAdmin(userID) {
 		return fmt.Errorf("user is already an admin")
 	}
-	// adminTypeID, err := UserTypeID("admin")
-	// if err != nil {
-	// 	return nil
-	// }
-
-	query := "UPDATE users SET user_type = 1 WHERE u_id = ?"
-	if _, err := DB.Exec(query, userID); err != nil {
+	adminTypeID, err := UserTypeID("admin")
+	if err != nil {
+		return err
+	}
+	
+	query := "UPDATE users SET user_type = ? WHERE u_id = ?"
+	if _, err = DB.Exec(query, adminTypeID, userID); err != nil {
 		return err
 	}
 	return nil
