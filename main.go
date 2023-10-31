@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"fourm/funcs"
+	"forum/funcs"
 )
 
 // func init() {

@@ -10,7 +10,7 @@ const DBPath string = "forum.db"
 
 var DB *sql.DB
 
-func init() {
+func Init() {
 	// connect to the database
 	_, err := os.Stat(DBPath)
 	if os.IsNotExist(err) {

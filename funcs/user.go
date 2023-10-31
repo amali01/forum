@@ -16,6 +16,7 @@ func AddUser(userName string, pwd string) error {
 	if _, err := DB.Exec(query, userName, pwd, userTypeID); err != nil {
 		sqliteErr, ok := err.(sqlite3.Error)
 		if ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
+			fmt.Println(err)
 			return fmt.Errorf("user already exist")
 		}
 		return err

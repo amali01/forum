@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"forum/funcs"
 	"io"
 	"net/http"
 )
@@ -29,6 +30,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	funcs.AddUser(data.Name, data.Password)
 	fmt.Println(data)
 
 }
