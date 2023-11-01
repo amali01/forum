@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"forum/funcs"
+	"forum/hashing"
 	"io"
 	"net/http"
 	"text/template"
@@ -52,7 +53,10 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if funcs.AddUser(data.Name, data.Password) != nil {
+		// Hash the password before adding it
+		hash, _ := hashing.HashPassword(data.Password) // ignore error for the sake of simplicity
+
+		if funcs.AddUser(data.Name, hash) != nil {
 			io.WriteString(w, "Add user error, try again")
 			return
 		}
