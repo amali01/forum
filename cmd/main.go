@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"forum/api"
 	"forum/funcs"
 	"log"
@@ -20,4 +21,8 @@ func main() {
 	http.HandleFunc("/signup", api.SignUp)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	if err := funcs.DB.Close(); err != nil {
+		fmt.Println("Error :", err)
+	}
 }
