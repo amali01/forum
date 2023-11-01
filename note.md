@@ -3,3 +3,5 @@ UNIQUE constraint failed: users.user_id
 Email in the database users table
 empty string added to users
 
+-- frontend:
+Modify / handle endpoints from fetches. mainpage coming soon

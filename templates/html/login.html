@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/starterpages.css" />
+    <title>4UM Login</title>
+  </head>
+  <body>
+    <div class="logo">
+      <h1>Welcome to 4UM!</h1>
+      <img src="../assets/reddit.png" alt="Amjad we need a logo bruh" />
+    </div>
+    <div class="form">
+      <form>
+        <input
+          name="loginCredential"
+          placeholder="Username/Email"
+          type="text"
+          required
+        />
+        <input
+          name="loginPassword"
+          placeholder="Password"
+          type="text"
+          required
+        />
+        <button class="LoginBtn" id="submit" onclick="sendLoginRequest()">
+          <span>Login</span>
+        </button>
+      </form>
+    </div>
+    <script>
+      function sendLoginRequest() {
+        const url = "/auth";
+
+        // Send the POST request using the fetch API
+        fetch(url, {
+          method: "POST",
+          body: new FormData(document.querySelector("form")),
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Request failed");
+            }
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    </script>
+  </body>
+</html>
