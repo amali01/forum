@@ -52,7 +52,11 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		funcs.AddUser(data.Name, data.Password)
+		if funcs.AddUser(data.Name, data.Password) != nil {
+			io.WriteString(w, "Add user error, try again")
+			return
+		}
+		io.WriteString(w, "Add user success")
 		fmt.Printf("Name: %s, Email: %s, Password: %s", data.Name, data.Email, data.Password)
 	}
 
