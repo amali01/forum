@@ -16,18 +16,15 @@ function sendsignupreq() {
   fetch(url, {
     method: "POST",
     body: jsonString,
-  })
-    .then((response) => {
+  }).then((response) => {
       if (response.ok) {
         return response.json();
       } else {
         throw new Error("Request failed");
       }
-    })
-    .then((data) => {
+    }).then((data) => {
       console.log(data);
-    })
-    .catch((error) => {
+    }).catch((error) => {
       console.error(error);
     });
 }
