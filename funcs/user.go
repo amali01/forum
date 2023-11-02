@@ -81,6 +81,17 @@ func UserIsType(userID int, typ string) bool {
 	return userType == typeID
 }
 
+// Gets user hashed password
+func GetUserHash(userID string) string {
+	query := "SELECT user_pwd FROM users WHERE user_id = ?"
+	var userHash string
+	if err := DB.QueryRow(query, userID).Scan(&userHash); err != nil {
+		return "nil"
+	}
+
+	return userHash
+}
+
 // func CreateUserType(userID int, userType string) error {
 // 	if !UserIsAdmin(userID) {
 // 		return fmt.Errorf("user is not allowed to create a type")
