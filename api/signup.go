@@ -10,12 +10,6 @@ import (
 	"text/template"
 )
 
-type Person struct {
-	Email    string
-	Name     string
-	Password string
-}
-
 func SignUp(w http.ResponseWriter, r *http.Request) {
 	// Get method, serve the page
 	if r.Method == http.MethodGet {
