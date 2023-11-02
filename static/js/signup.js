@@ -17,14 +17,14 @@ function sendsignupreq() {
     method: "POST",
     body: jsonString,
   }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Request failed");
-      }
-    }).then((data) => {
-      console.log(data);
-    }).catch((error) => {
-      console.error(error);
-    });
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error("Request failed");
+    }
+  }).then((data) => {
+    console.log(data);
+  }).catch((error) => {
+    console.error(error);
+  });
 }
