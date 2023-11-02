@@ -19,6 +19,8 @@ func main() {
 
 	// Handle signup
 	http.HandleFunc("/signup", api.SignUp)
+	// Handle login
+	http.HandleFunc("/login", api.LogIn)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
