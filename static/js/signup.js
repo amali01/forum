@@ -9,6 +9,13 @@ function sendsignupreq() {
     jsonObject[key] = value;
   });
 
+  // Check if password matches before submitting
+  let signUpConfirm = document.getElementsByName("signUpPassConfirm")
+  if (jsonObject["Password"] != jsonObject["signUpPassConfirm"]) {
+    alert("Password fields must match!")
+    return
+  }
+
   // Convert the JSON object to a JSON string
   const jsonString = JSON.stringify(jsonObject);
   console.log(jsonString)
