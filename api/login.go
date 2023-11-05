@@ -93,7 +93,7 @@ func EXPIRED(userSession Session) {
 	{
 		for !userSession.IsExpired() {
 		}
-		fmt.Printf("User %s token expired!", userSession.username)
+		fmt.Printf("User %s token expired!\n", userSession.username)
 	}
 }
 
