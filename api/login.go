@@ -58,19 +58,13 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			io.WriteString(w, "Pass doesn't match!")
 			return
 		}
-
-		/*	if IsLoggedIn(data.Name) {
-			io.WriteString(w, "Already logged in")
-			return
-		}*/
-		//fmt.Printf("Name: %s, Email: %s, Password: %s", data.Name, data.Email, data.Password)
-
 		// Create a seesion for this user
 
 		// Generate a new UUID
 		userUUID, err := uuid.NewV4()
 		if err != nil {
 			// Handle the error
+			fmt.Printf("error: %s\n", err)
 		}
 		// Associate the UUID with the user in your session or database
 		userSession := Session{
@@ -80,6 +74,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		}
 		Sessions[userSession.SessionUUID] = userSession
 
+		// Set a cookie with a session token that can be used to authenticate access without logging in
 		http.SetCookie(w, &http.Cookie{
 			Name:    "session_token",
 			Value:   userSession.SessionUUID,
@@ -88,6 +83,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Printf("UUID: %s\n", userSession.SessionUUID)
 
+		// A go routine to indicate that the session is expired
 		go EXPIRED(userSession)
 	}
 
@@ -97,7 +93,7 @@ func EXPIRED(userSession Session) {
 	{
 		for !userSession.IsExpired() {
 		}
-		fmt.Println("EXPIRED")
+		fmt.Printf("User %s token expired!", userSession.username)
 	}
 }
 
