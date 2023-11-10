@@ -30,6 +30,8 @@ func main() {
 	http.HandleFunc("/add_comment", api.AddCommentHandler)
 	// Handle Likes & Dislikes for Posts
 	http.HandleFunc("/likes_post", api.LikesPostHandler)
+	// Handle Likes & Dislikes for Posts
+	http.HandleFunc("/likes_comment", api.LikesCommentHandler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
