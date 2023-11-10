@@ -66,9 +66,16 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			// Handle the error
 			fmt.Printf("error: %s\n", err)
 		}
+
+		// get user id
+		get_user_id, err := funcs.SelectUserID(data.Name)
+		if err != nil {
+			return
+		}
+
 		// Associate the UUID with the user in your session or database
 		userSession := Session{
-			userID:      data.Name,
+			userID:      get_user_id,
 			SessionUUID: userUUID.String(),
 			expiry:      time.Now().Add(20 * time.Second),
 		}
@@ -93,7 +100,7 @@ func EXPIRED(userSession Session) {
 	{
 		for !userSession.IsExpired() {
 		}
-		fmt.Printf("User %s token expired!\n", userSession.userID)
+		fmt.Printf("User %d token expired!\n", userSession.userID)
 	}
 }
 
