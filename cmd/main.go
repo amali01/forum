@@ -24,6 +24,8 @@ func main() {
 
 	// create post
 	http.HandleFunc("/create_post", api.Create_Post)
+	// create category
+	http.HandleFunc("/create_category", api.Create_Category_Handler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
