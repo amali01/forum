@@ -68,7 +68,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		}
 		// Associate the UUID with the user in your session or database
 		userSession := Session{
-			username:    data.Name,
+			userID:      data.Name,
 			SessionUUID: userUUID.String(),
 			expiry:      time.Now().Add(20 * time.Second),
 		}
@@ -93,7 +93,7 @@ func EXPIRED(userSession Session) {
 	{
 		for !userSession.IsExpired() {
 		}
-		fmt.Printf("User %s token expired!\n", userSession.username)
+		fmt.Printf("User %s token expired!\n", userSession.userID)
 	}
 }
 
