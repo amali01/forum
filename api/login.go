@@ -43,7 +43,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var data Person
+		var data LogIn_form
 
 		// Unmarshal the JSON data from the request body
 		if err := json.Unmarshal(body, &data); err != nil {
@@ -51,8 +51,14 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// get user id
+		get_user_id, err := funcs.SelectUserID(data.Email)
+		if err != nil {
+			return
+		}
+
 		// Check if passwords matches
-		hash_matched := hashing.CheckPasswordHash(data.Password, funcs.GetUserHash(data.Name)) // ignore error for the sake of simplicity
+		hash_matched := hashing.CheckPasswordHash(data.Password, funcs.GetUserHash(get_user_id)) // ignore error for the sake of simplicity
 
 		if !hash_matched {
 			io.WriteString(w, "Pass doesn't match!")
@@ -65,12 +71,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			// Handle the error
 			fmt.Printf("error: %s\n", err)
-		}
-
-		// get user id
-		get_user_id, err := funcs.SelectUserID(data.Name)
-		if err != nil {
-			return
 		}
 
 		// Associate the UUID with the user in your session or database
