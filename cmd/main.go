@@ -22,6 +22,9 @@ func main() {
 	// Handle login
 	http.HandleFunc("/login", api.LogIn)
 
+	// create post
+	http.HandleFunc("/create_post", api.Create_Post)
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 	if err := funcs.DB.Close(); err != nil {
@@ -66,7 +69,7 @@ func session_midddle(in_http http.Handler) http.Handler {
 		}
 
 		// If the session is valid, return a welcome message to the user
-		fmt.Fprintf(w, "Welcome %s!", userSession.Get_Username())
+		fmt.Fprintf(w, "Welcome %d!", userSession.Get_UserID())
 
 		in_http.ServeHTTP(w, r)
 	})
