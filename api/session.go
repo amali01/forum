@@ -11,7 +11,7 @@ var (
 
 // each session contains the username of the user and the time at which it expires
 type Session struct {
-	userID      string
+	userID      int
 	SessionUUID string
 	expiry      time.Time
 }
@@ -21,6 +21,6 @@ func (s Session) IsExpired() bool {
 	return s.expiry.Before(time.Now())
 }
 
-func (s Session) Get_Username() string {
+func (s Session) Get_UserID() int {
 	return s.userID
 }
