@@ -33,9 +33,9 @@ func UserTypeID(userType string) (int, error) {
 	return userTypeID, nil
 }
 
-func SelectUserID(userName, pwd string) (int, error) {
-	query := "SELECT u_id FROM users WHERE user_id = ? AND user_pwd = ?"
-	row := DB.QueryRow(query, userName, pwd)
+func SelectUserID(userName string) (int, error) {
+	query := "SELECT u_id FROM users WHERE user_id = ?"
+	row := DB.QueryRow(query, userName)
 
 	var userID int
 	if err := row.Scan(&userID); err != nil {
