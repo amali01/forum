@@ -56,6 +56,10 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		}
 		io.WriteString(w, "Add user success")
 		fmt.Printf("Name: %s, Email: %s, Password: %s", data.Name, data.Email, data.Password)
+	} else {
+		// Handle other HTTP methods or incorrect requests
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
 	}
 
 }
