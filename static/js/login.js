@@ -9,7 +9,7 @@ function onSignIn(googleUser) {
     email: profile.getEmail(),
   };
 
-  const url = "/auth";
+  const url = "/login";
 
   // Send the POST request using the fetch API
   fetch(url, {
