@@ -50,7 +50,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Failed to unmarshal JSON", http.StatusBadRequest)
 			return
 		}
-
+		fmt.Println(data)
 		// get user id
 		get_user_id, err := funcs.SelectUserID(data.Email)
 		if err != nil {
@@ -92,16 +92,18 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 
 		// A go routine to indicate that the session is expired
 		go EXPIRED(userSession)
+	} else {
+		// Handle other HTTP methods or incorrect requests
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
 	}
 
 }
 
 func EXPIRED(userSession Session) {
-	{
-		for !userSession.IsExpired() {
-		}
-		fmt.Printf("User %d token expired!\n", userSession.userID)
+	for !userSession.IsExpired() {
 	}
+	fmt.Printf("User %d token expired!\n", userSession.userID)
 }
 
 func IsLoggedIn(user string) bool {
