@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-signin-client_id" content="173893630139-4nbjs26flrgd6s706654isufjj91vt7v.apps.googleusercontent.com">
     <link rel="stylesheet" href="static/css/starterpages.css" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>4UM Login</title>
   </head>
   <body>
@@ -28,11 +30,49 @@
         <button type= "button" class="LoginBtn" id="submit" onclick="sendLoginRequest()">
           <span>Login</span>
         </button>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
       </form>
     </div>
     <script>
-      function sendLoginRequest() {
+      function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+  
+        // Prepare the data to send to the backend
+        var data = {
+          id: profile.getId(), // Do not send to your backend! Use an ID token instead.
+          name: profile.getName(),
+          imageUrl: profile.getImageUrl(),
+          email: profile.getEmail(),
+        };
+        
         const url = "/auth";
+
+        // Send the POST request using the fetch API
+        fetch(url, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Request failed");
+            }
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+    </script>
+    <script>
+      function sendLoginRequest() {
+        const url = "/login";
 
         // Send the POST request using the fetch API
         fetch(url, {
