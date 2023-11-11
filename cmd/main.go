@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"forum/api"
+	"forum/controllers"
 	"forum/funcs"
 	"log"
 	"net/http"
@@ -18,7 +19,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Handle signup
-	http.Handle("/signup", http.HandlerFunc(api.SignUp))
+	http.HandleFunc("/signup", api.SignUp)
 	// Handle login
 	http.HandleFunc("/login", api.LogIn)
 
@@ -33,6 +34,23 @@ func main() {
 	// Handle Likes & Dislikes for Posts
 	http.HandleFunc("/likes_comment", api.LikesCommentHandler)
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		controllers.RenderPage(w, r, funcs.DB)
+	})
+
+	http.HandleFunc("/category/", func(w http.ResponseWriter, r *http.Request) {
+		controllers.RenderCategoryPage(w, r, funcs.DB)
+	})
+
+	http.HandleFunc("/post/", func(w http.ResponseWriter, r *http.Request) {
+		controllers.RenderPostPage(w, r, funcs.DB)
+	})
+
+	http.HandleFunc("/user/", func(w http.ResponseWriter, r *http.Request) {
+		controllers.RenderUserPage(w, r, funcs.DB)
+	})
+
+	fmt.Println("Server listening on port http://localhost:8080 ...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 	if err := funcs.DB.Close(); err != nil {
