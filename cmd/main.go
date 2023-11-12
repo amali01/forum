@@ -34,9 +34,11 @@ func main() {
 	// Handle Likes & Dislikes for Posts
 	http.HandleFunc("/likes_comment", api.LikesCommentHandler)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	/*http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPage(w, r, funcs.DB)
-	})
+	})*/
+
+	http.HandleFunc("/", api.GetPostsHandler)
 
 	http.HandleFunc("/category/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderCategoryPage(w, r, funcs.DB)
