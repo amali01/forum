@@ -7,11 +7,15 @@ import (
 	"net/http"
 )
 
-type Post_JSON struct {
+type post_json struct {
 	User_ID       string `json:"user_id"`
 	Title         string `json:"title"`
 	Category      string `json:"category"`
 	Creation_Date string `json:"creation_date"`
+}
+
+type posts_capsul_json struct {
+	Posts []post_json `json:"posts"`
 }
 
 func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,15 +25,22 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	posts_map := funcs.Get_posts_from_db()
+	var posts_arr []post_json
 
-	posts_wahid := Post_JSON{
-		User_ID:       posts_map["user_id"][0],
-		Title:         posts_map["title"][0],
-		Category:      "test",
-		Creation_Date: posts_map["creation_date"][0],
+	for idx := range posts_map["user_id"] {
+		posts_arr = append(posts_arr, post_json{
+			User_ID:       posts_map["user_id"][idx],
+			Title:         posts_map["title"][idx],
+			Category:      "test",
+			Creation_Date: posts_map["creation_date"][idx],
+		})
+	}
+
+	JSON_Response := posts_capsul_json{
+		Posts: posts_arr,
 	}
 	// Marshal the data into JSON format
-	jsonData, err := json.Marshal(posts_wahid)
+	jsonData, err := json.Marshal(JSON_Response)
 	if err != nil {
 		fmt.Println("Error marshaling JSON:", err)
 		return
