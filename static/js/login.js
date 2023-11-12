@@ -37,10 +37,21 @@ function onSignIn(googleUser) {
 function sendLoginRequest() {
   const url = "/login";
 
+  let formData = new FormData(document.querySelector("form"))
+
+  // Convert form data to JSON object
+  const jsonObject = {};
+  formData.forEach((value, key) => {
+    jsonObject[key] = value;
+  });
+
+  // Convert the JSON object to a JSON string
+  const jsonString = JSON.stringify(jsonObject);
+
   // Send the POST request using the fetch API
   fetch(url, {
     method: "POST",
-    body: new FormData(document.querySelector("form")),
+    body: jsonString,
   })
     .then((response) => {
       if (response.ok) {
