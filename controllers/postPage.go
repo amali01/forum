@@ -24,7 +24,7 @@ func RenderPostPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////
 	files := []string{
-		"barebones/postpage.html", // need to creat a post page
+		"barebones/postpage.html", // need to create a post page
 	}
 
 	tmpl, err := template.ParseFiles(files...)
