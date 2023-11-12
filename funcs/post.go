@@ -2,6 +2,7 @@ package funcs
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -59,4 +60,31 @@ func CreatePost(userID int, category string, content string) error {
 	}
 	return nil
 
+}
+
+// Func to get posts from database
+func Get_posts_from_db() map[string][]string {
+	// Query the database
+	rows, err := DB.Query("SELECT user_id ,creation_date, title FROM posts LIMIT 100")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the results
+	results := make(map[string][]string, 0)
+
+	// Iterate through the rows
+	for rows.Next() {
+		var column1, column2, column3 string
+		if err := rows.Scan(&column1, &column2, &column3); err != nil {
+			log.Fatal(err)
+		}
+		// Do something with the data, for example, add it to the result slice
+		results["user_id"] = append(results["user_id"], column1)
+		results["creation_date"] = append(results["creation_date"], column2)
+		results["title"] = append(results["title"], column3)
+	}
+
+	return results
 }
