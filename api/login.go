@@ -90,6 +90,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Printf("UUID: %s\n", userSession.SessionUUID)
 
+		io.WriteString(w, fmt.Sprintf("Welcome %d", userSession.userID))
 		// A go routine to indicate that the session is expired
 		go EXPIRED(userSession)
 	} else {
