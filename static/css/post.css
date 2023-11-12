@@ -1,0 +1,46 @@
+      body {
+        background-color: #111;
+      }
+
+      body::-webkit-scrollbar {
+        display: none;
+      }
+
+      h1,
+      p,
+      h2 {
+        color: wheat;
+      }
+
+      img {
+        width: 25px;
+        filter: invert(100%);
+        cursor: pointer;
+      }
+
+      .votebtns {
+        display: flex;
+        gap: 10px;
+      }
+
+      .post {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .comments {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        padding-left: 8px;
+      }
+
+      .comm {
+        padding-top: 10px;
+      }
+
+      .comment {
+        color: wheat;
+      }
