@@ -6,13 +6,14 @@ fetch('/posts')
         const jsonContainer = document.getElementById('postcardwrapper');
         data.posts.forEach(post => {
             const postElement = document.createElement('div');
+            postElement.className = "postcard"
             postElement.innerHTML = `
-                <div class="postcard">
+               
                     <p>User ID: ${post.user_id}</p>
                     <p>Title: ${post.title}</p>
                     <p>Category: ${post.category}</p>
                     <p>Creation Date: ${post.creation_date}</p>
-                </div>
+               
             `;
             jsonContainer.appendChild(postElement);
         });
