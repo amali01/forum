@@ -25,7 +25,7 @@ func GetPostID(postID string) (int, error) {
 	return Id, nil
 }
 
-func CreatePost(userID int, category string, content string) error {
+func CreatePost(userID int, title string, category string, content string) error {
 	// Fetching Category ID
 	catID, err := GetCategoryID(category)
 	if err != nil {
@@ -41,8 +41,8 @@ func CreatePost(userID int, category string, content string) error {
 	//////////////////////////////////////////////////////////////////
 
 	// Inserting post data into the database
-	query := "INSERT INTO posts (user_id, post) VALUES (?, ?)"
-	result, err := DB.Exec(query, userID, content)
+	query := "INSERT INTO posts (user_id, title, post) VALUES (?, ?, ?)"
+	result, err := DB.Exec(query, userID, title, content)
 	if err != nil {
 		return fmt.Errorf("Failed to insert the post")
 	}
