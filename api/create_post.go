@@ -46,7 +46,7 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 	err = funcs.CreatePost(userSession.Get_UserID(), data.Title, data.Category, data.Post)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
-
+		return
 	}
 	w.Write([]byte("OK!"))
 	////////////////////////////////////////////////////////////////////////

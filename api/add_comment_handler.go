@@ -43,7 +43,7 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		err = funcs.CreateComment(userSession.Get_UserID(), data.Post_id, data.Content)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
-
+			return
 		}
 		w.Write([]byte("OK!"))
 		////////////////////////////////////////////////////////////////////////
