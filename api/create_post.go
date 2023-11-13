@@ -9,8 +9,8 @@ import (
 )
 
 type Post struct {
-	User_id  int
 	Post     string
+	Title    string
 	Category string
 }
 
@@ -43,7 +43,7 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 
 	////////////////////////////////////////////////////////////////////////
 
-	err = funcs.CreatePost(userSession.Get_UserID(), data.Category, data.Post)
+	err = funcs.CreatePost(userSession.Get_UserID(), data.Title, data.Category, data.Post)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
 
