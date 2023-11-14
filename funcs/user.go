@@ -12,11 +12,13 @@ func AddUser(userName string, pwd string) error {
 	if err != nil {
 		return err
 	}
-	query := "INSERT INTO users (user_id, user_pwd, user_type) VALUES (?, ?, ?)"
+	//    query := "INSERT INTO users (user_email, user_pwd, user_type) VALUES (?, ?, ?)"
+
+	query := "INSERT INTO users (user_email, user_pwd, user_type) VALUES (?, ?, ?)"
 	if _, err := DB.Exec(query, userName, pwd, userTypeID); err != nil {
+
 		sqliteErr, ok := err.(sqlite3.Error)
 		if ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
-			fmt.Println(err)
 			return fmt.Errorf("user already exist")
 		}
 		return err
@@ -33,14 +35,14 @@ func UserTypeID(userType string) (int, error) {
 	return userTypeID, nil
 }
 
-func SelectUserID(userName, pwd string) (int, error) {
-	query := "SELECT u_id FROM users WHERE user_id = ? AND user_pwd = ?"
-	row := DB.QueryRow(query, userName, pwd)
+func SelectUserID(userEmail string) (int, error) {
+	query := "SELECT u_id FROM users WHERE user_email = ?"
+	row := DB.QueryRow(query, userEmail)
 
 	var userID int
 	if err := row.Scan(&userID); err != nil {
 		if err == sql.ErrNoRows {
-			return 0, fmt.Errorf("incorrect UserName / password")
+			return 0, fmt.Errorf("incorrect userEmail / password")
 		}
 		return 0, err
 	}
@@ -79,6 +81,17 @@ func UserIsType(userID int, typ string) bool {
 		return false
 	}
 	return userType == typeID
+}
+
+// Gets user hashed password
+func GetUserHash(userID int) string {
+	query := "SELECT user_pwd FROM users WHERE u_id = ?"
+	var userHash string
+	if err := DB.QueryRow(query, userID).Scan(&userHash); err != nil {
+		return "nil"
+	}
+
+	return userHash
 }
 
 // func CreateUserType(userID int, userType string) error {

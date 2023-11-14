@@ -3,56 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/starterpages.css" />
+    <meta name="google-signin-client_id" content="173893630139-4nbjs26flrgd6s706654isufjj91vt7v.apps.googleusercontent.com">
+    <link rel="stylesheet" href="static/css/starterpages.css" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>4UM Login</title>
   </head>
   <body>
     <div class="logo">
       <h1>Welcome to 4UM!</h1>
-      <img src="../assets/reddit.png" alt="Amjad we need a logo bruh" />
+      <img src="static/assets/logo.png" alt="Amjad we need a logo bruh" />
     </div>
     <div class="form">
       <form>
         <input
-          name="loginCredential"
+          name="Email"
           placeholder="Username/Email"
           type="text"
           required
         />
         <input
-          name="loginPassword"
+          name="Password"
           placeholder="Password"
           type="text"
           required
         />
-        <button class="LoginBtn" id="submit" onclick="sendLoginRequest()">
+        <button type= "button" class="LoginBtn" id="submit" onclick="sendLoginRequest()">
           <span>Login</span>
         </button>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
       </form>
     </div>
-    <script>
-      function sendLoginRequest() {
-        const url = "/auth";
-
-        // Send the POST request using the fetch API
-        fetch(url, {
-          method: "POST",
-          body: new FormData(document.querySelector("form")),
-        })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error("Request failed");
-            }
-          })
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    </script>
+    <script src="static/js/login.js"></script>
   </body>
 </html>
