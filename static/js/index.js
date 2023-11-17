@@ -9,10 +9,9 @@ fetch('/posts')
             postElement.className = "postcard"
             postElement.innerHTML = `
                
-                    <p>User ID: ${post.user_id}</p>
+                   
                     <p>Title: ${post.title}</p>
-                    <p>Category: ${post.category}</p>
-                    <p>Creation Date: ${post.creation_date}</p>
+                    
                
             `;
             jsonContainer.appendChild(postElement);
