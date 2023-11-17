@@ -257,19 +257,101 @@ main {
 }
 
 .postcardwrapper {
-    display: grid;
-    grid-template-columns: 33vw 33vw 34vw;
-    grid-template-rows: 30vh 30vh 30vh;
-    width: 100vw;
-    height: 80vh;
-    margin-top: 10vh;
-    margin-bottom: 2vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
 }
 
 .postcard {
     display: flex;
-    background-color: #3c3b3b;
-    border: 1px solid #111;
-    width: 25vw;
-    height: 10vh;
+    width: 785px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    border-radius: 16px;
+    background: var(--Dark-3, #262D34);
+}
+
+.postWrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.postImage {
+    width: 156px;
+    height: 156px;
+    border-radius: 16px;
+    border: 1px solid rgba(43, 0, 212, 0.10);
+    background: url(<path-to-image>), lightgray -67.941px -68.096px / 184.47% 178.067% no-repeat;
+    box-shadow: 0px 2px 6px 0px rgba(43, 0, 212, 0.06);
+}
+
+.dataWrapper {
+    display: flex;
+    width: 569px;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.data {
+    display: flex;
+    width: 519px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    flex-shrink: 0;
+}
+
+.title {
+    display: flex;
+    width: 521px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 521px;
+}
+
+.categories {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.category {
+    display: flex;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 20px;
+    background: var(--Dark-4, #2C353D);
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.userID {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.creationdate {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
 }
