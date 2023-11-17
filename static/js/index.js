@@ -8,29 +8,30 @@ fetch('/posts')
             const postElement = document.createElement('div');
             postElement.className = "postcard"
             postElement.innerHTML = `
-            <div class="postWrapper">
-                <div class="postImage"></div>
-                    <div class="dataWrapper">
-                        <div class="data">
-                            <div class="title">
-                                ${post.title} 
-                                <div class="categories"> 
-                                    <div class="category">
-                                        ${post.category}
-                                    </div>
-                            </div>
-                            <div class="user">
-                                <div class="userID">User ID: ${post.user_id}</div>
-                                <div class="action">
-                                    <p>Creation Date: ${post.creation_date}</p>
-                                    <p>{commentsCount}</p>
-                                    <p>{likes count}</p>
-                                </div>
+        <div class="postWrapper">
+            <div class="postImage"></div>
+            <div class="dataWrapper">
+                <div class="data">
+                    <div class="title">
+                        ${post.title}
+                        <div class="categories">
+                            <div class="category">
+                                ${post.category}
                             </div>
                         </div>
+                    </div>
+                    <div class="user">
+                        <div class="userID">User ID: ${post.user_id}</div>
+                        <div class="action">
+                            <p>Creation Date: ${post.creation_date}</p>
+                            <p>{commentsCount}</p>
+                            <p>{likes count}</p>
                         </div>
-                    <div>likeICON</div>
+                    </div>
+                </div>
+                <div>likeICON</div>
             </div>
+        </div>
             `;
             jsonContainer.appendChild(postElement);
 
