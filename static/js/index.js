@@ -12,8 +12,8 @@ fetch('/posts')
             <div class="postImage"></div>
             <div class="dataWrapper">
                 <div class="data">
-                    <div class="title">
-                        ${post.title}
+                    <div class="title_category">
+                        <div class="title bold_text">${post.title}</div>    
                         <div class="categories">
                             <div class="category">
                                 ${post.category}
