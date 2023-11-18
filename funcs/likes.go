@@ -85,3 +85,86 @@ func CommentLikes(userID int, commentID int, action bool) error {
 	return nil
 
 }
+
+type LikeCounts struct {
+	LikeCount    int
+	DislikeCount int
+}
+
+func CountPostLikes(postID int) (LikeCounts, error) {
+	var postExists bool
+	// Checking if the post ID exists in the database
+	query := "SELECT EXISTS (SELECT 1 FROM posts WHERE p_id = ?)"
+	if err := DB.QueryRow(query, postID).Scan(&postExists); err != nil {
+		return LikeCounts{}, err
+	}
+	if !postExists {
+		return LikeCounts{}, fmt.Errorf("Post does not exist")
+	}
+
+	//////////////////////////////////////////////////////////////////
+
+	var counts LikeCounts
+
+	query = "SELECT actions_type, COUNT(*) as count FROM posts_interaction WHERE post_id = ? GROUP BY actions_type;"
+	rows, err := DB.Query(query, postID)
+	if err != nil {
+		return LikeCounts{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var actionType bool
+		var count int
+		if err := rows.Scan(&actionType, &count); err != nil {
+			return LikeCounts{}, err
+		}
+		if actionType {
+			counts.LikeCount = count
+		} else {
+			counts.DislikeCount = count
+		}
+	}
+
+	return counts, nil
+}
+
+func CountCommentLikes(commentID int) (LikeCounts, error) {
+
+	var commentExists bool
+	// Checking if the post ID exists in the database
+	query := "SELECT EXISTS (SELECT 1 FROM comments WHERE comm_id = ?)"
+	if err := DB.QueryRow(query, commentID).Scan(&commentExists); err != nil {
+		return LikeCounts{}, err
+	}
+	if !commentExists {
+		return LikeCounts{}, fmt.Errorf("Comment does not exist")
+	}
+
+	//////////////////////////////////////////////////////////////////
+
+	var counts LikeCounts
+
+	query = "SELECT actions_type, COUNT(*) as count FROM comments_interactions WHERE comment_id = ? GROUP BY actions_type;"
+	rows, err := DB.Query(query, commentID)
+	if err != nil {
+		return LikeCounts{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var actionType bool
+		var count int
+		if err := rows.Scan(&actionType, &count); err != nil {
+			return LikeCounts{}, err
+		}
+		if actionType {
+			counts.LikeCount = count
+		} else {
+			counts.DislikeCount = count
+		}
+	}
+
+	return counts, nil
+}
