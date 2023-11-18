@@ -63,7 +63,7 @@ func CreatePost(userID int, title string, category string, content string) error
 }
 
 // Func to get posts from database
-func Get_posts_from_db() map[string][]string {
+func Get_posts_from_db() []Post_json {
 	// Query the database
 	rows, err := DB.Query("SELECT user_id, creation_date, title, p_id FROM posts LIMIT 100")
 	if err != nil {
@@ -72,7 +72,7 @@ func Get_posts_from_db() map[string][]string {
 	defer rows.Close()
 
 	// Create a slice to hold the results
-	results := make(map[string][]string, 0)
+	results := make([]Post_json, 0)
 
 	// Iterate through the rows
 	for rows.Next() {
@@ -81,10 +81,15 @@ func Get_posts_from_db() map[string][]string {
 			log.Fatal(err)
 		}
 		// Do something with the data, for example, add it to the result slice
-		results["user_id"] = append(results["user_id"], column1)
-		results["creation_date"] = append(results["creation_date"], column2)
-		results["title"] = append(results["title"], column3)
-		results["post_id"] = append(results["post_id"], column4)
+		post_ideee, _ := strconv.Atoi(column4)      // converts post_id to integer
+		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
+		results = append(results, Post_json{        // Append this post into posts_arr array
+			User_ID:       column1,
+			Creation_Date: column2,
+			Title:         column3,
+			Category:      "test",
+			Likes_Count:   countLikes.LikeCount,
+		})
 	}
 
 	return results
