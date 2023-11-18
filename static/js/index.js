@@ -25,7 +25,7 @@ fetch('/posts')
                         <div class="action">
                             <p>Creation Date: ${post.creation_date}</p>
                             <p>{commentsCount}</p>
-                            <p>{likes count}</p>
+                            <p>${post.likes_count}</p>
                         </div>
                     </div>
                 </div>
