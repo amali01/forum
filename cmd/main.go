@@ -30,8 +30,6 @@ func main() {
 		controllers.RenderPage(w, r, funcs.DB)
 	})
 
-	//http.HandleFunc("/posts", api.GetPostsHandler)
-
 	http.HandleFunc("/category/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderCategoryPage(w, r, funcs.DB)
 	})
