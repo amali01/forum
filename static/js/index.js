@@ -1,5 +1,5 @@
 // Fetch the JSON data from the URL
-fetch('/posts')
+fetch('api/posts')
     .then(response => response.json())
     .then(data => {
         // Process the JSON data and create HTML elements
