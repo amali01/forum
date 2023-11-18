@@ -18,27 +18,19 @@ func main() {
 	// Handle requests for files in the "/static/" path
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	// Handle API (JSON servers)
+	http.Handle("/api/", http.StripPrefix("/api/", http.HandlerFunc(api.API_Handler)))
+
 	// Handle signup
 	http.HandleFunc("/signup", api.SignUp)
 	// Handle login
 	http.HandleFunc("/login", api.LogIn)
 
-	// create post
-	http.HandleFunc("/create_post", api.Create_Post)
-	// create category
-	http.HandleFunc("/create_category", api.Create_Category_Handler)
-	// Handle Create comment
-	http.HandleFunc("/add_comment", api.AddCommentHandler)
-	// Handle Likes & Dislikes for Posts
-	http.HandleFunc("/likes_post", api.LikesPostHandler)
-	// Handle Likes & Dislikes for Posts
-	http.HandleFunc("/likes_comment", api.LikesCommentHandler)
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPage(w, r, funcs.DB)
 	})
 
-	http.HandleFunc("/posts", api.GetPostsHandler)
+	//http.HandleFunc("/posts", api.GetPostsHandler)
 
 	http.HandleFunc("/category/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderCategoryPage(w, r, funcs.DB)
