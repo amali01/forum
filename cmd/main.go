@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"forum/api"
 	"forum/controllers"
-	"forum/funcs"
+	"forum/pkgs/funcs"
 	"log"
 	"net/http"
 )

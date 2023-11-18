@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/funcs"
 	"forum/hashing"
+	"forum/pkgs/funcs"
 	"io"
 	"net/http"
 	"text/template"

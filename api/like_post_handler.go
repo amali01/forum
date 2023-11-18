@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/funcs"
+	"forum/pkgs/funcs"
 	"io"
 	"net/http"
 )

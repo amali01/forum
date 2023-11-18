@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"database/sql"
-	"forum/funcs"
+	"forum/pkgs/funcs"
 	"html/template"
 	"net/http"
 	"strings"
