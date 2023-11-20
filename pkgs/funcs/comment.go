@@ -31,3 +31,54 @@ func CreateComment(userID int, postID int, content string) error {
 	return nil
 
 }
+
+// holds all the Comment info
+type CommentResults struct {
+	UserID          int
+	CommentID       int
+	Comment         string
+	CreationDate    string
+	Edited          bool // can be used later to show it the post been edited
+	CommentLikes    int  // can be fed from funcs.CountCommentLikes()
+	CommentDislikes int  // can be fed from funcs.CountCommentLikes()
+
+}
+
+// Func to get Comment from database
+func GetComment(postID int) ([]CommentResults, error) {
+	// Query the database
+	rows, err := DB.Query("SELECT user_id, comm_id, comment_date, comment, edited FROM comments WHERE post_id = ?", postID)
+	if err != nil {
+		return []CommentResults{}, err
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the results
+	var result []CommentResults
+
+	// Iterate through the rows
+	for rows.Next() {
+		// Create a struct to hold the current result
+		var comment CommentResults
+
+		// Scan the values into the struct fields
+		if err := rows.Scan(&comment.UserID, &comment.CommentID, &comment.CreationDate, &comment.Comment, &comment.Edited); err != nil {
+			return []CommentResults{}, err
+		}
+		// can be removed and done somewhere else
+		LikesCount, _ := CountCommentLikes(comment.CommentID)
+		comment.CommentLikes = LikesCount.LikeCount
+		comment.CommentDislikes = LikesCount.DislikeCount
+		//
+		// Append the current result to the slice
+		result = append(result, comment)
+	}
+
+	// Check if any rows were returned
+	if len(result) == 0 {
+		// No comments found for the given postID
+		return []CommentResults{}, fmt.Errorf("No comments found for post ID %d", postID)
+	}
+
+	return result, nil
+}
