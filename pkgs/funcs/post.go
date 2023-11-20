@@ -1,6 +1,7 @@
 package funcs
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"strconv"
@@ -87,7 +88,6 @@ func Get_posts_from_db() []Post_json {
 			User_ID:       column1,
 			Creation_Date: column2,
 			Title:         column3,
-			Category:      "test",
 			Likes_Count:   countLikes.LikeCount,
 		})
 	}
@@ -95,45 +95,65 @@ func Get_posts_from_db() []Post_json {
 	return results
 }
 
-// holds all the post info
-type PostResults struct {
-	UserID       int
-	Post         string
-	CreationDate string
-	Title        string
-	Edited       bool // can be used later to show it the post been edited
-	PostLikes    int  // can be fed from funcs.CountPostLikes()
-	PostDislikes int  // can be fed from funcs.CountPostLikes()
+func Get_Post(postID string) (Post_json, error) {
+	var postDetails Post_json
 
-}
+	// Create the SQL query
+	query := `
+        SELECT user_profile.user_name, posts.creation_date, posts.title, posts.post
+        FROM posts
+        JOIN user_profile ON posts.user_id = user_profile.user_account_id
+        WHERE posts.p_id = ?
+    `
+	// Execute the query and retrieve the row
+	row := DB.QueryRow(query, postID)
 
-// Func to get post from database
-func GetPost(postID int) (Post_json, error) {
-	// Query the database
-	rows, err := DB.Query("SELECT user_id, post, creation_date, title, edited FROM posts WHERE p_id = ?", postID)
+	// Scan the row values into the postDetails struct
+	if err := row.Scan(&postDetails.User_ID, &postDetails.Creation_Date, &postDetails.Title, &postDetails.Text); err != nil {
+		if err == sql.ErrNoRows {
+			// Post not found
+			return Post_json{}, fmt.Errorf("post not found")
+		}
+		return Post_json{}, err
+	}
+
+	// Retrieve categories for the post
+	categories, err := Get_Post_Categories(postID)
 	if err != nil {
 		return Post_json{}, err
 	}
+	postDetails.Category = categories
+
+	// Post details retrieved successfully
+	return postDetails, nil
+}
+
+func Get_Post_Categories(postID string) ([]string, error) {
+	query := `
+        SELECT category
+        FROM threads
+        JOIN category ON threads.cat_id = category.cat_id
+        WHERE post_id = ?
+    `
+
+	rows, err := DB.Query(query, postID)
+	if err != nil {
+		return nil, err
+	}
 	defer rows.Close()
 
-	// Create a struct to hold the result
-	var result Post_json
-
-	// Check if a row was returned
-	if rows.Next() {
-		// Scan the values into the struct fields
-		if err := rows.Scan(&result.User_ID, &result.Text, &result.Creation_Date, &result.Title, &result.Edited); err != nil {
-			return Post_json{}, err
+	var categories []string
+	for rows.Next() {
+		var category string
+		if err := rows.Scan(&category); err != nil {
+			return nil, err
 		}
-		/////////////////////////////////////////// can be removed and done somewhere else
-		/*LikesCount, _ := CountPostLikes(postID)
-		result.PostLikes = LikesCount.LikeCount
-		result.PostDislikes = LikesCount.DislikeCount*/
-		/////////////////////////////////////////////////
-	} else {
-		// No row found for the given postID
-		return Post_json{}, fmt.Errorf("No post found with ID %d", postID)
+		categories = append(categories, category)
 	}
 
-	return result, nil
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return categories, nil
 }
