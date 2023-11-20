@@ -18,42 +18,32 @@ func main() {
 	// Handle requests for files in the "/static/" path
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	// Handle signup
-	http.HandleFunc("/signup", api.SignUp)
-	// Handle login
-	http.HandleFunc("/login", api.LogIn)
+	// API endpoints
+	http.HandleFunc("/api/signup", api.SignUp)                           // Handle signup
+	http.HandleFunc("/api/login", api.LogIn)                             // Handle login
+	http.HandleFunc("/api/create_post", api.Create_Post)                 // create post
+	http.HandleFunc("/api/create_category", api.Create_Category_Handler) // create category
+	http.HandleFunc("/api/add_comment", api.AddCommentHandler)           // Handle Create comment
+	http.HandleFunc("/api/likes_post", api.LikesPostHandler)             // Handle Likes & Dislikes for Posts
+	http.HandleFunc("/api/likes_comment", api.LikesCommentHandler)       // Handle Likes & Dislikes for Posts
+	http.HandleFunc("/api/posts", api.GetPostsHandler)                   // Retrive posts as JSON
 
-	// create post
-	http.HandleFunc("/create_post", api.Create_Post)
-	// create category
-	http.HandleFunc("/create_category", api.Create_Category_Handler)
-	// Handle Create comment
-	http.HandleFunc("/add_comment", api.AddCommentHandler)
-	// Handle Likes & Dislikes for Posts
-	http.HandleFunc("/likes_post", api.LikesPostHandler)
-	// Handle Likes & Dislikes for Posts
-	http.HandleFunc("/likes_comment", api.LikesCommentHandler)
-
+	// Render pages
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPage(w, r, funcs.DB)
 	})
-
-	http.HandleFunc("/posts", api.GetPostsHandler)
-
 	http.HandleFunc("/category/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderCategoryPage(w, r, funcs.DB)
 	})
-
 	http.HandleFunc("/post/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPostPage(w, r, funcs.DB)
 	})
-
 	http.HandleFunc("/user/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderUserPage(w, r, funcs.DB)
 	})
 
-	fmt.Println("Server listening on port http://localhost:8080 ...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Server listening on port http://localhost:8081 ...")
+	log.Fatal(http.ListenAndServe(":8081", nil))
 
 	if err := funcs.DB.Close(); err != nil {
 		fmt.Println("Error :", err)
