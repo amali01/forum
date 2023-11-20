@@ -45,3 +45,37 @@ func CreateCategory(userId int, categoryName string) error {
 	}
 	return nil
 }
+
+// Func to get all post IDs of a Category from database
+func GetCategoryPosts(catID int) ([]int, error) {
+	// Query the database
+	rows, err := DB.Query("SELECT post_id FROM threads WHERE cat_id = ?", catID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the result
+	var result []int
+
+	// Iterate through the rows
+	for rows.Next() {
+		var postID int
+
+		// Scan the values into the variable's address
+		if err := rows.Scan(&postID); err != nil {
+			return nil, err
+		}
+
+		// Append the current postID to the result slice
+		result = append(result, postID)
+	}
+
+	// Check if any rows were returned
+	if len(result) == 0 {
+		// No posts found for the given catID
+		return nil, fmt.Errorf("No posts found for category ID %d", catID)
+	}
+
+	return result, nil
+}
