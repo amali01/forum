@@ -6,7 +6,6 @@ import (
 	"forum/controllers"
 	"forum/pkgs/funcs"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -20,9 +19,9 @@ func Get_post_handler(w http.ResponseWriter, r *http.Request) {
 
 	postID := strings.TrimPrefix(r.URL.Path, "/api/post/")
 	fmt.Println(postID)
-	postID_integer, _ := strconv.Atoi(postID)
+	//postID_integer, _ := strconv.Atoi(postID)
 
-	json_post, err := funcs.GetPost(postID_integer)
+	json_post, err := funcs.Get_Post(postID)
 
 	if err != nil {
 		http.Error(w, "This Post do not exist", http.StatusBadRequest)
