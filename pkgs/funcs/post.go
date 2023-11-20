@@ -108,31 +108,31 @@ type PostResults struct {
 }
 
 // Func to get post from database
-func GetPost(postID int) (PostResults, error) {
+func GetPost(postID int) (Post_json, error) {
 	// Query the database
 	rows, err := DB.Query("SELECT user_id, post, creation_date, title, edited FROM posts WHERE p_id = ?", postID)
 	if err != nil {
-		return PostResults{}, err
+		return Post_json{}, err
 	}
 	defer rows.Close()
 
 	// Create a struct to hold the result
-	var result PostResults
+	var result Post_json
 
 	// Check if a row was returned
 	if rows.Next() {
 		// Scan the values into the struct fields
-		if err := rows.Scan(&result.UserID, &result.Post, &result.CreationDate, &result.Title, &result.Edited); err != nil {
-			return PostResults{}, err
+		if err := rows.Scan(&result.User_ID, &result.Text, &result.Creation_Date, &result.Title, &result.Edited); err != nil {
+			return Post_json{}, err
 		}
 		/////////////////////////////////////////// can be removed and done somewhere else
-		LikesCount, _ := CountPostLikes(postID)
+		/*LikesCount, _ := CountPostLikes(postID)
 		result.PostLikes = LikesCount.LikeCount
-		result.PostDislikes = LikesCount.DislikeCount
+		result.PostDislikes = LikesCount.DislikeCount*/
 		/////////////////////////////////////////////////
 	} else {
 		// No row found for the given postID
-		return PostResults{}, fmt.Errorf("No post found with ID %d", postID)
+		return Post_json{}, fmt.Errorf("No post found with ID %d", postID)
 	}
 
 	return result, nil

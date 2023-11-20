@@ -1,12 +1,13 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 )
 
 func API_Handler(w http.ResponseWriter, r *http.Request) {
 	request_path := r.URL.Path
-
+	fmt.Println(r.URL.Path)
 	switch request_path {
 
 	// lists posts
@@ -34,6 +35,11 @@ func API_Handler(w http.ResponseWriter, r *http.Request) {
 	case "likes_comment":
 		// Handle Likes & Dislikes for Posts
 		LikesCommentHandler(w, r)
+
+	// handle post
+	case "post/":
+
+		Get_post_handler(w, r)
 	}
 
 }
