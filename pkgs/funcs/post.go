@@ -94,3 +94,46 @@ func Get_posts_from_db() []Post_json {
 
 	return results
 }
+
+// holds all the post info
+type PostResults struct {
+	UserID       int
+	Post         string
+	CreationDate string
+	Title        string
+	Edited       bool // can be used later to show it the post been edited
+	PostLikes    int  // can be fed from funcs.CountPostLikes()
+	PostDislikes int  // can be fed from funcs.CountPostLikes()
+
+}
+
+// Func to get post from database
+func GetPost(postID int) (PostResults, error) {
+	// Query the database
+	rows, err := DB.Query("SELECT user_id, post, creation_date, title, edited FROM posts WHERE p_id = ?", postID)
+	if err != nil {
+		return PostResults{}, err
+	}
+	defer rows.Close()
+
+	// Create a struct to hold the result
+	var result PostResults
+
+	// Check if a row was returned
+	if rows.Next() {
+		// Scan the values into the struct fields
+		if err := rows.Scan(&result.UserID, &result.Post, &result.CreationDate, &result.Title, &result.Edited); err != nil {
+			return PostResults{}, err
+		}
+		/////////////////////////////////////////// can be removed and done somewhere else
+		LikesCount, _ := CountPostLikes(postID)
+		result.PostLikes = LikesCount.LikeCount
+		result.PostDislikes = LikesCount.DislikeCount
+		/////////////////////////////////////////////////
+	} else {
+		// No row found for the given postID
+		return PostResults{}, fmt.Errorf("No post found with ID %d", postID)
+	}
+
+	return result, nil
+}
