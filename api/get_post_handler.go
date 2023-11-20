@@ -18,7 +18,7 @@ func Get_post_handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	postID := strings.TrimPrefix(r.URL.Path, "post/")
+	postID := strings.TrimPrefix(r.URL.Path, "/api/post/")
 	fmt.Println(postID)
 	postID_integer, _ := strconv.Atoi(postID)
 
