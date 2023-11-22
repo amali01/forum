@@ -14,7 +14,7 @@ import (
 )
 
 func LogIn(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Println(r.URL.Path)
 	// Get method, serve the page
 	if r.Method == http.MethodGet {
 		// Parse the template

@@ -19,8 +19,8 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// API endpoints
-	http.HandleFunc("/api/signup/", api.SignUp)                           // Handle signup
-	http.HandleFunc("/api/login/", api.LogIn)                             // Handle login
+	http.HandleFunc("/signup/", api.SignUp)                               // Handle signup
+	http.HandleFunc("/login/", api.LogIn)                                 // Handle login
 	http.HandleFunc("/api/create_post/", api.Create_Post)                 // create post
 	http.HandleFunc("/api/create_category/", api.Create_Category_Handler) // create category
 	http.HandleFunc("/api/add_comment/", api.AddCommentHandler)           // Handle Create comment
@@ -43,8 +43,8 @@ func main() {
 		controllers.RenderUserPage(w, r, funcs.DB)
 	})
 
-	fmt.Println("Server listening on port http://localhost:8081 ...")
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	fmt.Println("Server listening on port http://localhost:8080 ...")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 
 	if err := funcs.DB.Close(); err != nil {
 		fmt.Println("Error :", err)
