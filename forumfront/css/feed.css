@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200&display=swap');
+
+:root {
+    --bg-color: #1B2021;
+    --orage-color: #FA824C;
+    --blue-color: #1CD9FF;
+    --input-bg: #333232;
+    --input-bg-hover: #514f4f;
+    --text-color: #ffffff;
+    --plex-font: 'IBM Plex Mono', monospace, sans-serif;
+    --post-bg: #51a9bb;
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
+body,
+html {
+    background-color: var(--bg-color);
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mainwrapper {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    padding-top: 33px;
+}
+
+@media (max-width: 600px) {
+    .mainwrapper {
+      grid-template-columns: 1fr;
+    }
+  }
+
+.GridItemPost {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    justify-content: center;
+}
+
+.creationDateDiv,
+.postedBy {
+    margin-left: 100px;
+    color: white;
+    font-family: var(--plex-font);
+}
+
+.postedBy {
+    font-size: 1.5em;
+}
+
+.creationDateDiv {
+    font-weight: 100;
+}
+
+.mainPostDiv {
+    width: 540px;
+    height: 95px;
+    border-radius: 44px;
+    background-color: var(--post-bg);
+    font-family: var(--plex-font);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 32px;
+    padding-right: 19px;
+}
+
+.downvote, .upvote {
+    display: flex;
+    gap: 1px;
+}
+
+.downBtn, .upBtn {
+    cursor: pointer;
+    transition: transform 0.5s ease ;
+}
+
+.downBtn:hover {
+    transform: translateY(5px);
+}
+
+.upBtn:hover {
+    transform: translateY(-5px);
+}
+
+.maincontentPost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.title {
+    font-size: 1.5rem;
+}
+
+.category {
+    font-size: smaller;
+}

@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200&display=swap');
+
+:root {
+    --bg-color: #1B2021;
+    --orage-color: #FA824C;
+    --blue-color: #1CD9FF;
+    --input-bg: #333232;
+    --input-bg-hover: #514f4f;
+    --text-color: #ffffff;
+    --plex-font: 'IBM Plex Mono', monospace, sans-serif;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body,
+html {
+    background-color: var(--bg-color);
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.postedWhoAndWhen {
+    width: 1147px;
+    height: 52px;
+    padding-top: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.who,
+.when {
+    font-family: var(--plex-font);
+    color: var(--text-color);
+}
+
+.who {
+    font-size: 2.6rem;
+    font-weight: 900;
+}
+
+.postTitleAndLikes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1105px;
+    height: 83px;
+    margin-top: 3em;
+}
+
+.likesndislikes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.likesndislikes img {
+    filter: invert(100%);
+    width: 41px;
+    height: 41px;
+}
+
+.downBtn {
+    position: relative;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.upBtn {
+    position: absolute;
+    top: 0;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.likenum,
+.dislikenum {
+    position: relative;
+    font-family: var(--plex-font);
+}
+
+.likenum {
+    color: greenyellow;
+}
+
+.dislikenum {
+    color: rgb(255, 82, 82);
+}
+
+.PostTitle {
+    font-size: 4rem;
+    font-family: var(--plex-font);
+    color: var(--blue-color);
+}
+
+.postText {
+    margin-top: 4em;
+    width: 1049px;
+    height: fit-content;
+    font-family: var(--plex-font);
+    color: black;
+    font-weight: bolder;
+    background-color: #1CD9FF;
+    padding: 60px 20px;
+    border-radius: 19px;
+    text-align: center;
+}
+
+.categories {
+    color: yellow;
+    font-family: var(--plex-font);
+    margin-top: 0.5em;
+}
+
+.comments {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+    justify-content: space-evenly;
+    margin-left: 20px;
+}
+
+.ctitle {
+    margin-left: 25px;
+    font-size: 2rem;
+    color: white;
+    font-family: var(--plex-font);
+}
+
+.com {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3em;
+    padding-bottom: 43px;
+}
+
+.frow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 256px;
+    height: 43px;
+    margin-left: 10px;
+}
+
+.uname {
+    color: white;
+    font-family: var(--plex-font);
+}
+
+.comcontent {
+    margin-top: 1.5em;
+    color: white;
+    font-family: var(--plex-font);
+    max-width: 300px;
+    margin-left: 30px;
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/login.css">
+    <title>Log In</title>
+</head>
+
+<body>
+    <form id="loginform" onsubmit="CorrespondDB()" action="POST">
+        <input type="text" name="Logincredential" placeholder="Email/Username" autocomplete="off">
+        <input type="password" name="password" placeholder="Password" autocomplete="off">
+        <div class="links">
+            <input type="submit" value="Log In" class="submitbtn">
+            <a href="/signup" class="toLogIn">or signup Instead</a>
+        </div>
+    </form>
+    <script src="../js/login.js"></script>
+</body>
+</html>
