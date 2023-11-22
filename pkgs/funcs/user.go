@@ -7,7 +7,7 @@ import (
 	"github.com/mattn/go-sqlite3"
 )
 
-func AddUser(userName string, pwd string) error {
+func AddUser(userName string, userEmail string, pwd string) error {
 	userTypeID, err := UserTypeID("user")
 	if err != nil {
 		return err
@@ -15,7 +15,31 @@ func AddUser(userName string, pwd string) error {
 	//    query := "INSERT INTO users (user_email, user_pwd, user_type) VALUES (?, ?, ?)"
 
 	query := "INSERT INTO users (user_email, user_pwd, user_type) VALUES (?, ?, ?)"
-	if _, err := DB.Exec(query, userName, pwd, userTypeID); err != nil {
+	if _, err := DB.Exec(query, userEmail, pwd, userTypeID); err != nil {
+
+		sqliteErr, ok := err.(sqlite3.Error)
+		if ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
+			return fmt.Errorf("user already exist")
+		}
+		return err
+	}
+
+	err = CreateUserProfile(userName, userEmail)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return nil
+}
+
+func CreateUserProfile(userName string, userEmail string) error {
+
+	userID, err := SelectUserID(userEmail)
+	if err != nil {
+		fmt.Println(err)
+	}
+	query := "INSERT INTO user_profile (user_account_id, user_name, DOB, first_name, last_name) VALUES (?, ?, ?, ?, ?)"
+
+	if _, err := DB.Exec(query, userID, userName, "1990-01-01 00:00:00", "first_name", "last_name"); err != nil {
 
 		sqliteErr, ok := err.(sqlite3.Error)
 		if ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
@@ -35,6 +59,7 @@ func UserTypeID(userType string) (int, error) {
 	return userTypeID, nil
 }
 
+// Retrive userID from database
 func SelectUserID(userEmail string) (int, error) {
 	query := "SELECT u_id FROM users WHERE user_email = ?"
 	row := DB.QueryRow(query, userEmail)
