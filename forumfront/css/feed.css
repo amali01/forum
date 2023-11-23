@@ -11,7 +11,7 @@
     --post-bg: #51a9bb;
 }
 
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
     display: none;
 }
 
@@ -37,9 +37,9 @@ html {
 
 @media (max-width: 600px) {
     .mainwrapper {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
     }
-  }
+}
 
 .GridItemPost {
     display: flex;
@@ -84,14 +84,16 @@ html {
     padding-right: 19px;
 }
 
-.downvote, .upvote {
+.downvote,
+.upvote {
     display: flex;
     gap: 1px;
 }
 
-.downBtn, .upBtn {
+.downBtn,
+.upBtn {
     cursor: pointer;
-    transition: transform 0.5s ease ;
+    transition: transform 0.5s ease;
 }
 
 .downBtn:hover {
@@ -115,4 +117,54 @@ html {
 
 .category {
     font-size: smaller;
+}
+
+.float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: yellow;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.float svg {
+    cursor: pointer;
+}
+
+
+/* Modal css */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    /* Sit on top */
+    left: 50%;
+    top: 50%;
+    width: 30em;
+    /* Full width */
+    height: 70vh;
+    /* Full height */
+    margin-top: -35vh;
+    /* Negative half of height. */
+    margin-left: -15em;
+    /* Negative half of width. */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Black w/ opacity */
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }

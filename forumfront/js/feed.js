@@ -35,10 +35,20 @@ function UpdateHTML(arr) {
     `
 }
 
+function FormatJson(form) {
+    var formData = new FormData(form);
+    var json = {};
+
+    for (var pair of formData.entries()) {
+        json[pair[0]] = pair[1];
+    }
+
+    console.log(json)
+
+    return json;
+}
+
 function fetchAndOrganizeData() {
-    //! DEPRECATED: event class is deprecated, ensure to replace in
-    //! Later iterations of this project
-    event.preventDefault()
     fetch('../samplefeed.json')
         .then(response => response.json())
         .then(data => {
@@ -68,4 +78,53 @@ function fetchAndOrganizeData() {
         });
 }
 
+function SubmitSubforumFilterRequest() {
+    //! DEPRECATED
+    event.preventDefault()
+    let subformFilterSearchInput = document.getElementById("subforumSearch")
+    console.log(FormatJson(subformFilterSearchInput))
+    fetch("/filter", {
+        method: "POST",
+        body: FormatJson(subformFilterSearchInput)
+    })
+        .then(response => response.json())
+        .then(data => {
+            location.reload()
+        }).catch((error) => {
+            console.log("ERROR SUBFORUM: " + error)
+        })
+}
+
+function ModalOps() {
+
+    var modal = document.getElementById("MainModal");
+    var smodal = document.getElementById("searchModal")
+
+    var openbtn = document.getElementById("settingBtn");
+    var openSearchModal = document.getElementById("opensearchModal");
+
+    var closebtn = document.getElementById("closebtn");
+    var closeSearchBtn = document.getElementById("closeSearchModalBtn")
+
+
+    openbtn.onclick = function () {
+        modal.style.display = "flex";
+    };
+
+    closebtn.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    openSearchModal.onclick = function () {
+        smodal.style.display = "flex";
+        modal.style.display = "none";
+    };
+
+    closeSearchBtn.onclick = function () {
+        smodal.style.display = "none";
+        modal.style.display = "none";
+    };
+}
+
+ModalOps()
 fetchAndOrganizeData()
