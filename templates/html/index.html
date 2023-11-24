@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/static/css/index.css" />
-    <title>Main page test</title>
-</head>
-
-<body>
-    <nav>
-        <div class="appicon">
-            <img src="/static/assets/reddit.png" alt="reddit Icon" class="appIcon" />
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/feed.css">
+        <link rel="stylesheet" href="/static/css/feedmodal.css">
+        <title>4um Feed</title>
+    </head>
+    <body>
+        <div class="mainwrapper"></div>
+        <a class="float" onclick="openOptions()" id="settingBtn">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                viewBox="0 0 20 20"
+                height="20"
+                fill="none"
+                class="svg-icon"
+            >
+                <g stroke-width="1.5" stroke-linecap="round" stroke="#000000">
+                    <circle r="2.5" cy="10" cx="10"></circle>
+                    <path fill-rule="evenodd" d="m8.39079 2.80235c.53842-1.51424 2.67991-1.51424 3.21831-.00001.3392.95358 1.4284 1.40477 2.3425.97027 1.4514-.68995 2.9657.82427 2.2758 2.27575-.4345.91407.0166 2.00334.9702 2.34248 1.5143.53842 1.5143 2.67996 0 3.21836-.9536.3391-1.4047 1.4284-.9702 2.3425.6899 1.4514-.8244 2.9656-2.2758 2.2757-.9141-.4345-2.0033.0167-2.3425.9703-.5384 1.5142-2.67989 1.5142-3.21831 0-.33914-.9536-1.4284-1.4048-2.34247-.9703-1.45148.6899-2.96571-.8243-2.27575-2.2757.43449-.9141-.01669-2.0034-.97028-2.3425-1.51422-.5384-1.51422-2.67994.00001-3.21836.95358-.33914 1.40476-1.42841.97027-2.34248-.68996-1.45148.82427-2.9657 2.27575-2.27575.91407.4345 2.00333-.01669 2.34247-.97026z" clip-rule="evenodd"></path>
+                </g>
+            </svg>
+        </a>
+        <!-- The Main Modal -->
+        <div id="MainModal" class="modal">
+            <h2>More Options</h2>
+            <button class="closebtn" id="closebtn">
+                <span class="X"></span>
+                <span class="Y"></span>
+                <div class="close">Close</div>
+            </button>
+            <a id="AddPost" class="profileBtn">
+                <img src="/static/assets/AddPost.png" alt="Add Post">
+            </a>
+            <a id="opensearchModal" class="profileBtn">
+                <img src="/static/assets/Filter.png" alt="Filter Posts">
+            </a>
+            <a id="profilePageBtn" class="profileBtn">
+                <img src="/static/assets/profilepg.png" alt="Open Profile Page">
+            </a>
         </div>
-        <div class="dropdown">
-            <button class="dropbtn">Search SubForums</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-        <div class="searchbar">
-            <form class="form">
-                <label for="search">
-                    <input class="input" type="text" required="" placeholder="Search forum" id="search" />
-                    <div class="fancy-bg"></div>
-                    <div class="search">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"
-                            class="r-14j79pv r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-4wgw6l r-f727ji r-bnwqim r-1plcrui r-lrvibr">
-                            <g>
-                                <path
-                                    d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
-                                </path>
-                            </g>
-                        </svg>
-                    </div>
-                    <button class="close-btn" type="reset">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                </label>
+    </div>
+    <!--End Of Main Modal-->
+    <!--Search Modal-->
+    <div id="searchModal" class="modal">
+        <button class="closebtn" id="closeSearchModalBtn">
+            <span class="X"></span>
+            <span class="Y"></span>
+            <div class="close">Close</div>
+        </button>
+        <div class="input-group">
+            <form onsubmit="SubmitSubforumFilterRequest()" id="subforumSearch">
+                <input
+                    required
+                    type="text"
+                    name="subforum"
+                    autocomplete="off"
+                    class="input"
+                >
+                <label class="user-label">Filter Subforums</label>
             </form>
         </div>
-        <div class="notiIcon">
-            <img src="/static/assets/bellIcon.png" alt="noti bell" class="navIcon" />
-        </div>
-        <div class="createPost">
-            <img src="/static/assets/addIcon.png" alt="reddit Icon" class="navIcon" />
-        </div>
-        <div class="profileAccess">
-            <img src="/static/assets/profilePic.png" alt="profilepic" class="pfpIcon" />
-        </div>
-    </nav>
-    <main>
-        <div class="postcardwrapper">
-
-        </div>
-
-    </main>
-    <script src="/static/js/index.js"></script>
+    </div>
+    <!--End of search Modal-->
 </body>
-
+<script src="/static/js/feed.js"></script>
 </html>
