@@ -18,14 +18,14 @@ function UpdateHTML(arr) {
         <div class="mainPostDiv">
             <div class="downvote">
                 <div class="counter">0</div>
-                <img src="../assets/downvote.svg" alt="downvote" class="downBtn">
+                <img src="/static/assets/downvote.svg" alt="downvote" class="downBtn">
             </div>
             <div class="maincontentPost">
                 <div class="title">${arr[1]}</div>
                 <div class="category">${arr[2]}</div>
             </div>
             <div class="upvote">
-                <img src="../assets/upvote.svg" alt="upvote" class="upBtn">
+                <img src="/static/assets/upvote.svg" alt="upvote" class="upBtn">
                 <div class="counter">50</div>
             </div>
         </div>
