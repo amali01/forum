@@ -21,7 +21,12 @@ function FormatJson(form) {
     var json = {};
 
     for (var pair of formData.entries()) {
-        json[pair[0]] = pair[1];
+        if (pair[0] == "cpassword") {
+            continue
+        } else {
+            json[pair[0]] = pair[1];
+        }
+
     }
 
     console.log(json)
@@ -29,17 +34,16 @@ function FormatJson(form) {
     return json;
 }
 
-function CorrespondDB() {
-    //! DEPRECATED: event class is deprecated, ensure to replace in
-    //! Later iterations of this project
+function AddToDB() {
+    //! DEPRECATED: event
     event.preventDefault()
-    let form = document.getElementById("loginform")
+    let form = document.getElementById("signupform")
     //* log the variables in the terminal
     logVars(form)
-    //* use fetch API to submit request to login
+    //* use fetch API to submit request to add
     console.log()
     if (checkPassEqual) {
-        fetch("/login", {
+        fetch("/signup", {
             method: "POST",
             body: FormatJson(form)
         })
