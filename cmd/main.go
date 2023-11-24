@@ -19,14 +19,14 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// API endpoints
-	http.HandleFunc("/signup/", api.SignUp)                               // Handle signup
-	http.HandleFunc("/login/", api.LogIn)                                 // Handle login
-	http.HandleFunc("/api/create_post/", api.Create_Post)                 // create post
-	http.HandleFunc("/api/create_category/", api.Create_Category_Handler) // create category
-	http.HandleFunc("/api/add_comment/", api.AddCommentHandler)           // Handle Create comment
-	http.HandleFunc("/api/likes_post/", api.LikesPostHandler)             // Handle Likes & Dislikes for Posts
-	http.HandleFunc("/api/likes_comment/", api.LikesCommentHandler)       // Handle Likes & Dislikes for Posts
-	http.HandleFunc("/api/posts/", api.GetPostsHandler)                   // Retrive posts as JSON
+	http.HandleFunc("/signup", api.SignUp)                               // Handle signup
+	http.HandleFunc("/login", api.LogIn)                                 // Handle login
+	http.HandleFunc("/api/create_post", api.Create_Post)                 // create post
+	http.HandleFunc("/api/create_category", api.Create_Category_Handler) // create category
+	http.HandleFunc("/api/add_comment", api.AddCommentHandler)           // Handle Create comment
+	http.HandleFunc("/api/likes_post", api.LikesPostHandler)             // Handle Likes & Dislikes for Posts
+	http.HandleFunc("/api/likes_comment", api.LikesCommentHandler)       // Handle Likes & Dislikes for Posts
+	http.HandleFunc("/api/posts", api.GetPostsHandler)                   // Retrive posts as JSON
 	http.HandleFunc("/api/post/", api.Get_post_handler)
 
 	// Render pages
