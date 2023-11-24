@@ -9,24 +9,17 @@ function logVars(form) {
     }
 }
 
-function checkPassEqual() {
-    let pass = document.getElementsByName("password")[0].value
-    let cpass = document.getElementsByName("cpassword")[0].value
-
-    return pass === cpass
-}
-
 function FormatJson(form) {
     var formData = new FormData(form);
-    var json = {};
+    var jsonObject = {};
 
-    for (var pair of formData.entries()) {
-        json[pair[0]] = pair[1];
-    }
+    formData.forEach((value, key) => {
+        jsonObject[key] = value;
+    });
 
-    console.log(json)
+    console.log(jsonObject)
 
-    return json;
+    return jsonObject;
 }
 
 function CorrespondDB() {
@@ -38,10 +31,12 @@ function CorrespondDB() {
     logVars(form)
     //* use fetch API to submit request to login
     console.log()
-    if (checkPassEqual) {
-        fetch("/login", {
-            method: "POST",
-            body: FormatJson(form)
-        })
-    }
+
+    fetch("", {
+        method: "POST",
+        body: JSON.stringify(FormatJson(form))
+    }).then(resp => {
+        console.log(resp)
+    })
+
 }
