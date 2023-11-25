@@ -27,7 +27,7 @@ func main() {
 	http.HandleFunc("/api/likes_post", api.LikesPostHandler)             // Handle Likes & Dislikes for Posts
 	http.HandleFunc("/api/likes_comment", api.LikesCommentHandler)       // Handle Likes & Dislikes for Posts
 	http.HandleFunc("/api/posts", api.GetPostsHandler)                   // Retrive posts as JSON
-	http.HandleFunc("/api/post/", api.Get_post_handler)
+	http.HandleFunc("/api/post/", api.Get_post_handler)                  // Retrive one post ex: /post/2
 
 	// Render pages
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
