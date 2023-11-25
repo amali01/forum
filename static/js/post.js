@@ -76,7 +76,11 @@ function formatDate(dateString) {
 }
 
 function OrgPost() {
-    fetch('../samplepost.json')
+    var urlString = window.location.href;
+    // Get id from the URL
+    var id = urlString.split("/").pop();
+
+    fetch("../../api/post/" + id)
         .then(response => response.json())
         .then(data => {
             const post = data;
@@ -84,7 +88,7 @@ function OrgPost() {
             const userId = post.user_id;
             const title = post.title;
             const text = post.text
-            const likeCount = post.like_count
+            const likeCount = post.likes_count
             const categories = post.category;
             let strCat = ""
             let i = 0
