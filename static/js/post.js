@@ -11,8 +11,8 @@ function OrgHTML(arr) {
         <div class="likesndislikes">
             <div class="likenum">${arr[3]}</div>
             <div class="likendislikebtndiv">
-                <img src="../assets/upvote.svg" alt="upvote" class="upBtn">
-                <img src="../assets/downvote.svg" alt="downvote" class="downBtn">
+                <img src="/static/assets/upvote.svg" alt="upvote" class="upBtn">
+                <img src="/static/assets/downvote.svg" alt="downvote" class="downBtn">
             </div>
             <div class="dislikenum">0</div>
         </div>
@@ -28,8 +28,8 @@ function OrgHTML(arr) {
                     <div class="likesndislikes">
                         <div class="likenum">100</div>
                         <div class="likendislikebtndiv">
-                            <img src="../assets/upvote.svg" alt="upvote" class="upBtn">
-                            <img src="../assets/downvote.svg" alt="downvote" class="downBtn">
+                            <img src="/static/assets/upvote.svg" alt="upvote" class="upBtn">
+                            <img src="/static/assets/downvote.svg" alt="downvote" class="downBtn">
                         </div>
                         <div class="dislikenum">0</div>
                     </div>
@@ -45,8 +45,8 @@ function OrgHTML(arr) {
                     <div class="likesndislikes">
                         <div class="likenum">100</div>
                         <div class="likendislikebtndiv">
-                            <img src="../assets/upvote.svg" alt="upvote" class="upBtn">
-                            <img src="../assets/downvote.svg" alt="downvote" class="downBtn">
+                            <img src="/static/assets/upvote.svg" alt="upvote" class="upBtn">
+                            <img src="/static/assets/downvote.svg" alt="downvote" class="downBtn">
                         </div>
                         <div class="dislikenum">0</div>
                     </div>
