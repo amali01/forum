@@ -8,4 +8,5 @@ type Post_json struct {
 	Edited        bool     `json:"edited"`
 	Creation_Date string   `json:"creation_date"`
 	Likes_Count   int      `json:"likes_count"`
+	Post_ID       string   `json:"post_id"`
 }

@@ -89,6 +89,7 @@ func Get_posts_from_db() []Post_json {
 			Creation_Date: column2,
 			Title:         column3,
 			Likes_Count:   countLikes.LikeCount,
+			Post_ID:       column4,
 		})
 	}
 
