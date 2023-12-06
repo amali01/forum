@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const DBPath string = "forum.db"
+const DBPath string = "../forum.db"
 
 var DB *sql.DB
 

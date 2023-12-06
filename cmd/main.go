@@ -52,7 +52,7 @@ func main() {
 		controllers.RenderUserPage(w, r, funcs.DB)
 	})
 
-	fmt.Println("Server listening on port http://localhost:8080 ...")
+	fmt.Println("Server is live on port http://localhost:8080 ...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 	if err := funcs.DB.Close(); err != nil {
@@ -62,7 +62,7 @@ func main() {
 
 // A middleware used for authenticate access to participate in the forum
 // All create, edit, post, comment handlers should be passed in this middleware handler
-func session_midddle(in_http http.Handler) http.Handler {
+func Session_midddle(in_http http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("session_token")
