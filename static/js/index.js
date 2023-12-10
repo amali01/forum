@@ -4,6 +4,7 @@ fetch('/api/posts')
     .then(data => {
         // Process the JSON data and create HTML elements
         const jsonContainer = document.getElementsByClassName('postcardwrapper')[0];
+        console.log(jsonContainer)
         data.posts.forEach(post => {
             const postElement = document.createElement('div');
             postElement.className = "postcard"

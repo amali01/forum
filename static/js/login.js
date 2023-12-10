@@ -1,42 +1,69 @@
-function logVars(form) {
-    var formValues = {}
-    for (var i = 0; i < form.elements.length; i++) {
-        var input = form.elements[i];
-        if (input.tagName === "INPUT") { // Check if the element is an input
-            console.log(input.value)
-            formValues[input.name] = input.value;
-        }
-    }
-}
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
 
-function FormatJson(form) {
-    var formData = new FormData(form);
-    var jsonObject = {};
+  // Prepare the data to send to the backend
+  var data = {
+    id: profile.getId(), // Do not send to your backend! Use an ID token instead.
+    name: profile.getName(),
+    imageUrl: profile.getImageUrl(),
+    email: profile.getEmail(),
+  };
 
-    formData.forEach((value, key) => {
-        jsonObject[key] = value;
-    });
+  const url = "/login";
 
-    console.log(jsonObject)
-
-    return jsonObject;
-}
-
-function CorrespondDB() {
-    //! DEPRECATED: event class is deprecated, ensure to replace in
-    //! Later iterations of this project
-    event.preventDefault()
-    let form = document.getElementById("loginform")
-    //* log the variables in the terminal
-    logVars(form)
-    //* use fetch API to submit request to login
-    console.log()
-
-    fetch("", {
-        method: "POST",
-        body: JSON.stringify(FormatJson(form))
-    }).then(resp => {
-        console.log(resp)
+  // Send the POST request using the fetch API
+  fetch(url, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Request failed");
+      }
     })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
+function sendLoginRequest() {
+  const url = "/login";
+
+  let formData = new FormData(document.querySelector("form"))
+
+  // Convert form data to JSON object
+  const jsonObject = {};
+  formData.forEach((value, key) => {
+    jsonObject[key] = value;
+  });
+
+  // Convert the JSON object to a JSON string
+  const jsonString = JSON.stringify(jsonObject);
+
+  // Send the POST request using the fetch API
+  fetch(url, {
+    method: "POST",
+    body: jsonString,
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Request failed");
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
