@@ -1,46 +1,81 @@
-      body {
-        background-color: #111;
-      }
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap");
 
-      body::-webkit-scrollbar {
-        display: none;
-      }
+:root {
+  --bg-color: #240115;
+  --text-color: #ffffff;
+  --bg-nav-color: #2b2427;
+  --main-font-family: "Rubik", monospace, sans-serif;
+  --bg-component-color: #262d34;
+}
 
-      h1,
-      p,
-      h2 {
-        color: wheat;
-      }
+body,
+html {
+  margin: 0;
+  height: 100%;
+  background-color: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-      img {
-        width: 25px;
-        filter: invert(100%);
-        cursor: pointer;
-      }
+body::-webkit-scrollbar {
+  display: none;
+}
 
-      .votebtns {
-        display: flex;
-        gap: 10px;
-      }
+header {
+  margin-top: 5vh;
+  height: 10vh;
+  width: 100vw;
+  font-family: var(--main-font-family);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
 
-      .post {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+.postedBy {
+  font-weight: bold;
+  /*font-size: 3rem;*/
+  font-size: 1rem;
+}
 
-      .comments {
-        display: flex;
-        flex-direction: column;
-        gap: 2em;
-        padding-left: 8px;
-      }
+.postedOn {
+  /*font-size: 1.5rem;*/
+  font-size: 1rem;
+}
 
-      .comm {
-        padding-top: 10px;
-      }
+.titleLikes {
+  margin: 0;
+  height: 10vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
 
-      .comment {
-        color: wheat;
-      }
+.title {
+  color: #ffffff;
+  font-family: var(--main-font-family);
+  font-size: 3.5rem;
+}
+
+.postContent {
+  color: white;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-size: 1.25rem;
+}
+
+.postContent>p {
+  white-space: pre-line;
+  word-wrap: break-word;
+  max-width: 1000px;
+}
+
+
+.postwrapper {
+  display: block;
+}

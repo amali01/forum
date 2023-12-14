@@ -1,11 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap");
 
+:root {
+    --bg-color :  #240115;
+    --text-color : #ffffff; 
+    --bg-nav-color : #2b2427;
+    --main-font-family: 'Rubik', monospace, sans-serif;
+    --bg-component-color: #262D34;
+}
+
 body,
 html {
     margin: 0;
     height: 100%;
-    background-color: #111;
-    color: orange;
+    background-color: var(--bg-color);
 }
 
 body::-webkit-scrollbar {
@@ -14,16 +21,17 @@ body::-webkit-scrollbar {
 
 .NavBar {
     display: inline-flex;
-    padding: 20px 22px;
+    /* padding: 20px 22px; */
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    margin-top: 0;
     gap: 10px;
-    background: var(--Dark-3, #262D34);
-    width: -webkit-fill-available;
-    margin-bottom: 20px;
-    top: 0;
-    position: fixed;
+    background: var(--bg-nav-color);
+    width: 100vw;
+    margin-bottom: 20em;
     z-index: 1000;
+    position: fixed;
+    top: 0;
 }
 
 .NavBarMain {
@@ -39,6 +47,9 @@ body::-webkit-scrollbar {
     display: flex;
     align-items: center;
     gap: 10px;
+    font-family: var(--main-font-family);
+    font-size: 34px;
+    color: var(--text-color);
 }
 
 .NavBarContents {
@@ -86,7 +97,7 @@ input {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     outline: none;
     background-color: transparent;
-    color: orange;
+    color: var(--text-color);
 }
 
 .NavBar-Search-Title {
@@ -269,7 +280,7 @@ svg {
 
 /* styling of input */
 .input {
-    color: var(--input-text-color);
+    color: var(--text-color);
     width: 100%;
     margin-inline: min(2em,
             calc(var(--inline-padding-of-input) + var(--gap)));
@@ -344,15 +355,20 @@ main {
     width: 100vw;
     height: 80vh;
     display: flex;
+    padding-top: 4em;
     justify-content: center;
-    margin-top: 108px;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 18vh;
 }
 
 .postcardwrapper {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+    align-items: center;
+    /* gap: 20px; */
+    /* margin-top: 10vh; */
+    min-height: 90vh;
 }
 
 .postcard {
@@ -362,8 +378,23 @@ main {
     flex-direction: column;
     align-items: flex-start;
     gap: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 16px;
     background: var(--Dark-3, #262D34);
+    color: var(--text-color);
+    font-family: var(--main-font-family);
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+.postcard:hover {
+    background-color: #3f2439;
+}
+
+a {
+    color: white;
+    text-decoration: none;
 }
 
 .postWrapper {
@@ -462,3 +493,67 @@ main {
     gap: 40px;
 }
 
+.sidebar-filter{
+    width: 20vw;
+    height: 90vh;
+    /* background-color: #1be7ee; */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.filterbox {
+    width: 12vw;
+    height: fit-content;
+    border-radius: 30px;
+    background-color: var(--bg-component-color);
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.4em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    justify-content: center;
+    font-family: var(--main-font-family);
+    color: #ffffff;
+    /* gap: 2.4em; */
+}
+
+.filterDIV, .catlisting {
+    cursor: pointer;
+    border-radius: 30px;
+    width: 10vw;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 1.5em;
+    transition-duration: 0.3S;
+}
+
+.allcats {
+    margin-top: 1em;
+}
+
+.filterDIV:hover, .catlisting:hover {
+    background-color: #3f2439;
+}
+
+.categ-sidebar {
+    width: 20vw;
+    height: 90vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.catTitle {
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
+
+.likeBtn, .dislikeBtn {
+    /* width: 1000px; */
+    /* display: flex; */
+    cursor: pointer;
+    font-size: 1.5rem;
+    border: 0;
+    background: none;
+}
