@@ -58,21 +58,15 @@ header {
   font-family: var(--main-font-family);
   font-size: 3.5rem;
 }
-
 .postContent {
   color: white;
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+  display: flex;
   font-size: 1.25rem;
+
 }
 
 .postContent>p {
-  white-space: pre-line;
-  word-wrap: break-word;
-  max-width: 1000px;
+  
 }
 
 
