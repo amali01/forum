@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/funcs"
-	"forum/hashing"
+	"forum/pkgs/funcs"
+	"forum/pkgs/hashing"
 	"io"
 	"net/http"
 	"text/template"
@@ -14,7 +14,7 @@ import (
 )
 
 func LogIn(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Println(r.URL.Path)
 	// Get method, serve the page
 	if r.Method == http.MethodGet {
 		// Parse the template

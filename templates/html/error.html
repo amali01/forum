@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ .Err }} {{ .Message}} </title>
+  <!-- <link rel="stylesheet" href="/css/error_page.css"> -->
+  <!-- <link rel="stylesheet" href="css/body.css"> -->
+</head>
+<body>
+  <!-- Display the error message and description -->
+  <h1>Error {{ .Err }}</h1>
+  <p>{{ .Message}}.</p>
+  <img style="height: 60vh; width:auto;" src="{{ .ImageURL }}" />
+</body>
+</html>

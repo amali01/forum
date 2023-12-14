@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/funcs"
+	"forum/pkgs/funcs"
 	"io"
 	"net/http"
 )
@@ -46,7 +46,7 @@ func Create_Category_Handler(w http.ResponseWriter, r *http.Request) {
 	err = funcs.CreateCategory(userSession.Get_UserID(), data.Category)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
-
+		return
 	}
 	w.Write([]byte("OK!"))
 	////////////////////////////////////////////////////////////////////////

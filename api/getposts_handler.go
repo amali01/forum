@@ -3,53 +3,38 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/funcs"
+	"forum/pkgs/funcs"
 	"net/http"
 )
 
-type post_json struct {
-	User_ID       string `json:"user_id"`
-	Title         string `json:"title"`
-	Category      string `json:"category"`
-	Creation_Date string `json:"creation_date"`
-}
-
 type posts_capsul_json struct {
-	Posts []post_json `json:"posts"`
+	Posts []funcs.Post_json `json:"posts"`
 }
 
+/* A function that retrieve posts, (used for mainpage posts listing) */
 func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	posts_map := funcs.Get_posts_from_db()
-	var posts_arr []post_json
+	posts_arr := funcs.Get_posts_from_db()
 
-	for idx := range posts_map["user_id"] {
-		posts_arr = append(posts_arr, post_json{
-			User_ID:       posts_map["user_id"][idx],
-			Title:         posts_map["title"][idx],
-			Category:      "test",
-			Creation_Date: posts_map["creation_date"][idx],
-		})
-	}
-
+	/* Used to encapsulate the struct into one struct that is used to construct JSON for sending to front-end */
 	JSON_Response := posts_capsul_json{
 		Posts: posts_arr,
 	}
-	// Marshal the data into JSON format
+	/* Marshal the data into JSON format */
 	jsonData, err := json.Marshal(JSON_Response)
 	if err != nil {
 		fmt.Println("Error marshaling JSON:", err)
 		return
 	}
 
-	// Set the content type to JSON
+	/* Set the content type to JSON */
 	w.Header().Set("Content-Type", "application/json")
 
-	// Write the JSON data to the response writer
+	/* Write the JSON data to the response writer */
 	w.Write(jsonData)
 
 }

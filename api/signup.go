@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/funcs"
-	"forum/hashing"
+	"forum/pkgs/funcs"
+	"forum/pkgs/hashing"
 	"io"
 	"net/http"
 	"text/template"
@@ -50,7 +50,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		// Hash the password before adding it
 		hash, _ := hashing.HashPassword(data.Password) // ignore error for the sake of simplicity
 
-		if funcs.AddUser(data.Email, hash) != nil {
+		if funcs.AddUser(data.Name, data.Email, hash) != nil {
 			io.WriteString(w, "Add user error, try again")
 			return
 		}

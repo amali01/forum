@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"database/sql"
-	"forum/funcs"
+	"forum/pkgs/funcs"
 	"html/template"
 	"net/http"
 	"strings"
@@ -24,7 +24,7 @@ func RenderPostPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////
 	files := []string{
-		"barebones/postpage.html", // need to create a post page
+		"templates/html/post.html", // need to create a post page
 	}
 
 	tmpl, err := template.ParseFiles(files...)
