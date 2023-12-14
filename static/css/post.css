@@ -35,11 +35,13 @@ header {
 
 .postedBy {
   font-weight: bold;
-  font-size: 3rem;
+  /*font-size: 3rem;*/
+  font-size: 1rem;
 }
 
 .postedOn {
-  font-size: 1.5rem;
+  /*font-size: 1.5rem;*/
+  font-size: 1rem;
 }
 
 .titleLikes {
@@ -55,4 +57,25 @@ header {
   color: #ffffff;
   font-family: var(--main-font-family);
   font-size: 3.5rem;
+}
+
+.postContent {
+  color: white;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-size: 1.25rem;
+}
+
+.postContent>p {
+  white-space: pre-line;
+  word-wrap: break-word;
+  max-width: 1000px;
+}
+
+
+.postwrapper {
+  display: block;
 }
