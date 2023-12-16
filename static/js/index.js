@@ -23,7 +23,7 @@ fetch("/api/posts")
                         </div>
                     </div>
                     <div class="user">
-                        <div class="userID">User ID: ${post.user_id}</div>
+                        <div class="userID">User Name: ${post.user_id}</div>
                         <div class="action">
                             <p>Creation Date: ${post.creation_date}</p>
                         </div>
