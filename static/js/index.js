@@ -15,7 +15,7 @@ fetch("/api/posts")
             <div class="dataWrapper">
                 <div class="data">
                     <div class="title_category">
-                        <a class="title bold_text" href='/post/${post.post_id}' target=_blank>${post.title}</a>    
+                        <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
                         <div class="categories">
                             <div class="category">
                                 ${post.category}
