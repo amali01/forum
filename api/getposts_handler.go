@@ -18,7 +18,7 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	posts_arr := funcs.Get_posts_from_db()
+	posts_arr, _ := funcs.Get_posts_from_db()
 
 	/* Used to encapsulate the struct into one struct that is used to construct JSON for sending to front-end */
 	JSON_Response := posts_capsul_json{

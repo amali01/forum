@@ -35,6 +35,7 @@ func CreateComment(userID int, postID int, content string) error {
 // holds all the Comment info
 type CommentResults struct {
 	UserID          int    `json:"user_id"`
+	UserName        string `json:"user_name"`
 	CommentID       int    `json:"comment_id"`
 	Comment         string `json:"comment"`
 	CreationDate    string `json:"creation_date"`
@@ -46,8 +47,14 @@ type CommentResults struct {
 
 // Func to get Comment from database
 func GetComment(postID int) ([]CommentResults, error) {
+
 	// Query the database
-	rows, err := DB.Query("SELECT user_id, comm_id, comment_date, comment, edited FROM comments WHERE post_id = ?", postID)
+	rows, err := DB.Query(`
+	SELECT user_id, user_profile.user_name, comm_id, comment_date, comment, edited
+	FROM comments 
+	INNER JOIN user_profile ON comments.user_id = user_profile.user_account_id
+	WHERE post_id = ?`, postID)
+
 	if err != nil {
 		return []CommentResults{}, err
 	}
@@ -62,7 +69,7 @@ func GetComment(postID int) ([]CommentResults, error) {
 		var comment CommentResults
 
 		// Scan the values into the struct fields
-		if err := rows.Scan(&comment.UserID, &comment.CommentID, &comment.CreationDate, &comment.Comment, &comment.Edited); err != nil {
+		if err := rows.Scan(&comment.UserID, &comment.UserName, &comment.CommentID, &comment.CreationDate, &comment.Comment, &comment.Edited); err != nil {
 			return []CommentResults{}, err
 		}
 		// can be removed and done somewhere else
