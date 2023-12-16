@@ -30,7 +30,8 @@ header {
   color: white;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between
+  ;
 }
 
 .postedBy {
@@ -50,7 +51,7 @@ header {
   width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between
 }
 
 .title {
@@ -62,11 +63,12 @@ header {
   color: white;
   display: flex;
   font-size: 1.25rem;
+  justify-content: flex-start
 
 }
 
 .postContent>p {
-  
+
 }
 
 
