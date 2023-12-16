@@ -64,9 +64,12 @@ func CreatePost(userID int, title string, category string, content string) error
 }
 
 // Func to get posts from database
-func Get_posts_from_db() []Post_json {
+func Get_posts_from_db() ([]Post_json, error) {
 	// Query the database
-	rows, err := DB.Query("SELECT user_id, creation_date, title, p_id FROM posts LIMIT 100")
+	rows, err := DB.Query(`
+	SELECT user_id, user_profile.user_name, posts.creation_date, posts.title, posts.p_id
+	FROM posts
+	INNER JOIN user_profile ON posts.user_id = user_profile.user_account_id`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -77,23 +80,31 @@ func Get_posts_from_db() []Post_json {
 
 	// Iterate through the rows
 	for rows.Next() {
-		var column1, column2, column3, column4 string
-		if err := rows.Scan(&column1, &column2, &column3, &column4); err != nil {
+		var column1, column2, column3, column4, column5 string
+		if err := rows.Scan(&column1, &column2, &column3, &column4, &column5); err != nil {
 			log.Fatal(err)
+		}
+		// Retrieve categories for the post
+		categories, err := Get_Post_Categories(column4)
+		if err != nil {
+			return results, err
 		}
 		// Do something with the data, for example, add it to the result slice
 		post_ideee, _ := strconv.Atoi(column4)      // converts post_id to integer
 		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
 		results = append(results, Post_json{        // Append this post into posts_arr array
 			User_ID:       column1,
-			Creation_Date: column2,
-			Title:         column3,
+			User_Name:     column2,
+			Creation_Date: column3,
+			Title:         column4,
 			Likes_Count:   countLikes.LikeCount,
-			Post_ID:       column4,
+			Post_ID:       column5,
+			Category:      categories,
 		})
+
 	}
 
-	return results
+	return results, err
 }
 
 func Get_Post(postID string) (Post_json, error) {
@@ -101,7 +112,7 @@ func Get_Post(postID string) (Post_json, error) {
 
 	// Create the SQL query
 	query := `
-        SELECT user_profile.user_name, posts.creation_date, posts.title, posts.post
+        SELECT user_id, user_profile.user_name, posts.creation_date, posts.title, posts.post
         FROM posts
         JOIN user_profile ON posts.user_id = user_profile.user_account_id
         WHERE posts.p_id = ?
@@ -110,7 +121,7 @@ func Get_Post(postID string) (Post_json, error) {
 	row := DB.QueryRow(query, postID)
 
 	// Scan the row values into the postDetails struct
-	if err := row.Scan(&postDetails.User_ID, &postDetails.Creation_Date, &postDetails.Title, &postDetails.Text); err != nil {
+	if err := row.Scan(&postDetails.User_ID, &postDetails.User_Name, &postDetails.Creation_Date, &postDetails.Title, &postDetails.Text); err != nil {
 		if err == sql.ErrNoRows {
 			// Post not found
 			return Post_json{}, fmt.Errorf("post not found")
