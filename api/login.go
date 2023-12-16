@@ -77,7 +77,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		userSession := Session{
 			userID:      get_user_id,
 			SessionUUID: userUUID.String(),
-			expiry:      time.Now().Add(20 * time.Second),
+			expiry:      time.Now().Add(3600 * time.Second),
 		}
 		Sessions[userSession.SessionUUID] = userSession
 
