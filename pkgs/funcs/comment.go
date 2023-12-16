@@ -34,13 +34,13 @@ func CreateComment(userID int, postID int, content string) error {
 
 // holds all the Comment info
 type CommentResults struct {
-	UserID          int
-	CommentID       int
-	Comment         string
-	CreationDate    string
-	Edited          bool // can be used later to show it the post been edited
-	CommentLikes    int  // can be fed from funcs.CountCommentLikes()
-	CommentDislikes int  // can be fed from funcs.CountCommentLikes()
+	UserID          int    `json:"user_id"`
+	CommentID       int    `json:"comment_id"`
+	Comment         string `json:"comment"`
+	CreationDate    string `json:"creation_date"`
+	Edited          bool   `json:"edited"`           // can be used later to show it the post been edited
+	CommentLikes    int    `json:"comment_likes"`    // can be fed from funcs.CountCommentLikes()
+	CommentDislikes int    `json:"comment_dislikes"` // can be fed from funcs.CountCommentLikes()
 
 }
 
