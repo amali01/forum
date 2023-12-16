@@ -111,8 +111,12 @@ func Get_Post(postID string) (Post_json, error) {
 
 	// Scan the row values into the postDetails struct
 	if err := row.Scan(&postDetails.User_ID, &postDetails.Creation_Date, &postDetails.Title, &postDetails.Text); err != nil {
+				fmt.Println("error1")
+
 		if err == sql.ErrNoRows {
 			// Post not found
+						fmt.Println("error2")
+
 			return Post_json{}, fmt.Errorf("post not found")
 		}
 		return Post_json{}, err
@@ -121,6 +125,8 @@ func Get_Post(postID string) (Post_json, error) {
 	// Retrieve categories for the post
 	categories, err := Get_Post_Categories(postID)
 	if err != nil {
+					fmt.Println("error1")
+
 		return Post_json{}, err
 	}
 	postDetails.Category = categories
