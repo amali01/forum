@@ -37,9 +37,9 @@ func CreateUserProfile(userName string, userEmail string) error {
 	if err != nil {
 		fmt.Println(err)
 	}
-	query := "INSERT INTO user_profile (user_account_id, user_name, DOB, first_name, last_name) VALUES (?, ?, ?, ?, ?)"
+	query := "INSERT INTO user_profile (user_account_id, user_name) VALUES (?, ?)"
 
-	if _, err := DB.Exec(query, userID, userName, "1990-01-01 00:00:00", "first_name", "last_name"); err != nil {
+	if _, err := DB.Exec(query, userID, userName); err != nil {
 
 		sqliteErr, ok := err.(sqlite3.Error)
 		if ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
