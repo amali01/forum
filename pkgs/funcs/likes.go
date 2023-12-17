@@ -36,12 +36,11 @@ func PostLikes(userID int, postID int, action int) error {
 
 	if existingAction != action {
 		query = "UPDATE posts_interaction SET actions_type = ? WHERE post_id = ? AND user_id = ?"
-		if _, err := DB.Exec(query, action, postID, action); err != nil {
+		if _, err := DB.Exec(query, action, postID, userID); err != nil {
 			return fmt.Errorf("failed to update the Like/Dislike action")
 		}
 	}
 	return nil
-
 }
 
 func CommentLikes(userID int, commentID int, action int) error {
