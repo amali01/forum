@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func Serve_categorys_handler(w http.ResponseWriter, r *http.Request) {
+func Serve_categories_handler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
