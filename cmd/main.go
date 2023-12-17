@@ -30,13 +30,11 @@ func main() {
 	http.HandleFunc("/api/post/", api.Get_post_handler)                  // Retrive one post ex: /post/2
 	http.HandleFunc("/api/comments", api.Serve_comments_handler)         // Serves post comments
 	http.HandleFunc("/api/categories", api.Serve_categories_handler)     // Serves categories
+	http.HandleFunc("/api/category/", api.Categories_filter_handler)     // Category filtering ex: /api/category/Technology
 	///////////////////////////////////cheak the boolen of like dislike
 	// Render pages
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPage(w, r, funcs.DB)
-	})
-	http.HandleFunc("/category/", func(w http.ResponseWriter, r *http.Request) {
-		controllers.RenderCategoryPage(w, r, funcs.DB)
 	})
 	http.HandleFunc("/post/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPostPage(w, r, funcs.DB)
