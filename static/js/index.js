@@ -25,7 +25,7 @@ fetch("/api/posts")
                     <div class="user">
                         <div class="userID">by ${post.user_name}</div>
                         <div class="action">
-                            <p>Creation Date: ${post.creation_date}</p>
+                            <p>Creation Date: ${new Date(post.creation_date)}</p>
                         </div>
                     </div>
                 </div>
