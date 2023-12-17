@@ -353,7 +353,7 @@ input:-webkit-autofill:active {
 
 main {
     width: 100vw;
-    height: 80vh;
+    height: 100vh;
     display: flex;
     padding-top: 4em;
     justify-content: center;
