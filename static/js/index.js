@@ -172,7 +172,7 @@ const sendReq = async (num) => {
 const filterToCat = async (cat) => {
   const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
   jsonContainer.innerHTML = ``;
-  let response = await fetch("/category/"+cat);
+  let response = await fetch("/api/category/"+cat);
   let data = await response.json();
   let i = 0;
   let cats = ``;
