@@ -171,12 +171,25 @@ func Get_Post_Categories(postID string) ([]string, error) {
 }
 
 func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
+	// Generate the placeholders for the SQL query
+	placeholders := make([]string, len(postIDs))
+	args := make([]interface{}, len(postIDs))
+	for i := range postIDs {
+		placeholders[i] = "?"
+		args[i] = postIDs[i]
+	}
+
+	// Join placeholders with commas
+	inClause := strings.Join(placeholders, ",")
+
 	// Query the database
-	rows, err := DB.Query(`
+	query := fmt.Sprintf(`
 	SELECT user_id, user_profile.user_name, posts.creation_date, posts.title, posts.p_id
 	FROM posts
 	INNER JOIN user_profile ON posts.user_id = user_profile.user_account_id
-	WHERE posts.p_id IN (?)`, postIDs)
+	WHERE posts.p_id IN (%s)`, inClause)
+
+	rows, err := DB.Query(query, args...)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -208,7 +221,6 @@ func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
 			Post_ID:       column5,
 			Category:      categories,
 		})
-
 	}
 
 	return results, err
