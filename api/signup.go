@@ -54,6 +54,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			io.WriteString(w, "Add user error, try again")
 			return
 		}
+
 		io.WriteString(w, "Add user success")
 		fmt.Printf("Name: %s, Email: %s, Password: %s", data.Name, data.Email, data.Password)
 	} else {
