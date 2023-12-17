@@ -177,3 +177,59 @@ func Get_Post_Categories(postID string) ([]string, error) {
 
 	return categories, nil
 }
+
+func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
+	// Generate the placeholders for the SQL query
+	placeholders := make([]string, len(postIDs))
+	args := make([]interface{}, len(postIDs))
+	for i := range postIDs {
+		placeholders[i] = "?"
+		args[i] = postIDs[i]
+	}
+
+	// Join placeholders with commas
+	inClause := strings.Join(placeholders, ",")
+
+	// Query the database
+	query := fmt.Sprintf(`
+	SELECT user_id, user_profile.user_name, posts.creation_date, posts.title, posts.p_id
+	FROM posts
+	INNER JOIN user_profile ON posts.user_id = user_profile.user_account_id
+	WHERE posts.p_id IN (%s)`, inClause)
+
+	rows, err := DB.Query(query, args...)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the results
+	results := make([]Post_json, 0)
+
+	// Iterate through the rows
+	for rows.Next() {
+		var column1, column2, column3, column4, column5 string
+		if err := rows.Scan(&column1, &column2, &column3, &column4, &column5); err != nil {
+			log.Fatal(err)
+		}
+		// Retrieve categories for the post
+		categories, err := Get_Post_Categories(column5)
+		if err != nil {
+			return results, err
+		}
+		// Do something with the data, for example, add it to the result slice
+		post_ideee, _ := strconv.Atoi(column4)      // converts post_id to integer
+		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
+		results = append(results, Post_json{        // Append this post into posts_arr array
+			User_ID:       column1,
+			User_Name:     column2,
+			Creation_Date: column3,
+			Title:         column4,
+			Likes_Count:   countLikes.LikeCount,
+			Post_ID:       column5,
+			Category:      categories,
+		})
+	}
+
+	return results, err
+}
