@@ -17,7 +17,8 @@ func PostLikes(userID int, postID int, action int) error {
 	}
 
 	//////////////////////////////////////////////////////////////////
-	var existingAction int
+	// var existingAction int
+	var existingAction sql.NullInt64
 
 	// Checking if there is already an action (like/dislike) on the post by the same user
 	query = "SELECT actions_type FROM posts_interaction WHERE post_id = ? AND user_id = ?"
@@ -34,13 +35,14 @@ func PostLikes(userID int, postID int, action int) error {
 		}
 	}
 
-	if existingAction != action {
+	if existingAction.Valid && int(existingAction.Int64) != action {
 		query = "UPDATE posts_interaction SET actions_type = ? WHERE post_id = ? AND user_id = ?"
 		if _, err := DB.Exec(query, action, postID, userID); err != nil {
 			return fmt.Errorf("failed to update the Like/Dislike action")
 		}
 	}
 	return nil
+
 }
 
 func CommentLikes(userID int, commentID int, action int) error {
@@ -56,7 +58,8 @@ func CommentLikes(userID int, commentID int, action int) error {
 
 	//////////////////////////////////////////////////////////////////
 
-	var existingAction int
+	// var existingAction int
+	var existingAction sql.NullInt64
 
 	// Checking if there is already an action (like/dislike) on the comment by the same user
 	query = "SELECT actions_type FROM comments_interactions WHERE comment_id = ? AND user_id = ?"
@@ -73,7 +76,7 @@ func CommentLikes(userID int, commentID int, action int) error {
 		}
 	}
 
-	if existingAction != action {
+	if existingAction.Valid && int(existingAction.Int64) != action {
 		query = "UPDATE comments_interactions SET actions_type = ? WHERE comment_id = ? AND user_id = ?"
 		if _, err := DB.Exec(query, action, commentID, userID); err != nil {
 			return fmt.Errorf("failed to update the Like/Dislike action")
