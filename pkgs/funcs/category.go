@@ -79,3 +79,34 @@ func GetCategoryPosts(catID int) ([]int, error) {
 
 	return result, nil
 }
+
+type CategorysContainer struct {
+	Categorys []CategoryResults `json:"Categorys"`
+}
+
+// holds all the Category info
+type CategoryResults struct {
+	CatID    int    `json:"cat_id"`
+	Category string `json:"category"`
+}
+
+func GetAllCategoryInfo() (CategorysContainer, error) {
+	var container CategorysContainer
+
+	query := "SELECT cat_id, category FROM category LIMIT 100"
+	rows, err := DB.Query(query)
+	if err != nil {
+		return container, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var result CategoryResults
+		if err := rows.Scan(&result.CatID, &result.Category); err != nil {
+			return container, err
+		}
+		container.Categorys = append(container.Categorys, result)
+	}
+
+	return container, nil
+}
