@@ -85,7 +85,7 @@ func Get_posts_from_db() ([]Post_json, error) {
 			log.Fatal(err)
 		}
 		// Retrieve categories for the post
-		categories, err := Get_Post_Categories(column4)
+		categories, err := Get_Post_Categories(column5)
 		if err != nil {
 			return results, err
 		}
