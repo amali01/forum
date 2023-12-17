@@ -20,7 +20,7 @@ func GetPostID(postID string) (int, error) {
 		return 0, err
 	}
 	if !postExists {
-		return 0, fmt.Errorf("Post does not exist")
+		return 0, fmt.Errorf("post does not exist")
 	}
 
 	return Id, nil
@@ -30,13 +30,13 @@ func CreatePost(userID int, title string, category string, content string) error
 	// Fetching Category ID
 	catID, err := GetCategoryID(category)
 	if err != nil {
-		return fmt.Errorf("Category does not exist")
+		return fmt.Errorf("category does not exist")
 	}
 
 	// Trimming whitespace from the content
 	content = strings.TrimSpace(content)
 	if content == "" {
-		return fmt.Errorf("Message cannot be empty")
+		return fmt.Errorf("message cannot be empty")
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -45,19 +45,19 @@ func CreatePost(userID int, title string, category string, content string) error
 	query := "INSERT INTO posts (user_id, title, post) VALUES (?, ?, ?)"
 	result, err := DB.Exec(query, userID, title, content)
 	if err != nil {
-		return fmt.Errorf("Failed to insert the post")
+		return fmt.Errorf("failed to insert the post")
 	}
 
 	lastID, err := result.LastInsertId()
 	if err != nil {
-		return fmt.Errorf("Failed to retrieve the last inserted ID")
+		return fmt.Errorf("failed to retrieve the last inserted ID")
 	}
 	postID := int(lastID)
 
 	// Inserting the post category into the database
 	query = "INSERT INTO threads (post_id, cat_id) VALUES (?, ?)"
 	if _, err := DB.Exec(query, postID, catID); err != nil {
-		return fmt.Errorf("Failed to insert the post category")
+		return fmt.Errorf("failed to insert the post category")
 	}
 	return nil
 
@@ -168,4 +168,48 @@ func Get_Post_Categories(postID string) ([]string, error) {
 	}
 
 	return categories, nil
+}
+
+func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
+	// Query the database
+	rows, err := DB.Query(`
+	SELECT user_id, user_profile.user_name, posts.creation_date, posts.title, posts.p_id
+	FROM posts
+	INNER JOIN user_profile ON posts.user_id = user_profile.user_account_id
+	WHERE posts.p_id IN (?)`, postIDs)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the results
+	results := make([]Post_json, 0)
+
+	// Iterate through the rows
+	for rows.Next() {
+		var column1, column2, column3, column4, column5 string
+		if err := rows.Scan(&column1, &column2, &column3, &column4, &column5); err != nil {
+			log.Fatal(err)
+		}
+		// Retrieve categories for the post
+		categories, err := Get_Post_Categories(column5)
+		if err != nil {
+			return results, err
+		}
+		// Do something with the data, for example, add it to the result slice
+		post_ideee, _ := strconv.Atoi(column4)      // converts post_id to integer
+		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
+		results = append(results, Post_json{        // Append this post into posts_arr array
+			User_ID:       column1,
+			User_Name:     column2,
+			Creation_Date: column3,
+			Title:         column4,
+			Likes_Count:   countLikes.LikeCount,
+			Post_ID:       column5,
+			Category:      categories,
+		})
+
+	}
+
+	return results, err
 }
