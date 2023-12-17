@@ -29,8 +29,7 @@ func main() {
 	http.HandleFunc("/api/posts", api.GetPostsHandler)                   // Retrive posts as JSON
 	http.HandleFunc("/api/post/", api.Get_post_handler)                  // Retrive one post ex: /post/2
 	http.HandleFunc("/api/comments", api.Serve_comments_handler)         // Serves post comments
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	http.HandleFunc("/api/categories", api.Serve_categories_handler) // Serves categories
+	http.HandleFunc("/api/categories", api.Serve_categories_handler)     // Serves categories
 	///////////////////////////////////cheak the boolen of like dislike
 	// Render pages
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

@@ -22,8 +22,8 @@ const orgComments = async () => {
                             <div class="pfpImage">
                                 <img src="../../static/assets/reddit.png" alt="reddit lol" class="pimg">
                             </div>
-                            <div class="profileName">${com.user_id}</div>
-                            <div class="commentDate">${com.creation_date}</div>
+                            <div class="profileName">${com.user_name}</div>
+                            <div class="commentDate">${new Date(com.creation_date)}</div>
                         </div>
                         <div class="commenttext">
                             ${com.comment}
@@ -62,9 +62,9 @@ const orgPostHTML = async (wrapper, prop) => {
                     <img src="../../static/assets/reddit.png" alt="reddit lol" class="pimg">
                 </div>
                 <div class="profileinfo">
-                    <div class="profileName">${prop.user_id}</div>
+                    <div class="profileName">${prop.user_name}</div>
                     <div class="postinfo">
-                        <div class="postDate">${prop.creation_date}</div>
+                        <div class="postDate">${new Date(prop.creation_date)}</div>
                         <div class="commentsLink">comments</div>
                         <div class="likesdislikes">
                             <div class="likeBtn">🤍</div>
