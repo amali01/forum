@@ -7,6 +7,17 @@ fetch("/api/posts")
     console.log(jsonContainer);
     let i = 0;
     data.posts.forEach((post) => {
+      //parse cats
+      let cats = ``;
+      if (post.category === null) {
+        cats += `<div class="category">null</div>`;
+      } else {
+        post.category.forEach((cat) => {
+          cats += `<div class="category">${cat}</div>`;
+        });
+      }
+
+      // parse post
       const postElement = document.createElement("div");
       postElement.className = "postcard";
       postElement.innerHTML = `
@@ -19,9 +30,7 @@ fetch("/api/posts")
                           post.post_id
                         }'>${post.title}</a>    
                         <div class="categories">
-                            <div class="category">
-                                ${post.category}
-                            </div>
+                              ${cats}
                         </div>
                     </div>
                     <div class="user">
@@ -102,9 +111,14 @@ const filterToCat = async (cat) => {
   let response = await fetch("/api/posts");
   let data = await response.json();
   let i = 0;
+  let cats = ``;
   data.posts.forEach((post) => {
     if (post.category === null) {
-      return
+      return;
+    } else {
+      post.category.forEach((cat) => {
+        cats += `<div class="category">${cat}</div>`;
+      });
     }
     if (post.category.includes(cat)) {
       console.log("TRUE");
@@ -120,9 +134,7 @@ const filterToCat = async (cat) => {
                           post.post_id
                         }'>${post.title}</a>    
                         <div class="categories">
-                            <div class="category">
-                                ${post.category}
-                            </div>
+                            ${cats}
                         </div>
                     </div>
                     <div class="user">
@@ -140,6 +152,7 @@ const filterToCat = async (cat) => {
         </div>
             `;
       i++;
+      cats = ``
       jsonContainer.appendChild(postElement);
     }
   });
