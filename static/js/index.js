@@ -15,7 +15,9 @@ fetch("/api/posts")
             <div class="dataWrapper">
                 <div class="data">
                     <div class="title_category">
-                        <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
+                        <a class="title bold_text" href='/post/${
+                          post.post_id
+                        }'>${post.title}</a>    
                         <div class="categories">
                             <div class="category">
                                 ${post.category}
@@ -25,7 +27,9 @@ fetch("/api/posts")
                     <div class="user">
                         <div class="userID">by ${post.user_name}</div>
                         <div class="action">
-                            <p>Creation Date: ${new Date(post.creation_date)}</p>
+                            <p>Creation Date: ${new Date(
+                              post.creation_date
+                            )}</p>
                         </div>
                     </div>
                 </div>
@@ -75,6 +79,18 @@ function disLikeEvent(index) {
     sendReq(-1);
   }
 }
+
+const loadCats = async () => {
+  const catwrapper = document.getElementById("allcats");
+  let response = await fetch("/api/categories");
+  let data = await response.json();
+  data.Categories.forEach((cat) => {
+    let child = document.createElement("div");
+    child.classList.add("catlisting");
+    child.innerText = cat.category;
+    catwrapper.append(child);
+  });
+};
 
 const sendReq = async (num) => {
   fetch("/likes_post", {
