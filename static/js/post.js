@@ -102,4 +102,23 @@ const readyPost = async () => {
   await orgPostHTML(postwrapper, postData);
 };
 
+const loadCats = async () => {
+    const catwrapper = document.getElementById("allcats");
+    let response = await fetch("../../api/categories");
+    console.log(response)
+    let data = await response.json();
+    data.Categories.forEach((cat) => {
+      let child = document.createElement("div");
+      child.classList.add("catlisting");
+      child.id = `catlisting-${cat.category}`;
+      child.addEventListener("click", () => {
+        filterToCat(cat.category);
+      });
+      child.innerText = cat.category;
+      catwrapper.append(child);
+    });
+  };
+
+
 readyPost();
+window.addEventListener("load", loadCats)
