@@ -26,13 +26,19 @@ func GetPostID(postID string) (int, error) {
 	return Id, nil
 }
 
-func CreatePost(userID int, title string, category string, content string) error {
-	// Fetching Category ID
-	catID, err := GetCategoryID(category)
-	if err != nil {
-		return fmt.Errorf("Category does not exist")
-	}
+func CreatePost(userID int, title string, categories []string, content string) error {
 
+	// Check if catigories are existed first
+	catIDs := make([]int, 0)
+	for _, category := range categories {
+
+		// Fetching Category ID
+		catID, err := GetCategoryID(category)
+		if err != nil {
+			return fmt.Errorf("Category does not exist")
+		}
+		catIDs = append(catIDs, catID)
+	}
 	// Trimming whitespace from the content
 	content = strings.TrimSpace(content)
 	if content == "" {
@@ -55,9 +61,11 @@ func CreatePost(userID int, title string, category string, content string) error
 	postID := int(lastID)
 
 	// Inserting the post category into the database
-	query = "INSERT INTO threads (post_id, cat_id) VALUES (?, ?)"
-	if _, err := DB.Exec(query, postID, catID); err != nil {
-		return fmt.Errorf("Failed to insert the post category")
+	for _, catID := range catIDs {
+		query = "INSERT INTO threads (post_id, cat_id) VALUES (?, ?)"
+		if _, err := DB.Exec(query, postID, catID); err != nil {
+			return fmt.Errorf("Failed to insert the post category")
+		}
 	}
 	return nil
 
