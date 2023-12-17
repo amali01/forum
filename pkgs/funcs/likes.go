@@ -17,54 +17,31 @@ func PostLikes(userID int, postID int, action int) error {
 	}
 
 	//////////////////////////////////////////////////////////////////
-	var existingAction bool
-	var toDo bool
-	if action == 0 {
-		// Checking if there is already an action (like/dislike) on the post by the same user
-		query = "SELECT actions_type FROM posts_interaction WHERE post_id = ? AND user_id = ?"
-		if err := DB.QueryRow(query, postID, userID).Scan(&existingAction); err != nil {
-			if err == sql.ErrNoRows {
-				return nil
-			} else if err != nil {
-				return fmt.Errorf("failed to check if the Like/Dislike action exist")
+	var existingAction int
+
+	// Checking if there is already an action (like/dislike) on the post by the same user
+	query = "SELECT actions_type FROM posts_interaction WHERE post_id = ? AND user_id = ?"
+	if err := DB.QueryRow(query, postID, userID).Scan(&existingAction); err != nil {
+		if err == sql.ErrNoRows {
+			// Inserting the action (like/dislike) data into the database
+			query = "INSERT INTO posts_interaction (post_id, user_id, actions_type) VALUES (?, ?, ?)"
+			if _, err := DB.Exec(query, postID, userID, action); err != nil {
+				return fmt.Errorf("failed to insert the Like/Dislike action")
 			}
+
+		} else if err != nil {
+			return fmt.Errorf("failed to check if the Like/Dislike action exist")
 		}
-		// Remove the action (like/dislike) data into from the database
+	}
+
+	if existingAction != action {
 		query = "UPDATE posts_interaction SET actions_type = ? WHERE post_id = ? AND user_id = ?"
-		if _, err := DB.Exec(query, nil, postID, userID); err != nil {
+		if _, err := DB.Exec(query, action, postID, action); err != nil {
 			return fmt.Errorf("failed to update the Like/Dislike action")
 		}
-
-	} else {
-		if action == 1 {
-			toDo = true
-		} else if action == -1 {
-			toDo = false
-		}
-		// Checking if there is already an action (like/dislike) on the post by the same user
-		query = "SELECT actions_type FROM posts_interaction WHERE post_id = ? AND user_id = ?"
-		if err := DB.QueryRow(query, postID, userID).Scan(&existingAction); err != nil {
-			if err == sql.ErrNoRows {
-				// Inserting the action (like/dislike) data into the database
-				query = "INSERT INTO posts_interaction (post_id, user_id, actions_type) VALUES (?, ?, ?)"
-				if _, err := DB.Exec(query, postID, userID, toDo); err != nil {
-					return fmt.Errorf("failed to insert the Like/Dislike action")
-				}
-
-			} else if err != nil {
-				return fmt.Errorf("failed to check if the Like/Dislike action exist")
-			}
-		}
-
-		if existingAction != toDo {
-			query = "UPDATE posts_interaction SET actions_type = ? WHERE post_id = ? AND user_id = ?"
-			if _, err := DB.Exec(query, action, postID, toDo); err != nil {
-				return fmt.Errorf("failed to update the Like/Dislike action")
-			}
-		}
-		return nil
 	}
 	return nil
+
 }
 
 func CommentLikes(userID int, commentID int, action int) error {
@@ -80,56 +57,31 @@ func CommentLikes(userID int, commentID int, action int) error {
 
 	//////////////////////////////////////////////////////////////////
 
-	var existingAction bool
-	var toDo bool
-	if action == 0 {
-		// Checking if there is already an action (like/dislike) on the comment by the same user
-		query = "SELECT actions_type FROM comments_interactions WHERE comment_id = ? AND user_id = ?"
-		if err := DB.QueryRow(query, commentID, userID).Scan(&existingAction); err != nil {
-			if err == sql.ErrNoRows {
-				return nil
-			} else if err != nil {
-				return fmt.Errorf("failed to check if the Like/Dislike action exist")
+	var existingAction int
+
+	// Checking if there is already an action (like/dislike) on the comment by the same user
+	query = "SELECT actions_type FROM comments_interactions WHERE comment_id = ? AND user_id = ?"
+	if err := DB.QueryRow(query, commentID, userID).Scan(&existingAction); err != nil {
+		if err == sql.ErrNoRows {
+			// Inserting the action (like/dislike) into the database
+			query = "INSERT INTO comments_interactions (comment_id, user_id, actions_type) VALUES (?, ?, ?)"
+			if _, err := DB.Exec(query, commentID, userID, action); err != nil {
+				return fmt.Errorf("failed to insert the Like/Dislike action")
 			}
-		}
 
-		// Remove the action (like/dislike) data into from the database
-		query = "UPDATE comments_interactions SET actions_type = ? WHERE comment_id = ? AND user_id = ?"
-		if _, err := DB.Exec(query, nil, commentID, userID); err != nil {
-			return fmt.Errorf("failed to update the Like/Dislike action")
-		}
-
-	} else {
-		if action == 1 {
-			toDo = true
-		} else if action == -1 {
-			toDo = false
-		}
-
-		// Checking if there is already an action (like/dislike) on the comment by the same user
-		query = "SELECT actions_type FROM comments_interactions WHERE comment_id = ? AND user_id = ?"
-		if err := DB.QueryRow(query, commentID, userID).Scan(&existingAction); err != nil {
-			if err == sql.ErrNoRows {
-				// Inserting the action (like/dislike) into the database
-				query = "INSERT INTO comments_interactions (comment_id, user_id, actions_type) VALUES (?, ?, ?)"
-				if _, err := DB.Exec(query, commentID, userID, toDo); err != nil {
-					return fmt.Errorf("failed to insert the Like/Dislike action")
-				}
-
-			} else if err != nil {
-				return fmt.Errorf("failed to check if the Like/Dislike action exist")
-			}
-		}
-
-		if existingAction != toDo {
-			query = "UPDATE comments_interactions SET actions_type = ? WHERE comment_id = ? AND user_id = ?"
-			if _, err := DB.Exec(query, toDo, commentID, userID); err != nil {
-				return fmt.Errorf("failed to update the Like/Dislike action")
-			}
+		} else if err != nil {
+			return fmt.Errorf("failed to check if the Like/Dislike action exist")
 		}
 	}
-	return nil
 
+	if existingAction != action {
+		query = "UPDATE comments_interactions SET actions_type = ? WHERE comment_id = ? AND user_id = ?"
+		if _, err := DB.Exec(query, action, commentID, userID); err != nil {
+			return fmt.Errorf("failed to update the Like/Dislike action")
+		}
+	}
+
+	return nil
 }
 
 type LikeCounts struct {
