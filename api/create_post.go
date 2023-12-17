@@ -9,9 +9,9 @@ import (
 )
 
 type Post struct {
-	Post     string
-	Title    string
-	Category string
+	Post       string
+	Title      string
+	Categories []string
 }
 
 func Create_Post(w http.ResponseWriter, r *http.Request) {
@@ -41,9 +41,9 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	////////////////////////////////////////////////////////////////////////
+	fmt.Println(data)
 
-	err = funcs.CreatePost(userSession.Get_UserID(), data.Title, data.Category, data.Post)
+	err = funcs.CreatePost(userSession.Get_UserID(), data.Title, data.Categories, data.Post)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
 		return
