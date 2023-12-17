@@ -6,8 +6,8 @@ import (
 )
 
 type ErrorData struct {
-	Err     int
-	Message string
+	Err      int
+	Message  string
 	ImageURL string
 }
 
@@ -38,7 +38,7 @@ func HTTPErrorHandler(w http.ResponseWriter, r *http.Request, errorCode int) {
 	}
 
 	// Execute the error template with the error data
-	tmpl, err := template.ParseFiles("templates/html/error.html")
+	tmpl, err := template.ParseFiles("static/html/error.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

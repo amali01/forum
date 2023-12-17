@@ -14,7 +14,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	// Get method, serve the page
 	if r.Method == http.MethodGet {
 		// Parse the template
-		tmpl, err := template.ParseFiles("templates/html/signup.html")
+		tmpl, err := template.ParseFiles("static/html/signup.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

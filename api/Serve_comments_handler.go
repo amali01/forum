@@ -38,7 +38,6 @@ func Serve_comments_handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to unmarshal JSON", http.StatusBadRequest)
 		return
 	}
-	fmt.Println(data.Post_id)
 
 	comments, _ := funcs.GetComment(data.Post_id)
 

@@ -69,7 +69,7 @@ go run . cmd/main.go
 │   ├── myFlags.go
 │   └── ...
 │
-├── templates/
+├── static/
 │   ├── myInfo.go
 │   ├── myFlags.go
 │   └── ...

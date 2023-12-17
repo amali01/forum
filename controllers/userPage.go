@@ -22,7 +22,7 @@ func RenderUserPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 	// }
 	/////////////////////////////////////////////////////////////////////////////////////////
 	files := []string{
-		"templates/html/index.html", // need to creat a user page
+		"static/html/index.html", // need to creat a user page
 	}
 
 	tmpl, err := template.ParseFiles(files...)

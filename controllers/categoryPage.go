@@ -24,7 +24,7 @@ func RenderCategoryPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////
 	files := []string{
-		"barebones/mainpage.html", // need to creat a category page
+		"/static/html/index.html", // need to creat a category page
 	}
 
 	tmpl, err := template.ParseFiles(files...)

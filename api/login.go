@@ -18,7 +18,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 	// Get method, serve the page
 	if r.Method == http.MethodGet {
 		// Parse the template
-		tmpl, err := template.ParseFiles("templates/html/login.html")
+		tmpl, err := template.ParseFiles("static/html/login.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

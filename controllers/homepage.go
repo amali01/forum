@@ -20,7 +20,7 @@ func RenderPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 	}
 
 	files := []string{
-		"templates/html/index.html",
+		"static/html/index.html",
 	}
 
 	tmpl, err := template.ParseFiles(files...)
