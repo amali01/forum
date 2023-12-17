@@ -10,7 +10,7 @@ import (
 
 type PostLike struct {
 	PostID      int
-	LikeDislike bool
+	LikeDislike int
 }
 
 func LikesPostHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +18,7 @@ func LikesPostHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		userSession, valid := ValidateUser(w, r)
 
-		if valid == false {
+		if !valid {
 			w.Write([]byte("Unauthorize access"))
 			return
 		}

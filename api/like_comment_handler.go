@@ -10,7 +10,7 @@ import (
 
 type CommentLike struct {
 	CommentID   int
-	LikeDislike bool
+	LikeDislike int
 }
 
 func LikesCommentHandler(w http.ResponseWriter, r *http.Request) {
