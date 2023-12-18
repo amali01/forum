@@ -23,7 +23,7 @@ func CreateCategory(userId int, categoryName string) error {
 	// Trimming whitespace from the categoryName
 	categoryName = strings.TrimSpace(categoryName)
 	if categoryName == "" {
-		return fmt.Errorf("Category cannot be empty")
+		return fmt.Errorf("category cannot be empty")
 	}
 
 	catID, err := GetCategoryID(categoryName)
@@ -31,12 +31,12 @@ func CreateCategory(userId int, categoryName string) error {
 		// Inserting category data into the database
 		query := "INSERT INTO category (category) VALUES (?)"
 		if _, err := DB.Exec(query, categoryName); err != nil {
-			return fmt.Errorf("Failed to insert the category")
+			return fmt.Errorf("failed to insert the category")
 		}
 		return nil
 	}
 	if catID != 0 {
-		return fmt.Errorf("This Category already exist")
+		return fmt.Errorf("this Category already exist")
 	}
 	///////////////////////////////////////////////////////////////////////////
 	query := "INSERT INTO category (category) VALUES (?)"

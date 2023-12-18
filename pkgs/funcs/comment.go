@@ -9,16 +9,16 @@ func CreateComment(userID int, postID int, content string) error {
 	// Trimming whitespace from the content
 	content = strings.TrimSpace(content)
 	if content == "" {
-		return fmt.Errorf("Message cannot be empty")
+		return fmt.Errorf("message cannot be empty")
 	}
 	var postExists bool
 	// Checking if the post ID exists in the database
 	query := "SELECT EXISTS (SELECT 1 FROM posts WHERE p_id = ?)"
 	if err := DB.QueryRow(query, postID).Scan(&postExists); err != nil {
-		return fmt.Errorf("Post does not exist")
+		return fmt.Errorf("post does not exist")
 	}
 	if !postExists {
-		return fmt.Errorf("Post does not exist")
+		return fmt.Errorf("post does not exist")
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ func CreateComment(userID int, postID int, content string) error {
 	// Inserting the comment data into the database
 	query = "INSERT INTO comments (post_id,user_id,comment) VALUES (?,?,?);"
 	if _, err := DB.Exec(query, postID, userID, content); err != nil {
-		return fmt.Errorf("Failed to insert the comment")
+		return fmt.Errorf("failed to insert the comment")
 	}
 	return nil
 
@@ -84,7 +84,7 @@ func GetComment(postID int) ([]CommentResults, error) {
 	// Check if any rows were returned
 	if len(result) == 0 {
 		// No comments found for the given postID
-		return []CommentResults{}, fmt.Errorf("No comments found for post ID %d", postID)
+		return []CommentResults{}, fmt.Errorf("no comments found for post ID %d", postID)
 	}
 
 	return result, nil

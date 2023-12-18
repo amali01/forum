@@ -20,7 +20,7 @@ func GetPostID(postID string) (int, error) {
 		return 0, err
 	}
 	if !postExists {
-		return 0, fmt.Errorf("Post does not exist")
+		return 0, fmt.Errorf("post does not exist")
 	}
 
 	return Id, nil
@@ -35,14 +35,14 @@ func CreatePost(userID int, title string, categories []string, content string) e
 		// Fetching Category ID
 		catID, err := GetCategoryID(category)
 		if err != nil {
-			return fmt.Errorf("Category does not exist")
+			return fmt.Errorf("category does not exist")
 		}
 		catIDs = append(catIDs, catID)
 	}
 	// Trimming whitespace from the content
 	content = strings.TrimSpace(content)
 	if content == "" {
-		return fmt.Errorf("Message cannot be empty")
+		return fmt.Errorf("message cannot be empty")
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -51,12 +51,12 @@ func CreatePost(userID int, title string, categories []string, content string) e
 	query := "INSERT INTO posts (user_id, title, post) VALUES (?, ?, ?)"
 	result, err := DB.Exec(query, userID, title, content)
 	if err != nil {
-		return fmt.Errorf("Failed to insert the post")
+		return fmt.Errorf("failed to insert the post")
 	}
 
 	lastID, err := result.LastInsertId()
 	if err != nil {
-		return fmt.Errorf("Failed to retrieve the last inserted ID")
+		return fmt.Errorf("failed to retrieve the last inserted ID")
 	}
 	postID := int(lastID)
 
@@ -64,7 +64,7 @@ func CreatePost(userID int, title string, categories []string, content string) e
 	for _, catID := range catIDs {
 		query = "INSERT INTO threads (post_id, cat_id) VALUES (?, ?)"
 		if _, err := DB.Exec(query, postID, catID); err != nil {
-			return fmt.Errorf("Failed to insert the post category")
+			return fmt.Errorf("failed to insert the post category")
 		}
 	}
 	return nil
