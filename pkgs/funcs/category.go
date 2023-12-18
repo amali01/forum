@@ -74,7 +74,7 @@ func GetCategoryPosts(catID int) ([]int, error) {
 	// Check if any rows were returned
 	if len(result) == 0 {
 		// No posts found for the given catID
-		return nil, fmt.Errorf("No posts found for category ID %d", catID)
+		return nil, fmt.Errorf("no posts found for category ID %d", catID)
 	}
 
 	return result, nil

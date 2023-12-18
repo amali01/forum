@@ -67,6 +67,14 @@ func CreatePost(userID int, title string, categories []string, content string) e
 			return fmt.Errorf("failed to insert the post category")
 		}
 	}
+
+	// If no catigories in the post we Inserte it onto General category
+	if len(catIDs) == 0 {
+		query = "INSERT INTO threads (post_id, cat_id) VALUES (?, ?)"
+		if _, err := DB.Exec(query, postID, 1); err != nil {
+			return fmt.Errorf("failed to insert the post General category")
+		}
+	}
 	return nil
 
 }
