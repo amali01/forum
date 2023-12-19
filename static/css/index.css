@@ -28,7 +28,7 @@ body::-webkit-scrollbar {
     gap: 10px;
     background: var(--bg-nav-color);
     width: 100vw;
-    margin-bottom: 20em;
+    /* margin-bottom: 20em; */
     z-index: 1000;
     position: fixed;
     top: 0;
@@ -355,11 +355,11 @@ main {
     width: 100vw;
     height: 100vh;
     display: flex;
-    padding-top: 4em;
-    justify-content: center;
-    align-items: center;
+    padding-top: 8em;
+    /* justify-content: center; */
+    /* align-items: center; */
     justify-content: space-around;
-    margin-top: 18vh;
+    /* margin-top: 18vh; */
 }
 
 .postcardwrapper {

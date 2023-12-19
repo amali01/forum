@@ -5,7 +5,8 @@ const render_index_page = () => {
     .then((response) => response.json())
     .then((data) => {
       // Process the JSON data and create HTML elements
-      const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
+      const jsonContainer =
+        document.getElementsByClassName("postcardwrapper")[0];
       console.log(jsonContainer);
       let i = 0;
       data.posts.forEach((post) => {
@@ -18,7 +19,7 @@ const render_index_page = () => {
             cats += `<div class="category">${cat}</div>`;
           });
         }
-  
+
         // parse post
         const postElement = document.createElement("div");
         postElement.className = "postcard";
@@ -44,8 +45,12 @@ const render_index_page = () => {
                           </div>
                       </div>
                   </div>
-                  <div class="likeBtn" onclick="LikeEvent(${i})">🤍</div>
-                  <div class="dislikeBtn" onclick="disLikeEvent(${i})">👎🏻</div>
+                  <div class="likeBtn" onclick="LikeEvent(${i})">
+                  <img src="static/assets/icons8-like-0.png" alt="like Heart">
+                </div>
+                  <div class="dislikeBtn" onclick="disLikeEvent(${i})">
+                    <img src="static/assets/icons8-dislike-0.png" alt="dislike Heart">
+                  </div>
               </div>
           </div>
               `;
@@ -54,40 +59,44 @@ const render_index_page = () => {
       });
     })
     .catch((error) => console.error("Error fetching JSON:", error));
-}
+};
 
 function LikeEvent(index) {
   let likeBtn = document.querySelectorAll(".likeBtn")[index];
   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
+
   if (likeBtn.classList.contains("liked")) {
     likeBtn.classList.remove("liked");
-    likeBtn.textContent = "🤍";
+    likeBtn.innerHTML = '<img src="static/assets/icons8-like-0.png" alt="Like">';
     sendReq(-1);
   } else {
     likeBtn.classList.add("liked");
+
     if (dislikeBtn.classList.contains("disliked")) {
       dislikeBtn.classList.remove("disliked");
-      dislikeBtn.textContent = "👎🏻";
+      dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-0.png" alt="Dislike">';
     }
-    likeBtn.textContent = "❤️";
+
+    likeBtn.innerHTML = '<img src="static/assets/icons8-like-2.png" alt="Like">';
     sendReq(1);
   }
 }
+
 
 function disLikeEvent(index) {
   let likeBtn = document.querySelectorAll(".likeBtn")[index];
   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
   if (dislikeBtn.classList.contains("disliked")) {
     dislikeBtn.classList.remove("disliked");
-    dislikeBtn.textContent = "👎🏻";
+    dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-0.png" alt="Dislike">';
     sendReq(1);
   } else {
     dislikeBtn.classList.add("disliked");
     if (likeBtn.classList.contains("liked")) {
       likeBtn.classList.remove("liked");
-      likeBtn.textContent = "🤍";
+      likeBtn.innerHTML = '<img src="static/assets/icons8-like-0.png" alt="Like">';
     }
-    dislikeBtn.textContent = "👎🏿";
+    dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-3.png" alt="Dislike">';
     sendReq(-1);
   }
 }
@@ -108,66 +117,6 @@ const loadCats = async () => {
   });
 };
 
-/*const filterToCat = async (cat) => {
-  const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
-  jsonContainer.innerHTML = ``;
-  let response = await fetch("/api/posts");
-  let data = await response.json();
-  let i = 0;
-  let cats = ``;
-  data.posts.forEach((post) => {
-    if (post.category === null) {
-      return;
-    } else {
-      post.category.forEach((cat) => {
-        cats += `<div class="category">${cat}</div>`;
-      });
-    }
-    if (post.category.includes(cat)) {
-      console.log("TRUE");
-      let postElement = document.createElement("div");
-      postElement.className = "postcard";
-      postElement.innerHTML = `
-        <div class="postWrapper">
-            <!-- <div class="postImage"></div> -->
-            <div class="dataWrapper">
-                <div class="data">
-                    <div class="title_category">
-                        <a class="title bold_text" href='/post/${
-                          post.post_id
-                        }'>${post.title}</a>    
-                        <div class="categories">
-                            ${cats}
-                        </div>
-                    </div>
-                    <div class="user">
-                        <div class="userID">by ${post.user_name}</div>
-                        <div class="action">
-                            <p>Creation Date: ${new Date(
-                              post.creation_date
-                            )}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="likeBtn" onclick="LikeEvent(${i})">🤍</div>
-                <div class="dislikeBtn" onclick="disLikeEvent(${i})">👎🏻</div>
-            </div>
-        </div>
-            `;
-      i++;
-      cats = ``
-      jsonContainer.appendChild(postElement);
-    }
-  });
-};
-
-const sendReq = async (num) => {
-  fetch("/likes_post", {
-    method: "POST",
-    body: num,
-  });
-};
-*/
 
 const filterToCat = async (cat) => {
   const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
@@ -209,8 +158,11 @@ const filterToCat = async (cat) => {
                         </div>
                     </div>
                 </div>
-                <div class="likeBtn" onclick="LikeEvent(${i})">🤍</div>
-                <div class="dislikeBtn" onclick="disLikeEvent(${i})">👎🏻</div>
+                <div class="likeBtn" onclick="LikeEvent(${i})">
+                <img src="static/assets/icons8-like-0.png" alt="like Heart">
+              </div>
+                <div class="dislikeBtn" onclick="disLikeEvent(${i})">
+                  <img src="static/assets/icons8-dislike-0.png" alt="dislike Heart">
             </div>
         </div>
             `;
