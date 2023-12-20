@@ -8,6 +8,7 @@ type Post_json struct {
 	Category      []string `json:"category"`
 	Edited        bool     `json:"edited"`
 	Creation_Date string   `json:"creation_date"`
-	Likes_Count   int      `json:"likes_count"`
+	PostLikes     int      `json:"post_likes"`
+	PostDisLikes  int      `json:"post_dislikes"`
 	Post_ID       string   `json:"post_id"`
 }

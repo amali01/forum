@@ -17,7 +17,6 @@ func LikesPostHandler(w http.ResponseWriter, r *http.Request) {
 	// Handling only POST method requests
 	if r.Method == http.MethodPost {
 		userSession, valid := ValidateUser(w, r)
-
 		if !valid {
 			w.Write([]byte("Unauthorize access"))
 			return
@@ -31,7 +30,6 @@ func LikesPostHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var data PostLike
-
 		// Unmarshal the JSON data from the request body into 'data' variable of type Post
 		if err := json.Unmarshal(body, &data); err != nil {
 			http.Error(w, "Failed to unmarshal JSON", http.StatusBadRequest)

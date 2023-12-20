@@ -39,18 +39,18 @@ const render_index_page = () => {
                       <div class="user">
                           <div class="userID">by ${post.user_name}</div>
                           <div class="action">
-                              <p>Creation Date: ${new Date(
-                                post.creation_date
-                              )}</p>
+                              <p>Creation Date: ${post.creation_date}</p>
                           </div>
                       </div>
                   </div>
-                  <div class="likeBtn" onclick="LikeEvent(${i})">
-                  <img src="static/assets/icons8-like-0.png" alt="like Heart">
-                </div>
-                  <div class="dislikeBtn" onclick="disLikeEvent(${i})">
-                    <img src="static/assets/icons8-dislike-0.png" alt="dislike Heart">
-                  </div>
+                    <div class="likeBtn" onclick="LikeEvent(${i}, ${post.post_id}, 'post', 1)">
+                      <img src="static/assets/icons8-accept-30.png" alt="like Heart">
+                    </div>
+                    ${post.post_likes}
+                    <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${post.post_id}, 'post', -1)">
+                      <img src="static/assets/icons8-dislike-30.png" alt="dislike Heart">
+                    </div>
+                    ${post.post_dislikes}
               </div>
           </div>
               `;
@@ -60,46 +60,6 @@ const render_index_page = () => {
     })
     .catch((error) => console.error("Error fetching JSON:", error));
 };
-
-function LikeEvent(index) {
-  let likeBtn = document.querySelectorAll(".likeBtn")[index];
-  let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
-
-  if (likeBtn.classList.contains("liked")) {
-    likeBtn.classList.remove("liked");
-    likeBtn.innerHTML = '<img src="static/assets/icons8-like-0.png" alt="Like">';
-    sendReq(-1);
-  } else {
-    likeBtn.classList.add("liked");
-
-    if (dislikeBtn.classList.contains("disliked")) {
-      dislikeBtn.classList.remove("disliked");
-      dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-0.png" alt="Dislike">';
-    }
-
-    likeBtn.innerHTML = '<img src="static/assets/icons8-like-2.png" alt="Like">';
-    sendReq(1);
-  }
-}
-
-
-function disLikeEvent(index) {
-  let likeBtn = document.querySelectorAll(".likeBtn")[index];
-  let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
-  if (dislikeBtn.classList.contains("disliked")) {
-    dislikeBtn.classList.remove("disliked");
-    dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-0.png" alt="Dislike">';
-    sendReq(1);
-  } else {
-    dislikeBtn.classList.add("disliked");
-    if (likeBtn.classList.contains("liked")) {
-      likeBtn.classList.remove("liked");
-      likeBtn.innerHTML = '<img src="static/assets/icons8-like-0.png" alt="Like">';
-    }
-    dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-3.png" alt="Dislike">';
-    sendReq(-1);
-  }
-}
 
 const loadCats = async () => {
   const catwrapper = document.getElementById("allcats");
@@ -152,17 +112,17 @@ const filterToCat = async (cat) => {
                     <div class="user">
                         <div class="userID">by ${post.user_name}</div>
                         <div class="action">
-                            <p>Creation Date: ${new Date(
-                              post.creation_date
-                            )}</p>
+                            <p>Creation Date: ${post.creation_date}</p>
                         </div>
                     </div>
                 </div>
                 <div class="likeBtn" onclick="LikeEvent(${i})">
-                <img src="static/assets/icons8-like-0.png" alt="like Heart">
+                <img src="static/assets/icons8-accept-30.png" alt="like Heart">
+                ${post.post_likes}
               </div>
                 <div class="dislikeBtn" onclick="disLikeEvent(${i})">
-                  <img src="static/assets/icons8-dislike-0.png" alt="dislike Heart">
+                  <img src="static/assets/icons8-dislike-30.png" alt="dislike Heart">
+                  ${post.post_dislikes}
             </div>
         </div>
             `;
@@ -173,13 +133,63 @@ const filterToCat = async (cat) => {
   });
 };
 
-const sendReq = async (num) => {
-  fetch("/likes_post", {
-    method: "POST",
-    body: num,
-  });
+/////////////////////////////////////////////////////////////////////
+
+const LikeEvent = (index, postID, type, likeDislike) => {
+  let likeBtn = document.querySelectorAll(".likeBtn")[index];
+  let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
+
+  if (type === "post") {
+    if (likeBtn.classList.contains("liked")) {
+      likeBtn.classList.remove("liked");
+      likeBtn.innerHTML = '<img src="static/assets/icons8-accept-30.png" alt="Like">';
+      sendReqPost(postID, 0);
+    } else {
+      likeBtn.classList.add("liked");
+
+      if (dislikeBtn.classList.contains("disliked")) {
+        dislikeBtn.classList.remove("disliked");
+        dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-30.png" alt="Dislike">';
+      }
+
+      likeBtn.innerHTML = '<img src="static/assets/icons8-accept-30(1).png" alt="Like">';
+      sendReqPost(postID, likeDislike);
+    }
+  } 
 };
 
+const disLikeEvent = (index, postID, type, likeDislike) => {
+  let likeBtn = document.querySelectorAll(".likeBtn")[index];
+  let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
+  if (type === "post") {
+    if (dislikeBtn.classList.contains("disliked")) {
+      dislikeBtn.classList.remove("disliked");
+      dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-30.png" alt="Dislike"> ';
+      sendReqPost(postID, 0);
+    } else {
+      dislikeBtn.classList.add("disliked");
+      if (likeBtn.classList.contains("liked")) {
+        likeBtn.classList.remove("liked");
+        likeBtn.innerHTML = '<img src="static/assets/icons8-accept-30.png" alt="Like">';
+      }
+      dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-30(1).png" alt="Dislike">';
+      sendReqPost(postID, -1);
+    }
+  }
+};
+
+const sendReqPost = async (postID, likeDislike) => {
+  fetch("/api/likes_post", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      postID,
+      likeDislike,
+    }),
+  });
+};
 
 // App entry point
 // Attach the function to the load event

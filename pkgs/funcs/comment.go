@@ -76,7 +76,8 @@ func GetComment(postID int) ([]CommentResults, error) {
 		LikesCount, _ := CountCommentLikes(comment.CommentID)
 		comment.CommentLikes = LikesCount.LikeCount
 		comment.CommentDislikes = LikesCount.DislikeCount
-		//
+		comment.CreationDate=comment.CreationDate[:10]
+
 		// Append the current result to the slice
 		result = append(result, comment)
 	}

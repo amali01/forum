@@ -96,25 +96,27 @@ func Get_posts_from_db() ([]Post_json, error) {
 
 	// Iterate through the rows
 	for rows.Next() {
-		var column1, column2, column3, column4, column5 string
-		if err := rows.Scan(&column1, &column2, &column3, &column4, &column5); err != nil {
+		var userID, userName, creationDate, title, PostID string
+		if err := rows.Scan(&userID, &userName, &creationDate, &title, &PostID); err != nil {
 			log.Fatal(err)
 		}
 		// Retrieve categories for the post
-		categories, err := Get_Post_Categories(column5)
+		categories, err := Get_Post_Categories(PostID)
 		if err != nil {
 			return results, err
 		}
+		date := creationDate[:10]
 		// Do something with the data, for example, add it to the result slice
-		post_ideee, _ := strconv.Atoi(column4)      // converts post_id to integer
+		post_ideee, _ := strconv.Atoi(PostID)      // converts post_id to integer
 		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
 		results = append(results, Post_json{        // Append this post into posts_arr array
-			User_ID:       column1,
-			User_Name:     column2,
-			Creation_Date: column3,
-			Title:         column4,
-			Likes_Count:   countLikes.LikeCount,
-			Post_ID:       column5,
+			User_ID:       userID,
+			User_Name:     userName,
+			Creation_Date: date,
+			Title:         title,
+			PostLikes:     countLikes.LikeCount,
+			PostDisLikes:  countLikes.DislikeCount,
+			Post_ID:       PostID,
 			Category:      categories,
 		})
 
@@ -150,7 +152,12 @@ func Get_Post(postID string) (Post_json, error) {
 	if err != nil {
 		return Post_json{}, err
 	}
+	postDetails.Creation_Date = postDetails.Creation_Date[0:10]
 	postDetails.Category = categories
+	post_ideee, _ := strconv.Atoi(postID) 
+	countLikes, _ := CountPostLikes(post_ideee)
+	postDetails.PostLikes = countLikes.LikeCount
+	postDetails.PostDisLikes = countLikes.DislikeCount
 
 	// Post details retrieved successfully
 	return postDetails, nil
@@ -216,25 +223,28 @@ func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
 
 	// Iterate through the rows
 	for rows.Next() {
-		var column1, column2, column3, column4, column5 string
-		if err := rows.Scan(&column1, &column2, &column3, &column4, &column5); err != nil {
+		var userID, userName, creationDate, title, postID string
+		if err := rows.Scan(&userID, &userName, &creationDate, &title, &postID); err != nil {
 			log.Fatal(err)
 		}
 		// Retrieve categories for the post
-		categories, err := Get_Post_Categories(column5)
+		categories, err := Get_Post_Categories(postID)
 		if err != nil {
 			return results, err
 		}
+		date := creationDate[:10]
+
 		// Do something with the data, for example, add it to the result slice
-		post_ideee, _ := strconv.Atoi(column4)      // converts post_id to integer
+		post_ideee, _ := strconv.Atoi(postID)      // converts post_id to integer
 		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
 		results = append(results, Post_json{        // Append this post into posts_arr array
-			User_ID:       column1,
-			User_Name:     column2,
-			Creation_Date: column3,
-			Title:         column4,
-			Likes_Count:   countLikes.LikeCount,
-			Post_ID:       column5,
+			User_ID:       userID,
+			User_Name:     userName,
+			Creation_Date: date,
+			Title:         title,
+			PostLikes:     countLikes.LikeCount,
+			PostDisLikes:  countLikes.DislikeCount,
+			Post_ID:       postID,
 			Category:      categories,
 		})
 	}
