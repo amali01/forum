@@ -3,6 +3,7 @@ package funcs
 import (
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 func PostLikes(userID int, postID int, action int) error {
@@ -29,7 +30,7 @@ func PostLikes(userID int, postID int, action int) error {
 			if _, err := DB.Exec(query, postID, userID, action); err != nil {
 				return fmt.Errorf("failed to insert the Like/Dislike action")
 			}
-		} else if err != nil  && int(existingAction.Int64) != 0 {
+		} else if err != nil && int(existingAction.Int64) != 0 {
 			return fmt.Errorf("failed to check if the Like/Dislike action exist")
 		}
 	}
@@ -72,7 +73,7 @@ func CommentLikes(userID int, commentID int, action int) error {
 			return fmt.Errorf("failed to check if the Like/Dislike action exist")
 		}
 	}
-	if existingAction.Valid && int(existingAction.Int64) != action || action == 0  {
+	if existingAction.Valid && int(existingAction.Int64) != action || action == 0 {
 		query = "UPDATE comments_interactions SET actions_type = ? WHERE comment_id = ? AND user_id = ?"
 		if _, err := DB.Exec(query, action, commentID, userID); err != nil {
 			return fmt.Errorf("failed to update the Like/Dislike action")
@@ -162,4 +163,55 @@ func CountCommentLikes(commentID int) (LikeCounts, error) {
 	}
 
 	return counts, nil
+}
+
+/*
+* This function will check if user have an action on specific post, and what type of action it got.
+* returns 1 when there is like or -1 when disliked or 0 when there is no action
+ */
+func Post_is_liked_by_user(act_id int, postID string) (int, error) {
+	/********************* Below routine is for checking if there exist like or not ***************************/
+	var like_exist bool
+
+	query := "SELECT EXISTS (SELECT actions_type FROM posts_interaction WHERE user_id = ? AND post_id = ?)"
+	if err := DB.QueryRow(query, act_id, postID).Scan(&like_exist); err != nil {
+		return 0, err
+	}
+	if !like_exist {
+		return 0, fmt.Errorf("no like or dislike")
+	}
+	/********************* END ***************************/
+
+	/********************* Get the action ***************************/
+	// Your SQL query
+	query = "SELECT actions_type FROM posts_interaction WHERE user_id = ? AND post_id = ?"
+
+	// Execute the query
+	rows, err := DB.Query(query, act_id, postID)
+	if err != nil {
+		return 0, err
+	}
+
+	defer rows.Close()
+
+	var column1 bool // Replace with the actual column types in your table
+	// Iterate over the result set
+	for rows.Next() {
+		if err := rows.Scan(&column1); err != nil {
+			log.Fatal(err)
+		}
+		// fmt.Printf("Column1: %t\n", column1) for debugging
+	}
+
+	// Check for errors from iterating over rows
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+	/********************* END ***************************/
+
+	// If action is true the return 1, or else return -1
+	if column1 {
+		return 1, err
+	}
+	return -1, err
 }
