@@ -107,7 +107,7 @@ func Get_posts_from_db() ([]Post_json, error) {
 		}
 		date := creationDate[:10]
 		// Do something with the data, for example, add it to the result slice
-		post_ideee, _ := strconv.Atoi(PostID)      // converts post_id to integer
+		post_ideee, _ := strconv.Atoi(PostID)       // converts post_id to integer
 		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
 		results = append(results, Post_json{        // Append this post into posts_arr array
 			User_ID:       userID,
@@ -154,7 +154,7 @@ func Get_Post(postID string) (Post_json, error) {
 	}
 	postDetails.Creation_Date = postDetails.Creation_Date[0:10]
 	postDetails.Category = categories
-	post_ideee, _ := strconv.Atoi(postID) 
+	post_ideee, _ := strconv.Atoi(postID)
 	countLikes, _ := CountPostLikes(post_ideee)
 	postDetails.PostLikes = countLikes.LikeCount
 	postDetails.PostDisLikes = countLikes.DislikeCount
@@ -235,7 +235,7 @@ func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
 		date := creationDate[:10]
 
 		// Do something with the data, for example, add it to the result slice
-		post_ideee, _ := strconv.Atoi(postID)      // converts post_id to integer
+		post_ideee, _ := strconv.Atoi(postID)       // converts post_id to integer
 		countLikes, _ := CountPostLikes(post_ideee) // gets likes count for this post in this idx
 		results = append(results, Post_json{        // Append this post into posts_arr array
 			User_ID:       userID,
