@@ -44,11 +44,12 @@ const render_index_page = () => {
                       </div>
                   </div>
                     <div class="likeBtn" onclick="LikeEvent(${i}, ${post.post_id}, 'post', 1)">
-                      <img src="static/assets/icons8-accept-30.png" alt="like Heart">
+                      <img src="${post.isLiked === 1 ? 'static/assets/icons8-accept-30(1).png' : 'static/assets/icons8-accept-30.png'}" alt="Like">
+                      ${post.isLiked}
                     </div>
                     ${post.post_likes}
                     <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${post.post_id}, 'post', -1)">
-                      <img src="static/assets/icons8-dislike-30.png" alt="dislike Heart">
+                        <img src="${post.isLiked === -1 ? 'static/assets/icons8-dislike-30(1).png' : 'static/assets/icons8-dislike-30.png'}" alt="Dislike">
                     </div>
                     ${post.post_dislikes}
               </div>
@@ -95,6 +96,16 @@ const filterToCat = async (cat) => {
     }
       console.log("TRUE");
       let postElement = document.createElement("div");
+    // Add "liked" class to likeBtn if post is liked
+    const likeBtn = postElement.querySelector('.likeBtn')[i];
+    const dislikeBtn = postElement.querySelector('.dislikeBtn')[i];
+
+    if (post.isLiked === 1) {
+      likeBtn.classList.add('liked');
+    } else if (post.isLiked === -1) {
+      dislikeBtn.classList.add('disliked');
+    }
+
       postElement.className = "postcard";
       postElement.innerHTML = `
         <div class="postWrapper">
@@ -116,13 +127,15 @@ const filterToCat = async (cat) => {
                         </div>
                     </div>
                 </div>
-                <div class="likeBtn" onclick="LikeEvent(${i})">
-                <img src="static/assets/icons8-accept-30.png" alt="like Heart">
-                ${post.post_likes}
-              </div>
-                <div class="dislikeBtn" onclick="disLikeEvent(${i})">
-                  <img src="static/assets/icons8-dislike-30.png" alt="dislike Heart">
-                  ${post.post_dislikes}
+                  <div class="likeBtn" onclick="LikeEvent(${i}, ${post.post_id}, 'post', 1)">
+                    <img src="${post.isLiked === 1 ? 'static/assets/icons8-accept-30(1).png' : 'static/assets/icons8-accept-30.png'}" alt="Like">
+                  ${post.isLiked}
+                  </div>
+                  ${post.post_likes}
+                  <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${post.post_id}, 'post', -1)">
+                    <img src="${post.isLiked === -1 ? 'static/assets/icons8-dislike-30(1).png' : 'static/assets/icons8-dislike-30.png'}" alt="Dislike">
+                 </div>
+                 ${post.post_dislikes}
             </div>
         </div>
             `;
