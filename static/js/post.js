@@ -101,7 +101,7 @@ const orgComments = async () => {
                                 <img src="../../static/assets/icons8-accept-30.png" alt="like Heart">
                               </div>
                               ${com.comment_likes}
-                              <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${com.comment_id}, "comm", -1)">
+                              <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${com.comment_id}, 'comm', -1)">
                                 <img src="../../static/assets/icons8-dislike-30.png" alt="dislike Heart">
                               </div>
                               ${com.comment_dislikes}
@@ -126,7 +126,7 @@ function LikeEvent(index, ID, type, like) {
      if (type === "post") {
         sendReqPost(ID, 0);
       } else if (type === "comm") {
-        sendReqCommnet(ID, 0);  
+        sendReqComment(ID, 0);  
       }
   } else {
     likeBtn.classList.add("liked");
@@ -140,39 +140,40 @@ function LikeEvent(index, ID, type, like) {
     if (type === "post") {
       sendReqPost(ID, 1);
     } else if (type === "comm") {
-      sendReqCommnet(ID, like);
+      sendReqComment(ID, like);
     }
-    sendReqPost(postID, like);
   }
 }
 
-function disLikeEvent(index ,ID, type, disLike) {
+function disLikeEvent(index, ID, type, disLike) {
   let likeBtn = document.querySelectorAll(".likeBtn")[index];
   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
 
-  if (type === "post") {
-    if (dislikeBtn.classList.contains("disliked")) {
-      dislikeBtn.classList.remove("disliked");
-      dislikeBtn.innerHTML = '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike"> ';
-      if (type === "post") {
-        sendReqPost(ID, 0);
-      } else if (type === "comm") {
-        sendReqCommnet(ID, 0);
-      }
-    } else {
-      dislikeBtn.classList.add("disliked");
-      if (likeBtn.classList.contains("liked")) {
-        likeBtn.classList.remove("liked");
-        likeBtn.innerHTML = '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
-      }
-      dislikeBtn.innerHTML = '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
-      if (type === "post") {
-        sendReqPost(ID, disLike);
-      } else if (type === "comm") {
-        sendReqCommnet(ID, disLike);
-      }
+  if (dislikeBtn.classList.contains("disliked")) {
+    dislikeBtn.classList.remove("disliked");
+    dislikeBtn.innerHTML = '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike"> ';
+    if (type === "post") {
+      sendReqPost(ID, 0);
+    } else if (type === "comm") {
+      sendReqComment(ID, 0);
     }
+  } else {
+    dislikeBtn.classList.add("disliked");
+
+    if (likeBtn.classList.contains("liked")) {
+      likeBtn.classList.remove("liked");
+      likeBtn.innerHTML = '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
+    }
+
+    dislikeBtn.innerHTML = '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
+    if (type === "post") {
+      sendReqPost(ID, disLike);
+    } else if (type === "comm") {
+      sendReqComment(ID, disLike);
+    }
+
   }
+  
 }
 
 const loadCats = async () => {
@@ -192,32 +193,6 @@ const loadCats = async () => {
   });
 };
 
-// const sendReqPost = async (postID, likeDislike) => {
-//   fetch("../../api/likes_post", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       postID,
-//       likeDislike,
-//     }),
-//   });
-// };
-
-// const sendReqCommnet = async (commentID, likeDislike) => {
-//   fetch("../../api/likes_comment", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       commentID,
-//       likeDislike,
-//     }),
-//   });
-// };
-
 const sendRequest = async (url, data) => {
   await fetch(url, {
     method: "POST",
@@ -235,6 +210,7 @@ const sendReqPost = async (postID, likeDislike) => {
 const sendReqComment = async (commentID, likeDislike) => {
   await sendRequest("../../api/likes_comment", { commentID, likeDislike });
 };
+
 
 readyPost();
 window.addEventListener("load", loadCats);
