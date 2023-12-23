@@ -42,6 +42,9 @@ func main() {
 	http.HandleFunc("/user/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderUserPage(w, r, funcs.DB)
 	})
+	http.HandleFunc("/create_post/", func(w http.ResponseWriter, r *http.Request) {
+		controllers.RenderCreatePostPage(w, r)
+	})
 
 	fmt.Println("Server listening on port http://localhost:8080 ...")
 	log.Fatal(http.ListenAndServe(":8080", nil))
