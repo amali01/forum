@@ -1,71 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../static/css/post.css" />
-    <title>Post</title>
-  </head>
 
-  <body>
-    <div class="NavBar">
-      <div class="NavBarMain">
-        <div class="NavBarLogo">
-          <img src="/static/assets/logo.png" class="navIcon" />
-          <a href="/">
-            <p>Re4um</p>
-          </a>
-        </div>
-        <div class="NavBarContents">
-          <div class="NavBarIcons">
-            <div class="NavBar-Home">
-              <img src="/static/assets/logo.png" class="navIcon" />
-            </div>
-            <div class="NavBar-Calender">
-              <img src="/static/assets/logo.png" class="navIcon" />
-            </div>
-            <div class="NavBar-Group">
-              <img src="/static/assets/logo.png" class="navIcon" />
-            </div>
-            <div class="NavBar-Podcasts">
-              <img src="/static/assets/logo.png" class="navIcon" />
-            </div>
-            <div class="NavBar-Interviews">
-              <img src="/static/assets/logo.png" class="navIcon" />
-            </div>
-          </div>
-          <div class="NavBar-Search-Container">
-            <div class="NavBar-Search">
-              <div class="NavBar-Search-Title">
-                <input type="text" placeholder="search" />
-                <!-- <img src="/static/assets/logo.png" class="NavBar-Search-Icon" /> -->
-              </div>
-            </div>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../../static/css/post.css" />
+  <title>Post</title>
+</head>
+
+<body>
+  <nav>
+    <a href="/">
+      <div class="logo">Re4um</div>
+    </a>
+    <ul class="actionitems">
+      <li>
+        <a href="/create_post"><img src="/static/assets/plus-large-svgrepo-com.svg" alt="add Icon" class="navicon"
+            title="Create Post" /></a>
+      </li>
+      <li>
+        <img src="/static/assets/information-circle-svgrepo-com.svg" alt="about Page Icon" class="navicon"
+          title="About" />
+      </li>
+      <li>
+        <img src="/static/assets/API.svg" alt="API Icon" class="navicon" title="API documentation" />
+      </li>
+      <li>
+        <img src="/static/assets/HomeIcon.svg" alt="HomeIcon" class="navicon" title="Back To Homepage"
+          onclick="location.href('/')" />
+      </li>
+      <li>
+        <img src="/static/assets/REgallery.svg" alt="ReGallery (SOON!)" class="navicon" title="Regallery (SOON!)" />
+      </li>
+      <li>
+        <img src="/static/assets/chat.svg" alt="chatIcon" class="navicon" title="chat (SOON)" />
+      </li>
+    </ul>
+    <button class="profile" id="profileBtn">Sign In</button>
+  </nav>
+
+  <main>
+    <div class="sidebar-filter">
+      <div class="filterbox">
+        <div class="recentDIV filterDIV">🆕 Newest and recent</div>
+        <div class="popularDIV filterDIV">✨ Most Liked</div>
+        <div class="createdBySelfDIV filterDIV">👥 Created by you</div>
+      </div>
+    </div>
+    <div class="mainPostWrapper" id="mPostWrapper">
+    </div>
+    <div class="categ-sidebar">
+      <div class="filterbox">
+        <div class="catTitle">All Categories</div>
+        <div class="allcats" id="allcats">
+          <!-- <div class="catlisting">cat1</div> -->
+
         </div>
       </div>
     </div>
+  </main>
+  <script src="../../static/js/post.js"></script>
+</body>
 
-    <main>
-      <div class="sidebar-filter">
-        <div class="filterbox">
-          <div class="recentDIV filterDIV">🆕 Newest and recent</div>
-          <div class="popularDIV filterDIV">✨ Most Liked</div>
-          <div class="createdBySelfDIV filterDIV">👥 Created by you</div>
-        </div>
-      </div>
-      <div class="mainPostWrapper" id="mPostWrapper">
-      </div>
-      <div class="categ-sidebar">
-        <div class="filterbox">
-          <div class="catTitle">All Categories</div>
-          <div class="allcats" id="allcats">
-            <!-- <div class="catlisting">cat1</div> -->
-            
-          </div>
-        </div>
-      </div>
-    </main>
-    <script src="../../static/js/post.js"></script>
-  </body>
 </html>
