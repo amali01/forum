@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/static/css/index.css" />
-    <title>Main page test</title>
+    <link rel="stylesheet" href="../css/createpost.css" />
+    <title>Post Creation</title>
   </head>
-
-  <body onload="loadCats()">
+  <body>
+    <!--Nav-->
     <nav>
       <div class="logo">Re4um</div>
       <ul class="actionitems">
@@ -64,26 +64,54 @@
       </ul>
       <button class="profile" id="profileBtn">Sign In</button>
     </nav>
-
-    <main>
-      <div class="sidebar-filter">
-        <div class="filterbox">
-          <div class="recentDIV filterDIV">🆕 Newest and recent</div>
-          <div class="popularDIV filterDIV">✨ Most Liked</div>
-          <div class="createdBySelfDIV filterDIV">👥 Created by you</div>
-        </div>
-      </div>
-      <div class="postcardwrapper"></div>
-      <div class="categ-sidebar">
-        <div class="filterbox">
-          <div class="catTitle">All Categories</div>
-          <div class="allcats" id="allcats">
-            <!-- <div class="catlisting">cat1</div> -->
-            
+    <!--Container for post creation form-->
+    <div class="container" id="FormContainer">
+      <div class="err" id="errdiv"></div>
+      <form>
+        <div class="row">
+          <div class="col-25">
+            <label for="fname">Post Title</label>
+          </div>
+          <div class="col-75">
+            <input
+              type="text"
+              id="Ptitle"
+              name="PostTitle"
+              placeholder="Post Title.."
+            />
           </div>
         </div>
-      </div>
-    </main>
-    <script src="/static/js/index.js"></script>
+        <div class="row">
+          <div class="col-25">
+            <label for="lname">Categories</label>
+          </div>
+          <div class="col-75">
+            <input
+              type="text"
+              id="Pcats"
+              name="PostCats"
+              placeholder="cats, seperated by commas..."
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="subject">Post Content</label>
+          </div>
+          <div class="col-75">
+            <textarea
+              id="Pcontent"
+              name="PostContent"
+              placeholder="Write something lol.."
+              style="height: 100px"
+            ></textarea>
+          </div>
+        </div>
+        <div class="rowl">
+          <input type="submit" value="Create Post!" onclick="createPost()" />
+        </div>
+      </form>
+    </div>
+    <script src="../js/createpost.js"></script>
   </body>
 </html>
