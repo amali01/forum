@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -38,6 +37,6 @@ func ValidateUser(w http.ResponseWriter, r *http.Request) (*Session, bool) {
 	}
 
 	// If the session is valid, return a welcome message to the user
-	fmt.Fprintf(w, "Welcome %d!", userSession.Get_UserID())
+	//fmt.Fprintf(w, "Welcome %d!", userSession.Get_UserID())
 	return &userSession, true // return the session
 }
