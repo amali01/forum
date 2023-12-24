@@ -6,6 +6,7 @@ import (
 	"forum/pkgs/funcs"
 	"io"
 	"net/http"
+	"strings"
 )
 
 type Post struct {
@@ -41,16 +42,16 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(data)
-	if len(data.Categories) < 1 {
-		data.Categories = append(data.Categories, "General")
+	categorysName := strings.TrimSpace(strings.Join(data.Categories, " "))
+	if len(categorysName) < 1 {
+		data.Categories = []string{"General"}
 	}
+
 	err = funcs.CreatePost(userSession.Get_UserID(), data.Title, data.Categories, data.Post)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
 		return
 	}
-	w.Write([]byte("OK!"))
-	////////////////////////////////////////////////////////////////////////
 
+	w.Write([]byte("OK!"))
 }
