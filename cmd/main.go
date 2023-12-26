@@ -31,6 +31,7 @@ func main() {
 	http.HandleFunc("/api/comments", api.Serve_comments_handler)         // Serves post comments
 	http.HandleFunc("/api/categories", api.Serve_categories_handler)     // Serves categories
 	http.HandleFunc("/api/category/", api.Categories_filter_handler)     // Category filtering ex: /api/category/Technology
+  http.HandleFunc("/api/postlikes", api.Serve_post_likes_dislikes)
 	///////////////////////////////////
 	// Render pages
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
