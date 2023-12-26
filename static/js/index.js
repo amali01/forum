@@ -29,8 +29,7 @@ const render_index_page = () => {
               <div class="dataWrapper">
                   <div class="data">
                       <div class="title_category">
-                          <a class="title bold_text" href='/post/${post.post_id
-          }'>${post.title}</a>    
+                          <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
                           <div class="categories">
                                 ${cats}
                           </div>
@@ -42,13 +41,25 @@ const render_index_page = () => {
                           </div>
                       </div>
                   </div>
-                    <div class="likeBtn ${post.isLiked === 1 ? 'liked' : ''}" onclick="LikeEvent(${i}, ${post.post_id})">
-                      <img src="${post.isLiked === 1 ? 'static/assets/icons8-accept-30(1).png' : 'static/assets/icons8-accept-30.png'}" alt="Like">
+                    <div class="likeBtn ${
+          post.isLiked === 1 ? "liked" : ""
+        }" onclick="LikeEvent(${i}, ${post.post_id})">
+                      <img src="${
+          post.isLiked === 1
+            ? "static/assets/icons8-accept-30(1).png"
+            : "static/assets/icons8-accept-30.png"
+        }" alt="Like">
                       ${post.isLiked}
                     </div>
                     ${post.post_likes}
-                    <div class="dislikeBtn ${post.isLiked === -1 ? 'disliked' : ''}" onclick="disLikeEvent(${i}, ${post.post_id})">
-                        <img src="${post.isLiked === -1 ? 'static/assets/icons8-dislike-30(1).png' : 'static/assets/icons8-dislike-30.png'}" alt="Dislike">
+                    <div class="dislikeBtn ${
+          post.isLiked === -1 ? "disliked" : ""
+        }" onclick="disLikeEvent(${i}, ${post.post_id})">
+                        <img src="${
+          post.isLiked === -1
+            ? "static/assets/icons8-dislike-30(1).png"
+            : "static/assets/icons8-dislike-30.png"
+        }" alt="Dislike">
                     </div>
                     ${post.post_dislikes}
               </div>
@@ -78,7 +89,6 @@ const loadCats = async () => {
   });
 };
 
-
 const filterToCat = async (cat) => {
   const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
   jsonContainer.innerHTML = ``;
@@ -104,8 +114,7 @@ const filterToCat = async (cat) => {
           <div class="dataWrapper">
               <div class="data">
                   <div class="title_category">
-                      <a class="title bold_text" href='/post/${post.post_id
-      }'>${post.title}</a>    
+                      <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
                       <div class="categories">
                             ${cats}
                       </div>
@@ -118,32 +127,39 @@ const filterToCat = async (cat) => {
                   </div>
               </div>
                 <div class="likeBtn" onclick="LikeEvent(${i}, ${post.post_id})">
-                  <img src="${post.isLiked === 1 ? 'static/assets/icons8-accept-30(1).png' : 'static/assets/icons8-accept-30.png'}" alt="Like">
+                  <img src="${
+      post.isLiked === 1
+        ? "static/assets/icons8-accept-30(1).png"
+        : "static/assets/icons8-accept-30.png"
+    }" alt="Like">
                   ${post.isLiked}
                 </div>
                 ${post.post_likes}
                 <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${post.post_id})">
-                    <img src="${post.isLiked === -1 ? 'static/assets/icons8-dislike-30(1).png' : 'static/assets/icons8-dislike-30.png'}" alt="Dislike">
+                    <img src="${
+      post.isLiked === -1
+        ? "static/assets/icons8-dislike-30(1).png"
+        : "static/assets/icons8-dislike-30.png"
+    }" alt="Dislike">
                 </div>
                 ${post.post_dislikes}
           </div>
       </div>
           `;
     i++;
-    cats = ``
+    cats = ``;
 
     // Add "liked" class to likeBtn if post is liked
-    const likeBtn = postElement.querySelector('.likeBtn')[i];
-    const dislikeBtn = postElement.querySelector('.dislikeBtn')[i];
+    const likeBtn = postElement.querySelector(".likeBtn")[i];
+    const dislikeBtn = postElement.querySelector(".dislikeBtn")[i];
 
     if (post.isLiked === 1) {
-      likeBtn.classList.add('liked');
+      likeBtn.classList.add("liked");
     } else if (post.isLiked === -1) {
-      dislikeBtn.classList.add('disliked');
+      dislikeBtn.classList.add("disliked");
     }
 
     jsonContainer.appendChild(postElement);
-
   });
 };
 
@@ -154,17 +170,20 @@ const LikeEvent = async (index, postID) => {
   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
   if (likeBtn.classList.contains("liked")) {
     likeBtn.classList.remove("liked");
-    likeBtn.innerHTML = '<img src="static/assets/icons8-accept-30.png" alt="Like">';
+    likeBtn.innerHTML =
+      '<img src="static/assets/icons8-accept-30.png" alt="Like">';
     await sendReqPost(postID, 0);
   } else {
     likeBtn.classList.add("liked");
 
     if (dislikeBtn.classList.contains("disliked")) {
       dislikeBtn.classList.remove("disliked");
-      dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-30.png" alt="Dislike">';
+      dislikeBtn.innerHTML =
+        '<img src="static/assets/icons8-dislike-30.png" alt="Dislike">';
     }
 
-    likeBtn.innerHTML = '<img src="static/assets/icons8-accept-30(1).png" alt="Like">';
+    likeBtn.innerHTML =
+      '<img src="static/assets/icons8-accept-30(1).png" alt="Like">';
     await sendReqPost(postID, 1);
   }
 };
@@ -174,15 +193,18 @@ const disLikeEvent = async (index, postID) => {
   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
   if (dislikeBtn.classList.contains("disliked")) {
     dislikeBtn.classList.remove("disliked");
-    dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-30.png" alt="Dislike"> ';
+    dislikeBtn.innerHTML =
+      '<img src="static/assets/icons8-dislike-30.png" alt="Dislike"> ';
     await sendReqPost(postID, 0);
   } else {
     dislikeBtn.classList.add("disliked");
     if (likeBtn.classList.contains("liked")) {
       likeBtn.classList.remove("liked");
-      likeBtn.innerHTML = '<img src="static/assets/icons8-accept-30.png" alt="Like">';
+      likeBtn.innerHTML =
+        '<img src="static/assets/icons8-accept-30.png" alt="Like">';
     }
-    dislikeBtn.innerHTML = '<img src="static/assets/icons8-dislike-30(1).png" alt="Dislike">';
+    dislikeBtn.innerHTML =
+      '<img src="static/assets/icons8-dislike-30(1).png" alt="Dislike">';
     await sendReqPost(postID, -1);
   }
 };
