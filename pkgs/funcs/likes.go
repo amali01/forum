@@ -83,8 +83,8 @@ func CommentLikes(userID int, commentID int, action int) error {
 }
 
 type LikeCounts struct {
-	LikeCount    int
-	DislikeCount int
+	LikeCount    int `json:"like_count"`
+	DislikeCount int `json:"dislike_count"`
 }
 
 func CountPostLikes(postID int) (LikeCounts, error) {
