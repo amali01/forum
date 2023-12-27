@@ -132,15 +132,15 @@ const filterToCat = async (cat) => {
     i++;
     cats = ``
 
-    // Add "liked" class to likeBtn if post is liked
-    const likeBtn = postElement.querySelector('.likeBtn')[i];
-    const dislikeBtn = postElement.querySelector('.dislikeBtn')[i];
+    // // Add "liked" class to likeBtn if post is liked
+    // const likeBtn = postElement.querySelector('.likeBtn')[i];
+    // const dislikeBtn = postElement.querySelector('.dislikeBtn')[i];
 
-    if (post.isLiked === 1) {
-      likeBtn.classList.add('liked');
-    } else if (post.isLiked === -1) {
-      dislikeBtn.classList.add('disliked');
-    }
+    // if (post.isLiked === 1) {
+    //   likeBtn.classList.add('liked');
+    // } else if (post.isLiked === -1) {
+    //   dislikeBtn.classList.add('disliked');
+    // }
 
     jsonContainer.appendChild(postElement);
 
