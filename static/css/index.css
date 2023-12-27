@@ -87,11 +87,11 @@ main {
     width: 100vw;
     height: 100vh;
     display: flex;
-    padding-top: 8em;
+    /* padding-top: 8em; */
     /* justify-content: center; */
     /* align-items: center; */
     justify-content: space-around;
-    /* margin-top: 18vh; */
+    margin-top: 12vh;
 }
 
 .postcardwrapper {
