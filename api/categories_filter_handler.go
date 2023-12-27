@@ -28,9 +28,17 @@ func Categories_filter_handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "This Category do not exist", http.StatusBadRequest)
 		return
 	}
-
 	/////////////////////////////////////////////////////////////////////////////////////////
+
+	userSession, valid := ValidateUser(w, r)
 	posts_arr, _ := funcs.Get_posts_of_category(postIDs)
+
+	if valid {
+		for idx := range posts_arr {
+			posts_arr[idx].IsLiked, _ = funcs.Post_is_liked_by_user(userSession.Get_UserID(), posts_arr[idx].Post_ID)
+
+		}
+	}
 
 	/* Used to encapsulate the struct into one struct that is used to construct JSON for sending to front-end */
 	JSON_Response := posts_capsul_json{

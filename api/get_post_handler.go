@@ -26,6 +26,13 @@ func Get_post_handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "This Post do not exist", http.StatusBadRequest)
 		return
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	userSession, valid := ValidateUser(w, r)
+
+	if valid {
+		json_post.IsLiked, _ = funcs.Post_is_liked_by_user(userSession.Get_UserID(), postID)
+	}
 	/* Marshal the data into JSON format */
 	jsonData, err := json.Marshal(json_post)
 	if err != nil {

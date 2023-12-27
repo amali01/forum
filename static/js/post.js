@@ -83,7 +83,6 @@ const orgComments = async () => {
   let commentArray = await Response.json();
   let i = 1;
   commentArray.comments.forEach((com) => {
-   
     comdiv += `<div class="scomment">
                         <div class="nameandlogo">
                             <div class="pfpImage">
@@ -111,7 +110,7 @@ const orgComments = async () => {
                     
 
                     `;
-                    i++;
+    i++;
   });
   return comdiv;
 };
@@ -122,21 +121,24 @@ function LikeEvent(index, ID, type, like) {
 
   if (likeBtn.classList.contains("liked")) {
     likeBtn.classList.remove("liked");
-    likeBtn.innerHTML = '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
-     if (type === "post") {
-        sendReqPost(ID, 0);
-      } else if (type === "comm") {
-        sendReqComment(ID, 0);  
-      }
+    likeBtn.innerHTML =
+      '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
+    if (type === "post") {
+      sendReqPost(ID, 0);
+    } else if (type === "comm") {
+      sendReqComment(ID, 0);
+    }
   } else {
     likeBtn.classList.add("liked");
 
     if (dislikeBtn.classList.contains("disliked")) {
       dislikeBtn.classList.remove("disliked");
-      dislikeBtn.innerHTML = '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
+      dislikeBtn.innerHTML =
+        '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
     }
 
-    likeBtn.innerHTML = '<img src="../../static/assets/icons8-accept-30(1).png" alt="Like">';
+    likeBtn.innerHTML =
+      '<img src="../../static/assets/icons8-accept-30(1).png" alt="Like">';
     if (type === "post") {
       sendReqPost(ID, 1);
     } else if (type === "comm") {
@@ -151,7 +153,8 @@ function disLikeEvent(index, ID, type, disLike) {
 
   if (dislikeBtn.classList.contains("disliked")) {
     dislikeBtn.classList.remove("disliked");
-    dislikeBtn.innerHTML = '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike"> ';
+    dislikeBtn.innerHTML =
+      '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike"> ';
     if (type === "post") {
       sendReqPost(ID, 0);
     } else if (type === "comm") {
@@ -162,36 +165,19 @@ function disLikeEvent(index, ID, type, disLike) {
 
     if (likeBtn.classList.contains("liked")) {
       likeBtn.classList.remove("liked");
-      likeBtn.innerHTML = '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
+      likeBtn.innerHTML =
+        '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
     }
 
-    dislikeBtn.innerHTML = '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
+    dislikeBtn.innerHTML =
+      '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
     if (type === "post") {
       sendReqPost(ID, disLike);
     } else if (type === "comm") {
       sendReqComment(ID, disLike);
     }
-
   }
-  
 }
-
-const loadCats = async () => {
-  const catwrapper = document.getElementById("allcats");
-  let response = await fetch("../../api/categories");
-  console.log(response);
-  let data = await response.json();
-  data.Categories.forEach((cat) => {
-    let child = document.createElement("div");
-    child.classList.add("catlisting");
-    child.id = `catlisting-${cat.category}`;
-    child.addEventListener("click", () => {
-      filterToCat(cat.category);
-    });
-    child.innerText = cat.category;
-    catwrapper.append(child);
-  });
-};
 
 const sendRequest = async (url, data) => {
   await fetch(url, {
@@ -211,6 +197,4 @@ const sendReqComment = async (commentID, likeDislike) => {
   await sendRequest("../../api/likes_comment", { commentID, likeDislike });
 };
 
-
 readyPost();
-window.addEventListener("load", loadCats);

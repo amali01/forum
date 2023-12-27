@@ -40,26 +40,22 @@
   </nav>
 
   <main>
-    <div class="sidebar-filter">
-      <div class="filterbox">
-        <div class="recentDIV filterDIV">🆕 Newest and recent</div>
-        <div class="popularDIV filterDIV">✨ Most Liked</div>
-        <div class="createdBySelfDIV filterDIV">👥 Created by you</div>
-      </div>
-    </div>
     <div class="mainPostWrapper" id="mPostWrapper">
     </div>
-    <div class="categ-sidebar">
-      <div class="filterbox">
-        <div class="catTitle">All Categories</div>
-        <div class="allcats" id="allcats">
-          <!-- <div class="catlisting">cat1</div> -->
-
-        </div>
+      <!-- Add this HTML form in your document -->
+  <div class="add-comment-section">
+    <form id="newCommentForm" class="addcommentcontener">
+      <div class="addcommentArea">
+        <textarea id="newCommentText" class="addcomment" placeholder="Type your comment here..." required></textarea>
       </div>
-    </div>
+      <button type="submit" class="addcommentBtn">Add Comment</button>
+    </form>
+  </div>
   </main>
   <script src="../../static/js/post.js"></script>
+
+  <script defer src="../../static/js/createComment.js"></script>
+
 </body>
 
 </html>
