@@ -17,30 +17,36 @@ func PostLikes(userID int, postID int, action int) error {
 		return fmt.Errorf("post does not exist")
 	}
 
-	//////////////////////////////////////////////////////////////////
-	// var existingAction int
-	var existingAction sql.NullInt64
+	var user_interaction_exists bool
+	// Checking if the user interacts in the database
+	query = "SELECT EXISTS (SELECT actions_type FROM posts_interaction WHERE post_id = ? AND user_id = ?)"
+	if err := DB.QueryRow(query, postID, userID).Scan(&user_interaction_exists); err != nil {
+		return err
+	}
 
-	// Checking if there is already an action (like/dislike) on the post by the same user
-	query = "SELECT actions_type FROM posts_interaction WHERE post_id = ? AND user_id = ?"
-	if err := DB.QueryRow(query, postID, userID).Scan(&existingAction); err != nil {
-		if err == sql.ErrNoRows && int(existingAction.Int64) == 0 {
+	// Remove action from database when action is ZERO
+	if action == 0 {
+		query = "DELETE FROM posts_interaction WHERE post_id = ? AND user_id = ?"
+		if _, err := DB.Exec(query, postID, userID); err != nil {
+			return fmt.Errorf("failed to delete the Like/Dislike action")
+		}
+	} else if action == 1 || action == -1 {
+		if user_interaction_exists {
+			query = "UPDATE posts_interaction SET actions_type = ? WHERE post_id = ? AND user_id = ?"
+			if _, err := DB.Exec(query, action, postID, userID); err != nil {
+				return fmt.Errorf("failed to insert the Like/Dislike action")
+			}
+		} else {
 			// Inserting the action (like/dislike) data into the database
 			query = "INSERT INTO posts_interaction (post_id, user_id, actions_type) VALUES (?, ?, ?)"
 			if _, err := DB.Exec(query, postID, userID, action); err != nil {
 				return fmt.Errorf("failed to insert the Like/Dislike action")
 			}
-		} else if err != nil && int(existingAction.Int64) != 0 {
-			return fmt.Errorf("failed to check if the Like/Dislike action exist")
 		}
+	} else {
+		return fmt.Errorf("Actions must be (1, 0, -1) only!")
 	}
 
-	if existingAction.Valid && int(existingAction.Int64) != action || action == 0 {
-		query = "UPDATE posts_interaction SET actions_type = ? WHERE post_id = ? AND user_id = ?"
-		if _, err := DB.Exec(query, action, postID, userID); err != nil {
-			return fmt.Errorf("failed to update the Like/Dislike action")
-		}
-	}
 	return nil
 }
 
