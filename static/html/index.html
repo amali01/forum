@@ -1,67 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/index.css" />
+    <title>Main page test</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/static/css/index.css" />
-  <title>Main page test</title>
-</head>
-
-<body onload="loadCats()">
-  <nav>
-    <a href="/">
-      <div class="logo">Re4um</div>
-    </a>
-    <ul class="actionitems">
-      <li>
-        <a href="/create_post"><img src="/static/assets/plus-large-svgrepo-com.svg" alt="add Icon" class="navicon"
-            title="Create Post" /></a>
-      </li>
-      <li>
-        <img src="/static/assets/information-circle-svgrepo-com.svg" alt="about Page Icon" class="navicon"
-          title="About" />
-      </li>
-      <li>
-        <img src="/static/assets/API.svg" alt="API Icon" class="navicon" title="API documentation" />
-      </li>
-      <li>
-        <img src="/static/assets/HomeIcon.svg" alt="HomeIcon" class="navicon" title="Back To Homepage"
-          onclick="location.href('/')" />
-      </li>
-      <li>
-        <img src="/static/assets/REgallery.svg" alt="ReGallery (SOON!)" class="navicon" title="Regallery (SOON!)" />
-      </li>
-      <li>
-        <img src="/static/assets/chat.svg" alt="chatIcon" class="navicon" title="chat (SOON)" />
-      </li>
-    </ul>
-    <div>
-      <a href="/login"><button class="profile" id="profileBtn">Sign In</button></a>
-      <a href="/signup"><button class="profile" id="profileBtn">Sign Up</button></a>
-    </div>
-  </nav>
-
-  <main>
-    <div class="sidebar-filter">
-      <div class="filterbox">
-        <div class="recentDIV filterDIV">🆕 Newest and recent</div>
-        <div class="popularDIV filterDIV">✨ Most Liked</div>
-        <div class="createdBySelfDIV filterDIV">👥 Created by you</div>
-      </div>
-    </div>
-    <div class="postcardwrapper"></div>
-    <div class="categ-sidebar">
-      <div class="filterbox">
-        <div class="catTitle">All Categories</div>
-        <div class="allcats" id="allcats">
-          <!-- <div class="catlisting">cat1</div> -->
-
+  <body>
+    <main>
+      <div class="sidebar-filter">
+        <div class="filterbox">
+          <div class="recentDIV filterDIV">🆕 Newest and recent</div>
+          <div class="popularDIV filterDIV">✨ Most Liked</div>
+          <div class="createdBySelfDIV filterDIV">👥 Created by you</div>
         </div>
       </div>
-    </div>
-  </main>
-  <script src="/static/js/index.js"></script>
-</body>
-
+      <div class="postcardwrapper"></div>
+      <div class="categ-sidebar">
+        <div class="filterbox">
+          <div class="catTitle">All Categories</div>
+          <div class="allcats" id="allcats">
+            <!-- <div class="catlisting">cat1</div> -->
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="/static/js/index.js"></script>
+  </body>
 </html>
