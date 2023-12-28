@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addComment(commentText);
 
     // Clear the textarea after adding the comment
+    location.reload();
     document.getElementById("newCommentText").value = "";
   });
 });
