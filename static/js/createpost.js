@@ -13,11 +13,14 @@ const createPost = async () => {
     },
     body: JSON.stringify(formData),
   });
-  if (response.ok) {
-    location.href('/')
-    console.log(formData)
+  console.log(response);
+  let t = await response.text;
+  if (t === "OK!") {
+    console.log(formData);
+    //TODO: FIX THIS
+    // location.replace("localhost:8080/");
   } else {
-    let errdiv = document.getElementById('errdiv')
+    let errdiv = document.getElementById("errdiv");
     errdiv.innerText = "ERROR CREATING POST";
   }
 };
