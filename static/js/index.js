@@ -14,67 +14,9 @@ const render_index_page = () => {
       let i = 0;
       data.posts.forEach((post) => {
         gotten_posts.push(post);
-        //parse cats
-        let cats = ``;
-        if (post.category === null) {
-          cats += `<div class="category">null</div>`;
-        } else {
-          post.category.forEach((cat) => {
-            cats += `<div class="category">${cat}</div>`;
-          });
-        }
-
+        
         // parse post
-        const postElement = document.createElement("div");
-        postElement.className = "postcard";
-        postElement.innerHTML = `
-          <div class="postWrapper">
-              <!-- <div class="postImage"></div> -->
-              <div class="dataWrapper">
-                  <div class="data">
-                      <div class="title_category">
-                          <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
-                          <div class="categories">
-                                ${cats}
-                          </div>
-                      </div>
-                      <div class="user">
-                          <div class="userID">by ${post.user_name}</div>
-                          <div class="action">
-                              <p>Creation Date: ${post.creation_date}</p>
-                          </div>
-                      </div>
-                  </div>
-                    <div class="likeBtn ${
-          post.isLiked === 1 ? "liked" : ""
-        }" onclick="LikeEvent(${i}, ${post.post_id})">
-                      <img src="${
-          post.isLiked === 1
-            ? "static/assets/icons8-accept-30(1).png"
-            : "static/assets/icons8-accept-30.png"
-        }" alt="Like">
-                      ${post.isLiked}
-                    </div>
-              <!-- Show like counts -->
-              <div id="likes_${post.post_id}">
-                    ${post.post_likes}
-              </div>
-                    <div class="dislikeBtn ${
-          post.isLiked === -1 ? "disliked" : ""
-        }" onclick="disLikeEvent(${i}, ${post.post_id})">
-                        <img src="${
-          post.isLiked === -1
-            ? "static/assets/icons8-dislike-30(1).png"
-            : "static/assets/icons8-dislike-30.png"
-        }" alt="Dislike">
-                    </div>
-              <!-- Show like counts -->
-              <div id="dislikes_${post.post_id}">
-                    ${post.post_dislikes}
-              </div>
-              </div>
-          </div>
-              `;
+        let postElement = post_cards_component(post, i)
         i++;
 
         jsonContainer.appendChild(postElement);
@@ -105,72 +47,15 @@ const filterToCat = async (cat) => {
   let response = await fetch("/api/category/" + cat);
   let data = await response.json();
   let i = 0;
-  let cats = ``;
   data.posts.forEach((post) => {
     if (post.category === null) {
       return;
     } else {
-      post.category.forEach((cat) => {
-        cats += `<div class="category">${cat}</div>`;
-      });
+      let postElement = post_cards_component(post, i)
+      i++;
+     jsonContainer.appendChild(postElement);
     }
-    console.log("TRUE");
-    // parse post
-        const postElement = document.createElement("div");
-        postElement.className = "postcard";
-        postElement.innerHTML = `
-          <div class="postWrapper">
-              <!-- <div class="postImage"></div> -->
-              <div class="dataWrapper">
-                  <div class="data">
-                      <div class="title_category">
-                          <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
-                          <div class="categories">
-                                ${cats}
-                          </div>
-                      </div>
-                      <div class="user">
-                          <div class="userID">by ${post.user_name}</div>
-                          <div class="action">
-                              <p>Creation Date: ${post.creation_date}</p>
-                          </div>
-                      </div>
-                  </div>
-                    <div class="likeBtn ${
-          post.isLiked === 1 ? "liked" : ""
-        }" onclick="LikeEvent(${i}, ${post.post_id})">
-                      <img src="${
-          post.isLiked === 1
-            ? "static/assets/icons8-accept-30(1).png"
-            : "static/assets/icons8-accept-30.png"
-        }" alt="Like">
-                      ${post.isLiked}
-                    </div>
-              <!-- Show like counts -->
-              <div id="likes_${post.post_id}">
-                    ${post.post_likes}
-              </div>
-                    <div class="dislikeBtn ${
-          post.isLiked === -1 ? "disliked" : ""
-        }" onclick="disLikeEvent(${i}, ${post.post_id})">
-                        <img src="${
-          post.isLiked === -1
-            ? "static/assets/icons8-dislike-30(1).png"
-            : "static/assets/icons8-dislike-30.png"
-        }" alt="Dislike">
-                    </div>
-              <!-- Show like counts -->
-              <div id="dislikes_${post.post_id}">
-                    ${post.post_dislikes}
-              </div>
-              </div>
-          </div>
-              `;
-    i++;
-    cats = ``;
-
-    jsonContainer.appendChild(postElement);
-  });
+     });
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -209,28 +94,31 @@ const LikeEvent = async (index, postID) => {
 };
 
 const disLikeEvent = async (index, postID) => {
-  let likeBtn = document.querySelectorAll(".likeBtn")[index];
-  let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index];
+  let likeBtn = document.querySelectorAll(".likeBtn")[index]; // selects like button
+  let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index]; // selects dislike button
   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
 
-  if (dislikeBtn.classList.contains("disliked")) {
+  if (gotten_posts[index].isLiked === -1) {
+    gotten_posts[index].isLiked = 0
     dislikeBtn.classList.remove("disliked");
     dislikeBtn.innerHTML =
-      '<img src="static/assets/icons8-dislike-30.png" alt="Dislike"> ';
+      '<img src="static/assets/icons8-dislike-30.png" alt="Dislike">';
     await sendReqPost(postID, 0);
   } else {
+    gotten_posts[index].isLiked = -1
     dislikeBtn.classList.add("disliked");
-    if (likeBtn.classList.contains("liked")) {
-      likeBtn.classList.remove("liked");
-      likeBtn.innerHTML =
-        '<img src="static/assets/icons8-accept-30.png" alt="Like">';
-    }
     dislikeBtn.innerHTML =
       '<img src="static/assets/icons8-dislike-30(1).png" alt="Dislike">';
+
     await sendReqPost(postID, -1);
   }
 
+  if (likeBtn.classList.contains("liked")) {
+    likeBtn.classList.remove("liked");
+    likeBtn.innerHTML =
+      '<img src="static/assets/icons8-accept-30.png" alt="Like">';
+  }
   /* fetch new like and dislike count and update the DOM */
   await get_like_dislike_count(postID).then((likes_dislikes) => {
     like_count_area.innerHTML = likes_dislikes.interactions.like_count;
@@ -270,3 +158,71 @@ const sendReqPost = async (postID, likeDislike) => {
 // App entry point
 // Attach the function to the load event
 window.addEventListener("load", render_index_page);
+
+/* Postcard component loader
+ * inputs:
+ *          post: post object
+ *          i: index of post in the html page*/
+const post_cards_component = (post, i) => {
+
+        //parse cats
+        let cats = ``;
+        if (post.category === null) {
+          cats += `<div class="category">null</div>`;
+        } else {
+          post.category.forEach((cat) => {
+            cats += `<div class="category">${cat}</div>`;
+          });
+        }
+        const postElement = document.createElement("div");
+        postElement.className = "postcard";
+        postElement.innerHTML = `
+          <div class="postWrapper">
+              <!-- <div class="postImage"></div> -->
+              <div class="dataWrapper">
+                  <div class="data">
+                      <div class="title_category">
+                          <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
+                          <div class="categories">
+                                ${cats}
+                          </div>
+                      </div>
+                      <div class="user">
+                          <div class="userID">by ${post.user_name}</div>
+                          <div class="action">
+                              <p>Creation Date: ${post.creation_date}</p>
+                          </div>
+                      </div>
+                  </div>
+                    <div class="likeBtn ${
+          post.isLiked === 1 ? "liked" : ""
+        }" onclick="LikeEvent(${i}, ${post.post_id})">
+                      <img src="${
+          post.isLiked === 1
+            ? "static/assets/icons8-accept-30(1).png"
+            : "static/assets/icons8-accept-30.png"
+        }" alt="Like">
+                    </div>
+              <!-- Show like counts -->
+              <div id="likes_${post.post_id}">
+                    ${post.post_likes}
+              </div>
+                    <div class="dislikeBtn ${
+          post.isLiked === -1 ? "disliked" : ""
+        }" onclick="disLikeEvent(${i}, ${post.post_id})">
+                        <img src="${
+          post.isLiked === -1
+            ? "static/assets/icons8-dislike-30(1).png"
+            : "static/assets/icons8-dislike-30.png"
+        }" alt="Dislike">
+                    </div>
+              <!-- Show like counts -->
+              <div id="dislikes_${post.post_id}">
+                    ${post.post_dislikes}
+              </div>
+              </div>
+          </div>
+              `;
+
+  return postElement
+}
