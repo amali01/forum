@@ -18,7 +18,7 @@ func main() {
 	// Handle requests for files in the "/static/" path
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	// API endpoints
+	/********************* API endpoints ************************/
 	http.HandleFunc("/signup", api.SignUp)                               // Handle signup
 	http.HandleFunc("/login", api.LogIn)                                 // Handle login
 	http.HandleFunc("/api/create_post", api.Create_Post)                 // create post
@@ -32,8 +32,10 @@ func main() {
 	http.HandleFunc("/api/categories", api.Serve_categories_handler)     // Serves categories
 	http.HandleFunc("/api/category/", api.Categories_filter_handler)     // Category filtering ex: /api/category/Technology
   http.HandleFunc("/api/postlikes", api.Serve_post_likes_dislikes)
-	///////////////////////////////////
-	// Render pages
+  http.HandleFunc("/api/islogged", api.Serve_is_logged)
+	/********************* END ************************/
+
+  // Render pages
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPage(w, r, funcs.DB)
 	})
