@@ -4,6 +4,155 @@ const postID = parseInt(
 );
 console.log(postID);
 
+const loadNav = () => {
+  let nav = ``;
+  let islogged = localStorage.getItem("isloggedIn");
+  if (islogged === "true") {
+    nav += `
+      <nav>
+        <a href="/">
+          <div class="logo">Re4um</div>
+        </a>
+        <ul class="actionitems">
+          <li>
+            <a href="/create_post">
+              <img
+                src="/static/assets/plus-large-svgrepo-com.svg"
+                alt="add Icon"
+                class="navicon"
+                title="Create Post"
+              />
+            </a>
+          </li>
+          <li>
+            <img
+              src="/static/assets/information-circle-svgrepo-com.svg"
+              alt="about Page Icon"
+              class="navicon"
+              title="About"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/API.svg"
+              alt="API Icon"
+              class="navicon"
+              title="API documentation"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/HomeIcon.svg"
+              alt="HomeIcon"
+              class="navicon"
+              title="Back To Homepage"
+              onclick="location.href('/')"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/REgallery.svg"
+              alt="ReGallery (SOON!)"
+              class="navicon"
+              title="Regallery (SOON!)"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/chat.svg"
+              alt="chatIcon"
+              class="navicon"
+              title="chat (SOON)"
+            />
+          </li>
+        </ul>
+        <div>
+          <a href="/logout">
+            <button class="profile" id="profileBtn">
+              Sign Out
+            </button>
+          </a>
+        </div>
+      </nav>
+    `;
+  } else {
+    nav += `
+      <nav>
+        <a href="/">
+          <div class="logo">Re4um</div>
+        </a>
+        <ul class="actionitems">
+          <li>
+            <a href="/create_post">
+              <img
+                src="/static/assets/plus-large-svgrepo-com.svg"
+                alt="add Icon"
+                class="navicon"
+                title="Create Post"
+              />
+            </a>
+          </li>
+          <li>
+            <img
+              src="/static/assets/information-circle-svgrepo-com.svg"
+              alt="about Page Icon"
+              class="navicon"
+              title="About"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/API.svg"
+              alt="API Icon"
+              class="navicon"
+              title="API documentation"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/HomeIcon.svg"
+              alt="HomeIcon"
+              class="navicon"
+              title="Back To Homepage"
+              onclick="location.href('/')"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/REgallery.svg"
+              alt="ReGallery (SOON!)"
+              class="navicon"
+              title="Regallery (SOON!)"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/chat.svg"
+              alt="chatIcon"
+              class="navicon"
+              title="chat (SOON)"
+            />
+          </li>
+        </ul>
+        <div>
+          <a href="/login">
+            <button class="profile" id="profileBtn">
+              Sign In
+            </button>
+          </a>
+          <a href="/signup">
+            <button class="profile" id="profileBtn">
+              Sign Up
+            </button>
+          </a>
+        </div>
+      </nav>
+    `;
+  }
+  let body = document.body;
+  body.insertAdjacentHTML("beforebegin", nav);
+};
+
 const readyPost = async () => {
   let Response = await fetch(`/api/post/${postID}`);
   if (!Response.ok) {
@@ -197,4 +346,9 @@ const sendReqComment = async (commentID, likeDislike) => {
   await sendRequest("../../api/likes_comment", { commentID, likeDislike });
 };
 
-readyPost();
+const initPostPage = async () => {
+  loadNav();
+  await readyPost();
+};
+
+window.addEventListener("load", initPostPage, true);
