@@ -1,6 +1,6 @@
 const postwrapper = document.getElementById("mPostWrapper");
 const postID = parseInt(
-  location.href.match(/post\/[0-9]+/)[0].replace("post/", "")
+  location.href.match(/post\/[0-9]+/)[0].replace("post/", ""),
 );
 console.log(postID);
 

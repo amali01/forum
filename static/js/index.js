@@ -14,9 +14,9 @@ const render_index_page = () => {
       let i = 0;
       data.posts.forEach((post) => {
         gotten_posts.push(post);
-        
+
         // parse post
-        let postElement = post_cards_component(post, i)
+        let postElement = post_cards_component(post, i);
         i++;
 
         jsonContainer.appendChild(postElement);
@@ -51,11 +51,11 @@ const filterToCat = async (cat) => {
     if (post.category === null) {
       return;
     } else {
-      let postElement = post_cards_component(post, i)
+      let postElement = post_cards_component(post, i);
       i++;
-     jsonContainer.appendChild(postElement);
+      jsonContainer.appendChild(postElement);
     }
-     });
+  });
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -67,13 +67,13 @@ const LikeEvent = async (index, postID) => {
   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
 
   if (gotten_posts[index].isLiked === 1) {
-    gotten_posts[index].isLiked = 0
+    gotten_posts[index].isLiked = 0;
     likeBtn.classList.remove("liked");
     likeBtn.innerHTML =
       '<img src="static/assets/icons8-accept-30.png" alt="Like">';
     await sendReqPost(postID, 0);
   } else {
-    gotten_posts[index].isLiked = 1
+    gotten_posts[index].isLiked = 1;
     likeBtn.classList.add("liked");
     likeBtn.innerHTML =
       '<img src="static/assets/icons8-accept-30(1).png" alt="Like">';
@@ -100,13 +100,13 @@ const disLikeEvent = async (index, postID) => {
   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
 
   if (gotten_posts[index].isLiked === -1) {
-    gotten_posts[index].isLiked = 0
+    gotten_posts[index].isLiked = 0;
     dislikeBtn.classList.remove("disliked");
     dislikeBtn.innerHTML =
       '<img src="static/assets/icons8-dislike-30.png" alt="Dislike">';
     await sendReqPost(postID, 0);
   } else {
-    gotten_posts[index].isLiked = -1
+    gotten_posts[index].isLiked = -1;
     dislikeBtn.classList.add("disliked");
     dislikeBtn.innerHTML =
       '<img src="static/assets/icons8-dislike-30(1).png" alt="Dislike">';
@@ -132,13 +132,15 @@ const get_like_dislike_count = async (postID) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "post_id": postID,
+      post_id: postID,
     },
-  }).then((resp) => {
-    return resp.json();
-  }).then((data) => {
-    interactions_obj = data;
-  });
+  })
+    .then((resp) => {
+      return resp.json();
+    })
+    .then((data) => {
+      interactions_obj = data;
+    });
 
   return interactions_obj;
 };
@@ -164,25 +166,26 @@ window.addEventListener("load", render_index_page);
  *          post: post object
  *          i: index of post in the html page*/
 const post_cards_component = (post, i) => {
-
-        //parse cats
-        let cats = ``;
-        if (post.category === null) {
-          cats += `<div class="category">null</div>`;
-        } else {
-          post.category.forEach((cat) => {
-            cats += `<div class="category">${cat}</div>`;
-          });
-        }
-        const postElement = document.createElement("div");
-        postElement.className = "postcard";
-        postElement.innerHTML = `
+  //parse cats
+  let cats = ``;
+  if (post.category === null) {
+    cats += `<div class="category">null</div>`;
+  } else {
+    post.category.forEach((cat) => {
+      cats += `<div class="category">${cat}</div>`;
+    });
+  }
+  const postElement = document.createElement("div");
+  postElement.className = "postcard";
+  postElement.innerHTML = `
           <div class="postWrapper">
               <!-- <div class="postImage"></div> -->
               <div class="dataWrapper">
                   <div class="data">
                       <div class="title_category">
-                          <a class="title bold_text" href='/post/${post.post_id}'>${post.title}</a>    
+                          <a class="title bold_text" href='/post/${
+                            post.post_id
+                          }'>${post.title}</a>    
                           <div class="categories">
                                 ${cats}
                           </div>
@@ -195,26 +198,26 @@ const post_cards_component = (post, i) => {
                       </div>
                   </div>
                     <div class="likeBtn ${
-          post.isLiked === 1 ? "liked" : ""
-        }" onclick="LikeEvent(${i}, ${post.post_id})">
+                      post.isLiked === 1 ? "liked" : ""
+                    }" onclick="LikeEvent(${i}, ${post.post_id})">
                       <img src="${
-          post.isLiked === 1
-            ? "static/assets/icons8-accept-30(1).png"
-            : "static/assets/icons8-accept-30.png"
-        }" alt="Like">
+                        post.isLiked === 1
+                          ? "static/assets/icons8-accept-30(1).png"
+                          : "static/assets/icons8-accept-30.png"
+                      }" alt="Like">
                     </div>
               <!-- Show like counts -->
               <div id="likes_${post.post_id}">
                     ${post.post_likes}
               </div>
                     <div class="dislikeBtn ${
-          post.isLiked === -1 ? "disliked" : ""
-        }" onclick="disLikeEvent(${i}, ${post.post_id})">
+                      post.isLiked === -1 ? "disliked" : ""
+                    }" onclick="disLikeEvent(${i}, ${post.post_id})">
                         <img src="${
-          post.isLiked === -1
-            ? "static/assets/icons8-dislike-30(1).png"
-            : "static/assets/icons8-dislike-30.png"
-        }" alt="Dislike">
+                          post.isLiked === -1
+                            ? "static/assets/icons8-dislike-30(1).png"
+                            : "static/assets/icons8-dislike-30.png"
+                        }" alt="Dislike">
                     </div>
               <!-- Show like counts -->
               <div id="dislikes_${post.post_id}">
@@ -222,7 +225,7 @@ const post_cards_component = (post, i) => {
               </div>
               </div>
           </div>
-              `;
+          `;
 
-  return postElement
-}
+  return postElement;
+};
