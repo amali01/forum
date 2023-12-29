@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-signin-client_id" content="173893630139-4nbjs26flrgd6s706654isufjj91vt7v.apps.googleusercontent.com">
+    <meta
+      name="google-signin-client_id"
+      content="173893630139-4nbjs26flrgd6s706654isufjj91vt7v.apps.googleusercontent.com"
+    />
     <link rel="stylesheet" href="/static/css/starterpages.css" />
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>4UM Login</title>
@@ -15,19 +18,20 @@
     </div>
     <div class="form">
       <form>
-        <input
-          name="Email"
-          placeholder="Username/Email"
-          type="text"
-          required
-        />
+        <input name="Email" placeholder="Username/Email" type="text" required  autocomplete="false"/>
         <input
           name="Password"
           placeholder="Password"
-          type="text"
+          type="password"
+          autocomplete="false"
           required
         />
-        <button type= "button" class="LoginBtn" id="submit" onclick="sendLoginRequest()">
+        <button
+          type="button"
+          class="LoginBtn"
+          id="submit"
+          onclick="sendLoginRequest()"
+        >
           <span>Login</span>
         </button>
         <div class="g-signin2" data-onsuccess="onSignIn"></div>
