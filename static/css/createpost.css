@@ -24,6 +24,12 @@ body::-webkit-scrollbar {
   display: none;
 }
 
+a {
+  text-decoration: none;
+  all: unset;
+  cursor: pointer;
+}
+
 nav {
   background-color: var(--bg-nav-color);
   width: 100%;
@@ -114,7 +120,7 @@ label {
   font-family: var(--main-font-family);
 }
 
-input[type="submit"], button {
+input[type="submit"], .postBtn {
   background-color: #045aaa;
   color: white;
   padding: 12px 20px;
@@ -125,7 +131,7 @@ input[type="submit"], button {
   transition: 0.3s;
 }
 
-input[type="submit"]:hover, button:hover {
+input[type="submit"]:hover, .postBtn:hover {
   background-color: #4574a0;
 }
 
@@ -148,6 +154,10 @@ input[type="submit"]:hover, button:hover {
   float: left;
   width: 75%;
   margin-top: 6px;
+}
+
+select::-webkit-scrollbar {
+  display: none;
 }
 
 .rowl {

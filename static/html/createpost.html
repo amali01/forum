@@ -1,79 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/createpost.css" />
+    <title>Post Creation</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../static/css/createpost.css" />
-  <title>Post Creation</title>
-</head>
-
-<body>
-  <!--Nav-->
-  <script src="../static/js/createpost.js"></script>
-  <nav>
-    <a href="/">
-      <div class="logo">Re4um</div>
-    </a>
-    <ul class="actionitems">
-      <li>
-        <a href="/create_post"><img src="/static/assets/plus-large-svgrepo-com.svg" alt="add Icon" class="navicon"
-            title="Create Post" /></a>
-      </li>
-      <li>
-        <img src="/static/assets/information-circle-svgrepo-com.svg" alt="about Page Icon" class="navicon"
-          title="About" />
-      </li>
-      <li>
-        <img src="/static/assets/API.svg" alt="API Icon" class="navicon" title="API documentation" />
-      </li>
-      <li>
-        <img src="/static/assets/HomeIcon.svg" alt="HomeIcon" class="navicon" title="Back To Homepage"
-          onclick="location.href('/')" />
-      </li>
-      <li>
-        <img src="/static/assets/REgallery.svg" alt="ReGallery (SOON!)" class="navicon" title="Regallery (SOON!)" />
-      </li>
-      <li>
-        <img src="/static/assets/chat.svg" alt="chatIcon" class="navicon" title="chat (SOON)" />
-      </li>
-    </ul>
-    <button class="profile" id="profileBtn">Sign In</button>
-  </nav>
-  <!--Container for post creation form-->
-  <div class="container" id="FormContainer">
-    <div class="err" id="errdiv"></div>
-    <form>
-      <div class="row">
-        <div class="col-25">
-          <label for="fname">Post Title</label>
+  <body>
+    <!--Nav-->
+    <script src="../static/js/createpost.js"></script>
+    <nav>
+      <a href="/">
+        <div class="logo">Re4um</div>
+      </a>
+      <ul class="actionitems">
+        <li>
+          <a href="/create_post"
+            ><img
+              src="/static/assets/plus-large-svgrepo-com.svg"
+              alt="add Icon"
+              class="navicon"
+              title="Create Post"
+          /></a>
+        </li>
+        <li>
+          <img
+            src="/static/assets/information-circle-svgrepo-com.svg"
+            alt="about Page Icon"
+            class="navicon"
+            title="About"
+          />
+        </li>
+        <li>
+          <img
+            src="/static/assets/API.svg"
+            alt="API Icon"
+            class="navicon"
+            title="API documentation"
+          />
+        </li>
+        <li>
+          <img
+            src="/static/assets/HomeIcon.svg"
+            alt="HomeIcon"
+            class="navicon"
+            title="Back To Homepage"
+            onclick="location.href('/')"
+          />
+        </li>
+        <li>
+          <img
+            src="/static/assets/REgallery.svg"
+            alt="ReGallery (SOON!)"
+            class="navicon"
+            title="Regallery (SOON!)"
+          />
+        </li>
+        <li>
+          <img
+            src="/static/assets/chat.svg"
+            alt="chatIcon"
+            class="navicon"
+            title="chat (SOON)"
+          />
+        </li>
+      </ul>
+      <button class="profile" id="profileBtn">Sign In</button>
+    </nav>
+    <!--Container for post creation form-->
+    <div class="container" id="FormContainer">
+      <div class="err" id="errdiv"></div>
+      <form>
+        <div class="row">
+          <div class="col-25">
+            <label for="fname">Post Title</label>
+          </div>
+          <div class="col-75">
+            <input
+              type="text"
+              id="Ptitle"
+              name="PostTitle"
+              placeholder="Post Title.."
+            />
+          </div>
         </div>
-        <div class="col-75">
-          <input type="text" id="Ptitle" name="PostTitle" placeholder="Post Title.." />
+        <div class="row">
+          <div class="col-25">
+            <label for="lname">Categories</label>
+          </div>
+          <div class="col-75">
+            <select name="category" id="Pcats" multiple size="5">
+              <option value="technology">Technology</option>
+              <option value="science">Science</option>
+              <option value="travel">Travel</option>
+              <option value="engineering">Engineering</option>
+              <option value="general">General</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-25">
-          <label for="lname">Categories</label>
+        <div class="row">
+          <div class="col-25">
+            <label for="subject">Post Content</label>
+          </div>
+          <div class="col-75">
+            <textarea
+              id="Pcontent"
+              name="PostContent"
+              placeholder="Write something lol.."
+              style="height: 100px"
+            ></textarea>
+          </div>
         </div>
-        <div class="col-75">
-          <input type="text" id="Pcats" name="PostCats" placeholder="cats, seperated by commas..." />
+        <div class="rowl">
+          <button onclick="createPost()" class="postBtn">Create Post</button>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-25">
-          <label for="subject">Post Content</label>
-        </div>
-        <div class="col-75">
-          <textarea id="Pcontent" name="PostContent" placeholder="Write something lol.."
-            style="height: 100px"></textarea>
-        </div>
-      </div>
-      <div class="rowl">
-        <button onclick="createPost()">Create Post</button>
-      </div>
-    </form>
-  </div>
-</body>
-
+      </form>
+    </div>
+  </body>
 </html>
