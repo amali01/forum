@@ -218,7 +218,7 @@ const render_index_page = () => {
                           ? "static/assets/icons8-accept-30(1).png"
                           : "static/assets/icons8-accept-30.png"
                       }" alt="Like">
-                      ${post.isLiked}
+                      <!-- ${post.isLiked} -->
                     </div>
               <!-- Show like counts -->
               <div id="likes_${post.post_id}">
@@ -311,7 +311,7 @@ const filterToCat = async (cat) => {
                           ? "static/assets/icons8-accept-30(1).png"
                           : "static/assets/icons8-accept-30.png"
                       }" alt="Like">
-                      ${post.isLiked}
+                      <!-- ${post.isLiked} -->
                     </div>
               <!-- Show like counts -->
               <div id="likes_${post.post_id}">
