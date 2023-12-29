@@ -4,8 +4,23 @@ const createPost = async () => {
     let formData = {
       Post: document.getElementById("Pcontent").value,
       Title: document.getElementById("Ptitle").value,
-      Categories: document.getElementById("Pcats").value.split(","),
     };
+
+    // get selected cats
+    let catdiv = document.getElementById('Pcats')
+    let maincats = []
+
+    for (let i = 0; i < catdiv.options.length; i++) {
+      const element = catdiv.options[i];
+      if (element.selected) {
+        maincats.push(element.value)
+      }
+    }
+
+
+    formData["Categories"] = maincats
+
+    console.log(formData);
 
     const response = await fetch("/api/create_post", {
       method: "POST",
