@@ -64,7 +64,6 @@ nav {
   background-color: #2c2c2c;
 }
 
-
 .actionitems {
   display: flex;
   align-items: center;
@@ -101,6 +100,8 @@ select {
   border: 1px solid #faf1f1;
   border-radius: 30px;
   resize: vertical;
+  background-color: transparent;
+  color: white;
 }
 
 textarea {
@@ -111,6 +112,8 @@ textarea {
   resize: vertical;
   padding-top: 20px;
   padding-left: 20px;
+  background-color: transparent;
+  color: white;
 }
 
 label {
@@ -120,7 +123,8 @@ label {
   font-family: var(--main-font-family);
 }
 
-input[type="submit"], .postBtn {
+input[type="submit"],
+.postBtn {
   background-color: #045aaa;
   color: white;
   padding: 12px 20px;
@@ -131,7 +135,8 @@ input[type="submit"], .postBtn {
   transition: 0.3s;
 }
 
-input[type="submit"]:hover, .postBtn:hover {
+input[type="submit"]:hover,
+.postBtn:hover {
   background-color: #4574a0;
 }
 
@@ -151,9 +156,12 @@ input[type="submit"]:hover, .postBtn:hover {
 }
 
 .col-75 {
-  float: left;
   width: 75%;
   margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 select::-webkit-scrollbar {
@@ -179,4 +187,45 @@ select::-webkit-scrollbar {
   text-align: center;
   width: 100vw;
   margin-bottom: 10px;
+}
+
+.checkcontainer {
+  cursor: pointer;
+}
+
+.checkcontainer input {
+  display: none;
+}
+
+.checkcontainer svg {
+  overflow: visible;
+}
+
+.path {
+  fill: none;
+  stroke: white;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.checkcontainer input:checked ~ svg .path {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+  stroke: greenyellow;
+}
+
+.option {
+  color: white;
+  font-size: 1em;
+  font-family: var(--main-font-family);
+}
+.checkoption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0;
 }
