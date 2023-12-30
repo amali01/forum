@@ -159,12 +159,13 @@ const loadOptions = async () => {
   });
 };
 
-const loadPage = async () => {
-  await render_nav_bar();
-  await loadOptions();
+const loadPage = () => {
+  loadOptions();
+  render_nav_bar();
 };
 
-document.addEventListener("load", loadPage, true);
+// document.addEventListener("load", loadPage, true);
+document.addEventListener("DOMContentLoaded", loadPage);
 
 const createPost = async () => {
   event.preventDefault();
