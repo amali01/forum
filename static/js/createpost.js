@@ -147,10 +147,27 @@ const render_nav_bar = async () => {
   body.insertAdjacentHTML("beforebegin", nav);
 };
 
-document.addEventListener('load', render_nav_bar(), true)
+const loadOptions = async () => {
+  const catdiv = document.getElementById("Pcats");
+  let response = await fetch("/api/categories");
+  let data = await response.json();
+  data.Categories.forEach((cat) => {
+    let option = document.createElement("option");
+    option.value = cat.category;
+    option.innerText = cat.category;
+    catdiv.append(option);
+  });
+};
+
+const loadPage = async () => {
+  await render_nav_bar();
+  await loadOptions();
+};
+
+document.addEventListener("load", loadPage, true);
 
 const createPost = async () => {
-  event.preventDefault()
+  event.preventDefault();
   try {
     let formData = {
       Post: document.getElementById("Pcontent").value,
@@ -158,18 +175,17 @@ const createPost = async () => {
     };
 
     // get selected cats
-    let catdiv = document.getElementById('Pcats')
-    let maincats = []
+    let catdiv = document.getElementById("Pcats");
+    let maincats = [];
 
     for (let i = 0; i < catdiv.options.length; i++) {
       const element = catdiv.options[i];
       if (element.selected) {
-        maincats.push(element.value)
+        maincats.push(element.value);
       }
     }
 
-
-    formData["Categories"] = maincats
+    formData["Categories"] = maincats;
 
     console.log(formData);
 
