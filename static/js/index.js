@@ -7,18 +7,27 @@ const isloggedIn = async () => {
   console.log(ok);
   let isSignedIn;
   if (ok === "1") {
-    isSignedIn = true;
+    isSignedIn = "true";
   } else {
-    isSignedIn = false;
+    isSignedIn = "false";
   }
   localStorage.setItem("isloggedIn", isSignedIn)
   return isSignedIn;
 };
 
+async function evalLogin(fn) {
+  let islogged = await isloggedIn()
+  if (islogged === "true") {
+    fn()
+  } else {
+    window.location.replace('/login')
+  }
+}
+
 const render_nav_bar = async () => {
   let nav = ``;
   let islogged = await isloggedIn();
-  if (islogged) {
+  if (islogged === "true") {
     nav += `
       <nav>
         <a href="/">
@@ -94,7 +103,7 @@ const render_nav_bar = async () => {
         </a>
         <ul class="actionitems">
           <li>
-            <a href="/create_post">
+            <a href="/login">
               <img
                 src="/static/assets/plus-large-svgrepo-com.svg"
                 alt="add Icon"
@@ -212,7 +221,7 @@ const render_index_page = () => {
                   </div>
                     <div class="likeBtn ${
                       post.isLiked === 1 ? "liked" : ""
-                    }" onclick="LikeEvent(${i}, ${post.post_id})">
+                    }" onclick="evalLogin(LikeEvent(${i}, ${post.post_id}))">
                       <img src="${
                         post.isLiked === 1
                           ? "static/assets/icons8-accept-30(1).png"
@@ -226,7 +235,7 @@ const render_index_page = () => {
               </div>
                     <div class="dislikeBtn ${
                       post.isLiked === -1 ? "disliked" : ""
-                    }" onclick="disLikeEvent(${i}, ${post.post_id})">
+                    }" onclick="evalLogin(disLikeEvent(${i}, ${post.post_id}))">
                         <img src="${
                           post.isLiked === -1
                             ? "static/assets/icons8-dislike-30(1).png"
@@ -247,6 +256,8 @@ const render_index_page = () => {
     })
     .catch((error) => console.error("Error fetching JSON:", error));
 };
+
+
 
 const loadCats = async () => {
   const catwrapper = document.getElementById("allcats");
@@ -305,7 +316,7 @@ const filterToCat = async (cat) => {
                   </div>
                     <div class="likeBtn ${
                       post.isLiked === 1 ? "liked" : ""
-                    }" onclick="LikeEvent(${i}, ${post.post_id})">
+                    }" onclick="evalLogin(LikeEvent(${i}, ${post.post_id}))">
                       <img src="${
                         post.isLiked === 1
                           ? "static/assets/icons8-accept-30(1).png"
@@ -319,7 +330,7 @@ const filterToCat = async (cat) => {
               </div>
                     <div class="dislikeBtn ${
                       post.isLiked === -1 ? "disliked" : ""
-                    }" onclick="disLikeEvent(${i}, ${post.post_id})">
+                    }" onclick="evalLogin(disLikeEvent(${i}, ${post.post_id}))">
                         <img src="${
                           post.isLiked === -1
                             ? "static/assets/icons8-dislike-30(1).png"

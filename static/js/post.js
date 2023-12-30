@@ -4,6 +4,29 @@ const postID = parseInt(
 );
 console.log(postID);
 
+const isloggedIn = async () => {
+  let res = await fetch("/api/islogged");
+  let ok = await res.text();
+  console.log(ok);
+  let isSignedIn;
+  if (ok === "1") {
+    isSignedIn = "true";
+  } else {
+    isSignedIn = "false";
+  }
+  localStorage.setItem("isloggedIn", isSignedIn)
+  return isSignedIn;
+};
+
+async function evalLogin(fn) {
+  let islogged = await isloggedIn()
+  if (islogged === "true") {
+    fn()
+  } else {
+    window.location.replace('/login')
+  }
+}
+
 const loadNav = () => {
   let nav = ``;
   let islogged = localStorage.getItem("isloggedIn");
@@ -83,7 +106,7 @@ const loadNav = () => {
         </a>
         <ul class="actionitems">
           <li>
-            <a href="/create_post">
+            <a href="/login">
               <img
                 src="/static/assets/plus-large-svgrepo-com.svg"
                 alt="add Icon"
@@ -187,11 +210,11 @@ const orgPostHTML = async (wrapper, prop) => {
                     <div class="postinfo">
                         <div class="postDate">${prop.creation_date}</div>
                         <div class="commentsLink">comments</div>
-                          <div class="likeBtn" onclick="LikeEvent(0, ${postID}, 'post', 1)">
+                          <div class="likeBtn" onclick="evalLogin(LikeEvent(0, ${postID}, 'post', 1))">
                              <img src="../../static/assets/icons8-accept-30.png" alt="like Heart">
                           </div>
                           ${prop.post_likes}
-                          <div class="dislikeBtn" onclick="disLikeEvent(0, ${postID}, 'post', -1)">
+                          <div class="dislikeBtn" onclick="evalLogin(disLikeEvent(0, ${postID}, 'post', -1))">
                               <img src="../../static/assets/icons8-dislike-30.png" alt="dislike Heart">
                           </div>
                           ${prop.post_dislikes}
@@ -245,11 +268,11 @@ const orgComments = async () => {
                         </div>
                         <div class="commentInfo">
                             <div class="comlikesdislikes">
-                              <div class="likeBtn" onclick="LikeEvent(${i}, ${com.comment_id}, 'comm', 1)">
+                              <div class="likeBtn" onclick="evalLogin(LikeEvent(${i}, ${com.comment_id}, 'comm', 1))">
                                 <img src="../../static/assets/icons8-accept-30.png" alt="like Heart">
                               </div>
                               ${com.comment_likes}
-                              <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${com.comment_id}, 'comm', -1)">
+                              <div class="dislikeBtn" onclick="evalLogin(disLikeEvent(${i}, ${com.comment_id}, 'comm', -1))">
                                 <img src="../../static/assets/icons8-dislike-30.png" alt="dislike Heart">
                               </div>
                               ${com.comment_dislikes}
