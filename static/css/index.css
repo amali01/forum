@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap");
 
 :root {
-    --bg-color :  #240115;
+    --bg-color :  #0C0F0A;
     --text-color : #ffffff; 
-    --bg-nav-color : #2b2427;
+    --bg-nav-color : #0C0F0A;
     --main-font-family: 'Rubik', monospace, sans-serif;
     --bg-component-color: #262D34;
 }
@@ -69,9 +69,9 @@ nav {
   width: 100px;
   height: 30px;
   border-radius: 1000px;
-  border: 0.5px solid #00ccff;
+  border: 0.5px solid #FF206E;
   background-color: transparent;
-  color: #00ccff;
+  color: #FF206E;
   cursor: pointer;
   transition-duration: 0.3s;
 }

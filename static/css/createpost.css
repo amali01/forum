@@ -3,9 +3,9 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100&display=swap");
 
 :root {
-  --bg-color: #121212;
+  --bg-color: #0C0F0A;
   --text-color: #ffffff;
-  --bg-nav-color: #1e1e1e;
+  --bg-nav-color: #0C0F0A;
   --main-font-family: "Rubik", monospace, sans-serif;
   --bg-component-color: #262d34;
 }
@@ -79,9 +79,9 @@ nav {
   width: 100px;
   height: 30px;
   border-radius: 1000px;
-  border: 0.5px solid #00ccff;
+  border: 0.5px solid #FF206E;
   background-color: transparent;
-  color: #00ccff;
+  color: #FF206E;
   cursor: pointer;
   transition-duration: 0.3s;
 }
@@ -125,8 +125,9 @@ label {
 
 input[type="submit"],
 .postBtn {
-  background-color: #045aaa;
-  color: white;
+  background-color: #FBFF12;
+  color: black;
+  font-weight: 700;
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
@@ -137,7 +138,7 @@ input[type="submit"],
 
 input[type="submit"]:hover,
 .postBtn:hover {
-  background-color: #4574a0;
+  background-color: #FF206E;
 }
 
 .container {
