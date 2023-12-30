@@ -148,14 +148,27 @@ const render_nav_bar = async () => {
 };
 
 const loadOptions = async () => {
-  const catdiv = document.getElementById("Pcats");
+  const catdiv = document.getElementById("catHandler");
+  console.log(catdiv);
   let response = await fetch("/api/categories");
   let data = await response.json();
+  console.log(data);
   data.Categories.forEach((cat) => {
-    let option = document.createElement("option");
-    option.value = cat.category;
-    option.innerText = cat.category;
-    catdiv.append(option);
+    catdiv.innerHTML += `
+    <div class="checkoption">
+              <label class="checkcontainer">
+                <input value="${cat.category}" type="checkbox" />
+                <svg width="1em" height="1em" viewBox="0 0 64 64">
+                  <path
+                    class="path"
+                    pathLength="575.0541381835938"
+                    d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                  ></path>
+                </svg>
+              </label>
+              <div class="option">${cat.category}</div>
+            </div>
+    `;
   });
 };
 
@@ -176,14 +189,19 @@ const createPost = async () => {
     };
 
     // get selected cats
-    let catdiv = document.getElementById("Pcats");
     let maincats = [];
 
-    for (let i = 0; i < catdiv.options.length; i++) {
-      const element = catdiv.options[i];
-      if (element.selected) {
-        maincats.push(element.value);
-      }
+    // handling cats
+    let checkboxes = document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    );
+
+    if (checkboxes.length === 0) {
+      maincats.push("General");
+    } else {
+      checkboxes.forEach((checkbox) => {
+        maincats.push(checkbox.value);
+      });
     }
 
     formData["Categories"] = maincats;
