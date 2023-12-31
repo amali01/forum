@@ -11,32 +11,41 @@
       <h1>Welcome to 4UM!</h1>
     </div>
     <div class="form">
-      <form>
+      <form id="signupform" autocomplete="off">
         <input
           name="Name"
           placeholder="Username"
           type="text"
+          id="uname"
           required
         />
         <input
           name="Email"
           placeholder="Email"
           type="text"
+          id="email"
           required
         />
         <input
           name="Password"
           placeholder="Password"
-          type="text"
+          type="password"
+          id="pass"
           required
         />
         <input
           name="signUpPassConfirm"
           placeholder="confirm password"
-          type="text"
+          type="password"
+          id="cpass"
           required
         />
-        <button type="button" class="Signupbtn" id="submit" onclick="sendsignupreq()">
+        <button
+          type="button"
+          class="Signupbtn"
+          id="submit"
+          onclick="toSignUp()"
+        >
           <span>SignUp</span>
         </button>
         <a class="entrypagehref" href="/login">Or login Instead</a>
@@ -44,5 +53,4 @@
     </div>
     <script src="/static/js/signup.js"></script>
   </body>
-
 </html>

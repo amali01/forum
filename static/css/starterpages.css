@@ -146,3 +146,11 @@ button:hover span:after {
 .entrypagehref:hover {
   color: #FF206E;
 }
+
+.signuperr {
+  font-family: 'IBM Plex Mono', monospace, sans-serif;
+  font-size: 1.5rem;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: rgb(255, 0, 0);
+}
