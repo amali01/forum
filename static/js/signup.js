@@ -1,37 +1,61 @@
+const errdiv = (msg) => `<div class="signuperr">${msg}</div>`;
+// send a followup login request to log the user in
+const followupLogin = async (email, pass) => {
+  const jsonObject = {
+    Email: email,
+    Password: pass,
+  };
 
-function sendsignupreq() {
-  const url = "/signup";
-  let formData = new FormData(document.querySelector("form"))
-
-  // Convert form data to JSON object
-  const jsonObject = {};
-  formData.forEach((value, key) => {
-    jsonObject[key] = value;
-  });
-
-  // Check if password matches before submitting
-  let signUpConfirm = document.getElementsByName("signUpPassConfirm")
-  if (jsonObject["Password"] != jsonObject["signUpPassConfirm"]) {
-    alert("Password fields must match!")
-    return
-  }
-
-  // Convert the JSON object to a JSON string
   const jsonString = JSON.stringify(jsonObject);
-  console.log(jsonString)
-  // Send the POST request using the fetch API
-  fetch(url, {
+
+  fetch("/login", {
     method: "POST",
     body: jsonString,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
+  })
+    .then((response) => {
+      if (response.ok) {
+        window.location.replace("/");
+      } else {
+        throw new Error("Request failed");
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+// main signup request
+const toSignUp = async () => {
+  // grab vars
+  let uname = document.getElementById("uname");
+  let email = document.getElementById("email");
+  let pass = document.getElementById("pass");
+  let cpass = document.getElementById("cpass");
+
+  const form = document.getElementById("signupform");
+
+  if (pass.value !== cpass.value) {
+    form.insertAdjacentHTML("afterbegin", errdiv("PASSWORDS DON'T MATCH"));
+  } else {
+    let signUpData = {
+      uname: uname.value,
+      email: email.value,
+      password: pass.value,
+    };
+    let Res = await fetch("/signup", {
+      method: "POST",
+      body: JSON.stringify(signUpData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!Res.ok) {
+      form.insertAdjacentHTML("afterbegin", errdiv("USER CREATION FAILED"));
     } else {
-      throw new Error("Request failed");
+      await followupLogin(email.value, pass.value);
     }
-  }).then((data) => {
-    console.log(data);
-  }).catch((error) => {
-    console.error(error);
-  });
-}
+  }
+};
