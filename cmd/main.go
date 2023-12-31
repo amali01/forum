@@ -33,7 +33,9 @@ func main() {
 	http.HandleFunc("/api/categories", api.Serve_categories_handler)     // Serves categories
 	http.HandleFunc("/api/category/", api.Categories_filter_handler)     // Category filtering ex: /api/category/Technology
 	http.HandleFunc("/api/postlikes", api.Serve_post_likes_dislikes)
-	http.HandleFunc("/api/islogged", api.Serve_is_logged)
+	http.HandleFunc("/api/islogged", api.Serve_is_logged) // Check if user logged in or not
+	http.HandleFunc("/logout", api.LogOut) //Handle logout
+
 	/********************* END ************************/
 
 	// Render pages
