@@ -85,7 +85,8 @@ func Get_posts_from_db() ([]Post_json, error) {
 	rows, err := DB.Query(`
 	SELECT user_id, user_profile.user_name, posts.creation_date, posts.title, posts.p_id
 	FROM posts
-	INNER JOIN user_profile ON posts.user_id = user_profile.user_account_id`)
+	INNER JOIN user_profile ON posts.user_id = user_profile.user_account_id
+	ORDER BY p_id DESC`)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -210,7 +211,8 @@ func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
 	SELECT user_id, user_profile.user_name, posts.creation_date, posts.title, posts.p_id
 	FROM posts
 	INNER JOIN user_profile ON posts.user_id = user_profile.user_account_id
-	WHERE posts.p_id IN (%s)`, inClause)
+	WHERE posts.p_id IN (%s) 
+	ORDER BY p_id DESC`, inClause)
 
 	rows, err := DB.Query(query, args...)
 	if err != nil {
@@ -248,6 +250,5 @@ func Get_posts_of_category(postIDs []int) ([]Post_json, error) {
 			Category:      categories,
 		})
 	}
-
 	return results, err
 }

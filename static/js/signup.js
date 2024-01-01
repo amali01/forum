@@ -26,23 +26,30 @@ const followupLogin = async (email, pass) => {
       console.error(error);
     });
 };
+
 // main signup request
 const toSignUp = async () => {
   // grab vars
-  let uname = document.getElementById("uname");
-  let email = document.getElementById("email");
-  let pass = document.getElementById("pass");
-  let cpass = document.getElementById("cpass");
+  let uname = document.getElementById("uname").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let pass = document.getElementById("pass").value;
+  let cpass = document.getElementById("cpass").value;
 
   const form = document.getElementById("signupform");
 
-  if (pass.value !== cpass.value) {
-    form.insertAdjacentHTML("afterbegin", errdiv("PASSWORDS DON'T MATCH"));
+  // Check for empty or whitespace-only username and email
+  if (!uname || !email) {
+    form.insertAdjacentHTML("afterbegin", errdiv("Username and email are required."));
+    return;
+  }
+
+  if (pass !== cpass) {
+    form.insertAdjacentHTML("afterbegin", errdiv("Passwords don't match."));
   } else {
     let signUpData = {
-      uname: uname.value,
-      email: email.value,
-      password: pass.value,
+      uname: uname,
+      email: email,
+      password: pass,
     };
     let Res = await fetch("/signup", {
       method: "POST",
@@ -53,9 +60,9 @@ const toSignUp = async () => {
     });
 
     if (!Res.ok) {
-      form.insertAdjacentHTML("afterbegin", errdiv("USER CREATION FAILED"));
+      form.insertAdjacentHTML("afterbegin", errdiv("User creation failed."));
     } else {
-      await followupLogin(email.value, pass.value);
+      await followupLogin(email, pass);
     }
   }
 };

@@ -3,10 +3,11 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/controllers"
-	"forum/pkgs/funcs"
 	"net/http"
 	"strings"
+
+	"forum/controllers"
+	"forum/pkgs/funcs"
 )
 
 // Category page Handler
@@ -21,6 +22,7 @@ func Get_post_handler(w http.ResponseWriter, r *http.Request) {
 	//postID_integer, _ := strconv.Atoi(postID)
 
 	json_post, err := funcs.Get_Post(postID)
+	json_post.Post_ID = postID // assign post id to the JSON
 
 	if err != nil {
 		http.Error(w, "This Post do not exist", http.StatusBadRequest)

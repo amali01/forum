@@ -3,8 +3,7 @@ package api
 import (
 	"net/http"
 )
-
-/* Takes cookies from clients and returns session,
+/* Takes cookies from clients and returns session, 
 * and boolean value indicating that user is logged or not */
 func ValidateUser(w http.ResponseWriter, r *http.Request) (*Session, bool) {
 	cookie, err := r.Cookie("session_token")
