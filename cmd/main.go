@@ -36,6 +36,9 @@ func main() {
 	http.HandleFunc("/api/islogged", api.Serve_is_logged) // Check if user logged in or not
 	http.HandleFunc("/logout", api.LogOut) //Handle logout
 
+	http.HandleFunc("/api/islogged", api.Serve_is_logged)
+	http.HandleFunc("/api/created_by_user", api.ByUser_filter_handler) // posts filtering ex: /api/userposts (when the user is loggedin) 
+	http.HandleFunc("/api/liked_by_user", api.ByUser_filter_handler) 
 	/********************* END ************************/
 
 	// Render pages
