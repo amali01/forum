@@ -1,15 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../static/css/post.css" />
+    <title>Post</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../../static/css/post.css" />
-  <title>Post</title>
-</head>
-
-<body>
-  <!-- <nav>
+  <body>
+    <!-- <nav>
     <a href="/">
       <div class="logo">Re4um</div>
     </a>
@@ -39,23 +38,25 @@
     <button class="profile" id="profileBtn">Sign In</button>
   </nav> -->
 
-  <main>
-    <div class="mainPostWrapper" id="mPostWrapper">
-    </div>
+    <main>
+      <div class="mainPostWrapper" id="mPostWrapper"></div>
       <!-- Add this HTML form in your document -->
-  <div class="add-comment-section">
-    <form id="newCommentForm" class="addcommentcontener">
-      <div class="addcommentArea">
-        <textarea id="newCommentText" class="addcomment" placeholder="Type your comment here.." required></textarea>
+      <div class="add-comment-section">
+        <form id="newCommentForm" class="addcommentcontener">
+          <div class="addcommentArea">
+            <textarea
+              id="newCommentText"
+              class="addcomment"
+              placeholder="Type your comment here.."
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="addcommentBtn">Add Comment</button>
+        </form>
       </div>
-      <button type="submit" class="addcommentBtn">Add Comment</button>
-    </form>
-  </div>
-  </main>
-  <script src="../../static/js/post.js"></script>
+    </main>
+    <script src="../../static/js/post.js" type="module"></script>
 
-  <script defer src="../../static/js/createComment.js"></script>
-
-</body>
-
+    <script defer src="../../static/js/createComment.js"></script>
+  </body>
 </html>
