@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap");
 
 :root {
-  --bg-color: #240115;
+  --bg-color: #0C0F0A;
   --text-color: #ffffff;
-  --bg-nav-color: #2b2427;
+  --bg-nav-color: #0C0F0A;
   --main-font-family: "Rubik", monospace, sans-serif;
   --bg-component-color: #262d34;
 }
@@ -57,9 +57,9 @@ nav {
   width: 100px;
   height: 30px;
   border-radius: 1000px;
-  border: 0.5px solid #00ccff;
+  border: 0.5px solid #FF206E;
   background-color: transparent;
-  color: #00ccff;
+  color: #FF206E;
   cursor: pointer;
   transition-duration: 0.3s;
 }
@@ -643,7 +643,7 @@ hr {
   padding-bottom: 20px;
   background-color: #240115;
   padding-left: 20px;
-  /* margin-left: 2em; */
+  margin-left: 2em;
   min-width: 50vw;
   border-radius: 40px;
   margin-bottom: 20px;
@@ -690,8 +690,8 @@ hr {
   color: #ecf5ff; */
   font-family: var(--main-font-family);
 }
+
 .addcommentcontener {
-  align-content: center;
   margin-bottom: 1em;
   display: flex;
   flex-direction: column;
@@ -699,13 +699,15 @@ hr {
   justify-content: center;
   width: -webkit-fill-available;
 }
+
 .addcommentArea {
   padding: 20px;
   border-radius: 20px;
   margin-bottom: 10px;
-  background: #262d34;
+  /* background: #262d34; */
   color: white;
 }
+
 .addcomment {
   /* padding-top: 30px;
   padding-bottom: 20px;
@@ -720,10 +722,45 @@ hr {
   min-width: 50vw;
   background: none;
   color: white;
+  border-radius: 50px;
+  padding-left: 30px;
+  font-family: var(--main-font-family);
+  border-color: white;
 }
 .addcommentBtn {
-  /* margin-bottom: 20px; */
-  min-height: 2lh;
-  background: #262d34;
-  color: white;
+  cursor: pointer;
+  padding: 0.8em 1.8em;
+  border: 2px solid #FBFF12;
+  position: relative;
+  overflow: hidden;
+  background-color: transparent;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 16px;
+  transition: 0.3s;
+  z-index: 1;
+  font-family: inherit;
+  color: #FBFF12;
+}
+
+.addcommentBtn::before {
+  content: "";
+  width: 0;
+  height: 300%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: #FBFF12;
+  transition: 0.5s ease;
+  display: block;
+  z-index: -1;
+}
+
+.addcommentBtn:hover::before {
+  width: 105%;
+}
+
+.addcommentBtn:hover {
+  color: #111;
 }

@@ -31,16 +31,24 @@ const addComment = async (commentText) => {
 document.addEventListener("DOMContentLoaded", () => {
   // Handle form submission
   const commentForm = document.getElementById("newCommentForm");
-  commentForm.addEventListener("submit", (event) => {
+  commentForm.addEventListener("submit", async(event) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
     // Get the comment text from the textarea
+
+    let a = await isloggedIn()
+    if (a === "false") {
+      window.location.replace('/login')
+      return
+    }
+
     const commentText = document.getElementById("newCommentText").value;
 
     // Call the addComment function with the comment text
     addComment(commentText);
 
     // Clear the textarea after adding the comment
+    location.reload();
     document.getElementById("newCommentText").value = "";
   });
 });

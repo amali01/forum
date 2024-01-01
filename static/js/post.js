@@ -4,6 +4,178 @@ const postID = parseInt(
 );
 console.log(postID);
 
+const isloggedIn = async () => {
+  let res = await fetch("/api/islogged");
+  let ok = await res.text();
+  console.log(ok);
+  let isSignedIn;
+  if (ok === "1") {
+    isSignedIn = "true";
+  } else {
+    isSignedIn = "false";
+  }
+  localStorage.setItem("isloggedIn", isSignedIn)
+  return isSignedIn;
+};
+
+async function evalLogin(fn) {
+  let islogged = await isloggedIn()
+  if (islogged === "true") {
+    fn()
+  } else {
+    window.location.replace('/login')
+  }
+}
+
+const loadNav = () => {
+  let nav = ``;
+  let islogged = localStorage.getItem("isloggedIn");
+  if (islogged === "true") {
+    nav += `
+      <nav>
+        <a href="/">
+          <div class="logo">Re4um</div>
+        </a>
+        <ul class="actionitems">
+          <li>
+            <a href="/create_post">
+              <img
+                src="/static/assets/plus-large-svgrepo-com.svg"
+                alt="add Icon"
+                class="navicon"
+                title="Create Post"
+              />
+            </a>
+          </li>
+          <li>
+            <img
+              src="/static/assets/information-circle-svgrepo-com.svg"
+              alt="about Page Icon"
+              class="navicon"
+              title="About"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/API.svg"
+              alt="API Icon"
+              class="navicon"
+              title="API documentation"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/HomeIcon.svg"
+              alt="HomeIcon"
+              class="navicon"
+              title="Back To Homepage"
+              onclick="location.href('/')"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/REgallery.svg"
+              alt="ReGallery (SOON!)"
+              class="navicon"
+              title="Regallery (SOON!)"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/chat.svg"
+              alt="chatIcon"
+              class="navicon"
+              title="chat (SOON)"
+            />
+          </li>
+        </ul>
+        <div>
+          <a href="/logout">
+            <button class="profile" id="profileBtn">
+              Sign Out
+            </button>
+          </a>
+        </div>
+      </nav>
+    `;
+  } else {
+    nav += `
+      <nav>
+        <a href="/">
+          <div class="logo">Re4um</div>
+        </a>
+        <ul class="actionitems">
+          <li>
+            <a href="/login">
+              <img
+                src="/static/assets/plus-large-svgrepo-com.svg"
+                alt="add Icon"
+                class="navicon"
+                title="Create Post"
+              />
+            </a>
+          </li>
+          <li>
+            <img
+              src="/static/assets/information-circle-svgrepo-com.svg"
+              alt="about Page Icon"
+              class="navicon"
+              title="About"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/API.svg"
+              alt="API Icon"
+              class="navicon"
+              title="API documentation"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/HomeIcon.svg"
+              alt="HomeIcon"
+              class="navicon"
+              title="Back To Homepage"
+              onclick="location.href('/')"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/REgallery.svg"
+              alt="ReGallery (SOON!)"
+              class="navicon"
+              title="Regallery (SOON!)"
+            />
+          </li>
+          <li>
+            <img
+              src="/static/assets/chat.svg"
+              alt="chatIcon"
+              class="navicon"
+              title="chat (SOON)"
+            />
+          </li>
+        </ul>
+        <div>
+          <a href="/login">
+            <button class="profile" id="profileBtn">
+              Sign In
+            </button>
+          </a>
+          <a href="/signup">
+            <button class="profile" id="profileBtn">
+              Sign Up
+            </button>
+          </a>
+        </div>
+      </nav>
+    `;
+  }
+  let body = document.body;
+  body.insertAdjacentHTML("beforebegin", nav);
+};
+
 const readyPost = async () => {
   let Response = await fetch(`/api/post/${postID}`);
   if (!Response.ok) {
@@ -38,11 +210,11 @@ const orgPostHTML = async (wrapper, prop) => {
                     <div class="postinfo">
                         <div class="postDate">${prop.creation_date}</div>
                         <div class="commentsLink">comments</div>
-                          <div class="likeBtn" onclick="LikeEvent(0, ${postID}, 'post', 1)">
+                          <div class="likeBtn" onclick="evalLogin(LikeEvent(0, ${postID}, 'post', 1))">
                              <img src="../../static/assets/icons8-accept-30.png" alt="like Heart">
                           </div>
                           ${prop.post_likes}
-                          <div class="dislikeBtn" onclick="disLikeEvent(0, ${postID}, 'post', -1)">
+                          <div class="dislikeBtn" onclick="evalLogin(disLikeEvent(0, ${postID}, 'post', -1))">
                               <img src="../../static/assets/icons8-dislike-30.png" alt="dislike Heart">
                           </div>
                           ${prop.post_dislikes}
@@ -96,11 +268,11 @@ const orgComments = async () => {
                         </div>
                         <div class="commentInfo">
                             <div class="comlikesdislikes">
-                              <div class="likeBtn" onclick="LikeEvent(${i}, ${com.comment_id}, 'comm', 1)">
+                              <div class="likeBtn" onclick="evalLogin(LikeEvent(${i}, ${com.comment_id}, 'comm', 1))">
                                 <img src="../../static/assets/icons8-accept-30.png" alt="like Heart">
                               </div>
                               ${com.comment_likes}
-                              <div class="dislikeBtn" onclick="disLikeEvent(${i}, ${com.comment_id}, 'comm', -1)">
+                              <div class="dislikeBtn" onclick="evalLogin(disLikeEvent(${i}, ${com.comment_id}, 'comm', -1))">
                                 <img src="../../static/assets/icons8-dislike-30.png" alt="dislike Heart">
                               </div>
                               ${com.comment_dislikes}
@@ -197,4 +369,9 @@ const sendReqComment = async (commentID, likeDislike) => {
   await sendRequest("../../api/likes_comment", { commentID, likeDislike });
 };
 
-readyPost();
+const initPostPage = async () => {
+  loadNav();
+  await readyPost();
+};
+
+window.addEventListener("load", initPostPage, true);

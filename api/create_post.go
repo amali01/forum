@@ -53,5 +53,8 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("POST CREATED SUCCESS")
+
+	// w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK!"))
 }

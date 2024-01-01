@@ -15,7 +15,7 @@ function onSignIn(googleUser) {
   fetch(url, {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   })
@@ -35,9 +35,10 @@ function onSignIn(googleUser) {
 }
 
 function sendLoginRequest() {
+  event.preventDefault()
   const url = "/login";
 
-  let formData = new FormData(document.querySelector("form"))
+  let formData = new FormData(document.querySelector("form"));
 
   // Convert form data to JSON object
   const jsonObject = {};
@@ -55,7 +56,8 @@ function sendLoginRequest() {
   })
     .then((response) => {
       if (response.ok) {
-        return response.json();
+        window.location.replace('/')
+        // return response.json();
       } else {
         throw new Error("Request failed");
       }

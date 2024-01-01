@@ -1,6 +1,29 @@
 // global_vars
 let gotten_posts = [];
 
+const isloggedIn = async () => {
+  let res = await fetch("/api/islogged");
+  let ok = await res.text();
+  console.log(ok);
+  let isSignedIn;
+  if (ok === "1") {
+    isSignedIn = "true";
+  } else {
+    isSignedIn = "false";
+  }
+  localStorage.setItem("isloggedIn", isSignedIn);
+  return isSignedIn;
+};
+
+async function evalLogin(fn) {
+  let islogged = await isloggedIn();
+  if (islogged === "true") {
+    fn();
+  } else {
+    window.location.replace("/login");
+  }
+}
+
 // App entry
 const render_index_page = () => {
   // Fetch the JSON data from the URL
@@ -144,6 +167,7 @@ const get_like_dislike_count = async (postID) => {
 
   return interactions_obj;
 };
+
 const sendReqPost = async (postID, likeDislike) => {
   await fetch("/api/likes_post", {
     method: "POST",
@@ -159,7 +183,16 @@ const sendReqPost = async (postID, likeDislike) => {
 
 // App entry point
 // Attach the function to the load event
-window.addEventListener("load", render_index_page);
+
+async function initPages() {
+  await loadCats();
+  // await render_nav_bar();
+  //  isloggedIn();
+  render_index_page();
+}
+
+// window.addEventListener("load", initPages, true);
+window.addEventListener("DOMContentLoaded", initPages);
 
 /* Postcard component loader
  * inputs:
@@ -199,7 +232,7 @@ const post_cards_component = (post, i) => {
                   </div>
                     <div class="likeBtn ${
                       post.isLiked === 1 ? "liked" : ""
-                    }" onclick="LikeEvent(${i}, ${post.post_id})">
+                    }" onclick="evalLogin(LikeEvent(${i}, ${post.post_id}))">
                       <img src="${
                         post.isLiked === 1
                           ? "static/assets/icons8-accept-30(1).png"
@@ -212,7 +245,7 @@ const post_cards_component = (post, i) => {
               </div>
                     <div class="dislikeBtn ${
                       post.isLiked === -1 ? "disliked" : ""
-                    }" onclick="disLikeEvent(${i}, ${post.post_id})">
+                    }" onclick="evalLogin(disLikeEvent(${i}, ${post.post_id}))">
                         <img src="${
                           post.isLiked === -1
                             ? "static/assets/icons8-dislike-30(1).png"
