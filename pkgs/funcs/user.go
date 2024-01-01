@@ -32,7 +32,6 @@ func AddUser(userName string, userEmail string, pwd string) error {
 }
 
 func CreateUserProfile(userName string, userEmail string) error {
-
 	userID, err := SelectUserID(userEmail)
 	if err != nil {
 		fmt.Println(err)
@@ -117,6 +116,43 @@ func GetUserHash(userID int) string {
 	}
 
 	return userHash
+}
+
+// Func to get all post IDs of a user from database
+func GetUserPosts(userID int, onlyLiked bool) ([]int, error) {
+	query := "SELECT p_id FROM posts WHERE user_id = ?"
+	if onlyLiked {
+		query="SELECT post_id FROM posts_interaction WHERE user_id = ? AND actions_type = 1"
+	}
+	// Query the database
+	rows, err := DB.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the result
+	var result []int
+
+	// Iterate through the rows
+	for rows.Next() {
+		var postID int
+
+		// Scan the values into the variable's address
+		if err := rows.Scan(&postID); err != nil {
+			return nil, err
+		}
+
+		// Append the current postID to the result slice
+		result = append(result, postID)
+	}
+
+	// Check if any rows were returned
+	if len(result) == 0 {
+		// No posts found for the given userID
+		return nil, fmt.Errorf("no posts found for user ID %d", userID)
+	}
+	return result, nil
 }
 
 // func CreateUserType(userID int, userType string) error {

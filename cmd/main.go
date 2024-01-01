@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+
 	"forum/api"
 	"forum/controllers"
 	"forum/pkgs/funcs"
-	"log"
-	"net/http"
 )
 
 func main() {
@@ -31,11 +32,13 @@ func main() {
 	http.HandleFunc("/api/comments", api.Serve_comments_handler)         // Serves post comments
 	http.HandleFunc("/api/categories", api.Serve_categories_handler)     // Serves categories
 	http.HandleFunc("/api/category/", api.Categories_filter_handler)     // Category filtering ex: /api/category/Technology
-  http.HandleFunc("/api/postlikes", api.Serve_post_likes_dislikes)
-  http.HandleFunc("/api/islogged", api.Serve_is_logged)
+	http.HandleFunc("/api/postlikes", api.Serve_post_likes_dislikes)
+	http.HandleFunc("/api/islogged", api.Serve_is_logged)
+	http.HandleFunc("/api/created_by_user", api.ByUser_filter_handler) // posts filtering ex: /api/userposts (when the user is loggedin) 
+	http.HandleFunc("/api/liked_by_user", api.ByUser_filter_handler) 
 	/********************* END ************************/
 
-  // Render pages
+	// Render pages
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		controllers.RenderPage(w, r, funcs.DB)
 	})
