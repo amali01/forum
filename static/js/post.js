@@ -14,16 +14,16 @@ const isloggedIn = async () => {
   } else {
     isSignedIn = "false";
   }
-  localStorage.setItem("isloggedIn", isSignedIn)
+  localStorage.setItem("isloggedIn", isSignedIn);
   return isSignedIn;
 };
 
 async function evalLogin(fn) {
-  let islogged = await isloggedIn()
+  let islogged = await isloggedIn();
   if (islogged === "true") {
-    fn()
+    fn();
   } else {
-    window.location.replace('/login')
+    window.location.replace("/login");
   }
 }
 
@@ -187,6 +187,12 @@ const readyPost = async () => {
 };
 
 // function to add post divs to post wrapper
+/*
+ * inputs:
+ *    prop: json object, in this case it is post object
+ *    wrapper: is the html tag that holds the rendered infrormations
+ *    */
+
 const orgPostHTML = async (wrapper, prop) => {
   let cats = ``;
 
@@ -237,7 +243,7 @@ const orgPostHTML = async (wrapper, prop) => {
                     ${comments}
                 </div>
             </div>
-            </div>
+          </div>
         `;
 };
 
