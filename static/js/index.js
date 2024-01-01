@@ -81,6 +81,35 @@ const filterToCat = async (cat) => {
   });
 };
 
+const filterByUser = async () => {
+  const createdByUser = document.getElementById("createdByUser");
+  createdByUser.addEventListener("click", () =>{
+    dispayPostsCards("/api/created_by_user")
+  })
+  const likedByUser = document.getElementById("likedByUser");
+  likedByUser.addEventListener("click", () =>{
+    dispayPostsCards("/api/liked_by_user")
+  })
+};
+
+
+// Fetches post data from the specified JSON file path and displays the posts
+const dispayPostsCards = async (path) => { 
+  const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
+  jsonContainer.innerHTML = ``;
+  let response = await fetch(path);
+  let data = await response.json();
+  let i = 0;
+  data.posts.forEach((post) => {
+    if (post.category === null) {
+      return;
+    } else {
+      let postElement = post_cards_component(post, i);
+      i++;
+      jsonContainer.appendChild(postElement);
+    }
+  });
+}
 /////////////////////////////////////////////////////////////////////
 
 const LikeEvent = async (index, postID) => {
@@ -186,6 +215,7 @@ const sendReqPost = async (postID, likeDislike) => {
 
 async function initPages() {
   await loadCats();
+  await filterByUser();
   // await render_nav_bar();
   //  isloggedIn();
   render_index_page();
