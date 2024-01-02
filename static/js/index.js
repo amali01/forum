@@ -1,22 +1,10 @@
-import { loadNav } from "./components/navbar.js";
+import { loadNav, isloggedIn } from "./components/navbar.js";
+import { post_cards_component } from "./components/postCard.js";
 
 // global_vars
 let gotten_posts = [];
 
-const isloggedIn = async () => {
-  let res = await fetch("/api/islogged");
-  let ok = await res.text();
-  console.log(ok);
-  let isSignedIn;
-  if (ok === "1") {
-    isSignedIn = "true";
-  } else {
-    isSignedIn = "false";
-  }
-  localStorage.setItem("isloggedIn", isSignedIn);
-  return isSignedIn;
-};
-
+// A function to check if logged in and executes another function
 async function evalLogin(fn) {
   let islogged = await isloggedIn();
   if (islogged === "true") {
@@ -28,9 +16,9 @@ async function evalLogin(fn) {
 
 // App entry
 const render_index_page = async () => {
-  let nav = loadNav("/");
-  let body = document.body;
-  body.insertAdjacentHTML("beforebegin", nav);
+  let nav = loadNav("/"); // loads navbar
+  let body = document.body; // get the html body
+  body.insertAdjacentHTML("beforebegin", nav); // attach nav bar to html body
 
   // Fetch the JSON data from the URL
   fetch("/api/posts")
@@ -39,7 +27,7 @@ const render_index_page = async () => {
       // Process the JSON data and create HTML elements
       const jsonContainer =
         document.getElementsByClassName("postcardwrapper")[0];
-      console.log(jsonContainer);
+      // console.log(jsonContainer);
       let i = 0;
       data.posts.forEach((post) => {
         gotten_posts.push(post);
@@ -52,7 +40,7 @@ const render_index_page = async () => {
       });
     })
     .then(() => {
-      // Add click listeners
+      /********* Add click listeners ***************/
       const likeButtons = document.querySelectorAll(".likeBtn");
       const dislikeButtons = document.querySelectorAll(".dislikeBtn");
       likeButtons.forEach((btn, index) => {
@@ -67,6 +55,7 @@ const render_index_page = async () => {
           evalLogin(() => disLikeEvent(index, btn.id.split("_")[1])),
         );
       });
+      /********* END of Adding click listeners ***************/
     })
     .catch((error) => console.error("Error fetching JSON:", error));
 };
@@ -102,6 +91,23 @@ const filterToCat = async (cat) => {
       jsonContainer.appendChild(postElement);
     }
   });
+
+  /********* Add click listeners ***************/
+  const likeButtons = document.querySelectorAll(".likeBtn");
+  const dislikeButtons = document.querySelectorAll(".dislikeBtn");
+  likeButtons.forEach((btn, index) => {
+    btn.addEventListener("click", () =>
+      evalLogin(() => LikeEvent(index, btn.id.split("_")[1])),
+    );
+  });
+
+  dislikeButtons.forEach((btn, index) => {
+    console.log(index);
+    btn.addEventListener("click", () =>
+      evalLogin(() => disLikeEvent(index, btn.id.split("_")[1])),
+    );
+  });
+  /********* END of Adding click listeners ***************/
 };
 
 const filterByUser = async () => {
@@ -230,75 +236,6 @@ const sendReqPost = async (PostID, LikeDislike) => {
       LikeDislike,
     }),
   });
-};
-
-/* Postcard component loader
- * inputs:
- *          post: post object
- *          i: index of post in the html page*/
-const post_cards_component = (post, i) => {
-  //parse cats
-  let cats = ``;
-  if (post.category === null) {
-    cats += `<div class="category">null</div>`;
-  } else {
-    post.category.forEach((cat) => {
-      cats += `<div class="category">${cat}</div>`;
-    });
-  }
-  const postElement = document.createElement("div");
-  postElement.className = "postcard";
-  postElement.innerHTML = `
-          <div class="postWrapper">
-              <!-- <div class="postImage"></div> -->
-              <div class="dataWrapper">
-                  <div class="data">
-                      <div class="title_category">
-                          <a class="title bold_text" href='/post/${
-                            post.post_id
-                          }'>${post.title}</a>    
-                          <div class="categories">
-                                ${cats}
-                          </div>
-                      </div>
-                      <div class="user">
-                          <div class="userID">by ${post.user_name}</div>
-                          <div class="action">
-                              <p>Creation Date: ${post.creation_date}</p>
-                          </div>
-                      </div>
-                  </div>
-                    <div id="likeBtn_${post.post_id}" class="likeBtn ${
-                      post.isLiked === 1 ? "liked" : ""
-                    }" >
-                      <img src="${
-                        post.isLiked === 1
-                          ? "static/assets/icons8-accept-30(1).png"
-                          : "static/assets/icons8-accept-30.png"
-                      }" alt="Like">
-                    </div>
-              <!-- Show like counts -->
-              <div id="likes_${post.post_id}">
-                    ${post.post_likes}
-              </div>
-                    <div id="dislikeBtn_${post.post_id}" class="dislikeBtn ${
-                      post.isLiked === -1 ? "disliked" : ""
-                    }" >
-                        <img src="${
-                          post.isLiked === -1
-                            ? "static/assets/icons8-dislike-30(1).png"
-                            : "static/assets/icons8-dislike-30.png"
-                        }" alt="Dislike">
-                    </div>
-              <!-- Show like counts -->
-              <div id="dislikes_${post.post_id}">
-                    ${post.post_dislikes}
-              </div>
-              </div>
-          </div>
-          `;
-
-  return postElement;
 };
 
 /************* App entry point *************/
