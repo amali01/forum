@@ -1,3 +1,5 @@
+import { loadNav } from "./components/navbar.js";
+
 // global_vars
 let gotten_posts = [];
 
@@ -26,6 +28,10 @@ async function evalLogin(fn) {
 
 // App entry
 const render_index_page = async () => {
+  let nav = loadNav("/");
+  let body = document.body;
+  body.insertAdjacentHTML("beforebegin", nav);
+
   // Fetch the JSON data from the URL
   fetch("/api/posts")
     .then((response) => response.json())
