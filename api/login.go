@@ -57,14 +57,16 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		
+
 		fmt.Println(data)
 		// get user id
 		get_user_id, err := funcs.SelectUserID(data.Email)
 		if err != nil {
 			return
 		}
-
+		if sessionToken, hasSession := UserHasSession(get_user_id); hasSession {
+			delete(Sessions, sessionToken)
+		}
 		// Check if passwords matches
 		hash_matched := hashing.CheckPasswordHash(data.Password, funcs.GetUserHash(get_user_id)) // ignore error for the sake of simplicity
 
