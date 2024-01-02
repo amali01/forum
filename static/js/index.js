@@ -1,3 +1,5 @@
+import { loadNav } from "./components/navbar.js";
+
 // global_vars
 let gotten_posts = [];
 
@@ -25,7 +27,11 @@ async function evalLogin(fn) {
 }
 
 // App entry
-const render_index_page = () => {
+const render_index_page = async () => {
+  let nav = loadNav("/");
+  let body = document.body;
+  body.insertAdjacentHTML("beforebegin", nav);
+
   // Fetch the JSON data from the URL
   fetch("/api/posts")
     .then((response) => response.json())
@@ -43,6 +49,23 @@ const render_index_page = () => {
         i++;
 
         jsonContainer.appendChild(postElement);
+      });
+    })
+    .then(() => {
+      // Add click listeners
+      const likeButtons = document.querySelectorAll(".likeBtn");
+      const dislikeButtons = document.querySelectorAll(".dislikeBtn");
+      likeButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () =>
+          evalLogin(() => LikeEvent(index, btn.id.split("_")[1])),
+        );
+      });
+
+      dislikeButtons.forEach((btn, index) => {
+        console.log(index);
+        btn.addEventListener("click", () =>
+          evalLogin(() => disLikeEvent(index, btn.id.split("_")[1])),
+        );
       });
     })
     .catch((error) => console.error("Error fetching JSON:", error));
@@ -83,18 +106,17 @@ const filterToCat = async (cat) => {
 
 const filterByUser = async () => {
   const createdByUser = document.getElementById("createdByUser");
-  createdByUser.addEventListener("click", () =>{
-    dispayPostsCards("/api/created_by_user")
-  })
+  createdByUser.addEventListener("click", () => {
+    dispayPostsCards("/api/created_by_user");
+  });
   const likedByUser = document.getElementById("likedByUser");
-  likedByUser.addEventListener("click", () =>{
-    dispayPostsCards("/api/liked_by_user")
-  })
+  likedByUser.addEventListener("click", () => {
+    dispayPostsCards("/api/liked_by_user");
+  });
 };
 
-
 // Fetches post data from the specified JSON file path and displays the posts
-const dispayPostsCards = async (path) => { 
+const dispayPostsCards = async (path) => {
   const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
   jsonContainer.innerHTML = ``;
   let response = await fetch(path);
@@ -109,7 +131,7 @@ const dispayPostsCards = async (path) => {
       jsonContainer.appendChild(postElement);
     }
   });
-}
+};
 /////////////////////////////////////////////////////////////////////
 
 const LikeEvent = async (index, postID) => {
@@ -197,32 +219,18 @@ const get_like_dislike_count = async (postID) => {
   return interactions_obj;
 };
 
-const sendReqPost = async (postID, likeDislike) => {
+const sendReqPost = async (PostID, LikeDislike) => {
   await fetch("/api/likes_post", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      postID,
-      likeDislike,
+      PostID: parseInt(PostID, 10),
+      LikeDislike,
     }),
   });
 };
-
-// App entry point
-// Attach the function to the load event
-
-async function initPages() {
-  await loadCats();
-  await filterByUser();
-  // await render_nav_bar();
-  //  isloggedIn();
-  render_index_page();
-}
-
-// window.addEventListener("load", initPages, true);
-window.addEventListener("DOMContentLoaded", initPages);
 
 /* Postcard component loader
  * inputs:
@@ -260,9 +268,9 @@ const post_cards_component = (post, i) => {
                           </div>
                       </div>
                   </div>
-                    <div class="likeBtn ${
+                    <div id="likeBtn_${post.post_id}" class="likeBtn ${
                       post.isLiked === 1 ? "liked" : ""
-                    }" onclick="evalLogin(LikeEvent(${i}, ${post.post_id}))">
+                    }" >
                       <img src="${
                         post.isLiked === 1
                           ? "static/assets/icons8-accept-30(1).png"
@@ -273,9 +281,9 @@ const post_cards_component = (post, i) => {
               <div id="likes_${post.post_id}">
                     ${post.post_likes}
               </div>
-                    <div class="dislikeBtn ${
+                    <div id="dislikeBtn_${post.post_id}" class="dislikeBtn ${
                       post.isLiked === -1 ? "disliked" : ""
-                    }" onclick="evalLogin(disLikeEvent(${i}, ${post.post_id}))">
+                    }" >
                         <img src="${
                           post.isLiked === -1
                             ? "static/assets/icons8-dislike-30(1).png"
@@ -292,3 +300,18 @@ const post_cards_component = (post, i) => {
 
   return postElement;
 };
+
+/************* App entry point *************/
+// Attach the function to the load event
+
+async function initPages() {
+  await loadCats();
+  await filterByUser();
+  // await render_nav_bar();
+  //  isloggedIn();
+  await render_index_page();
+}
+
+// window.addEventListener("load", initPages, true);
+window.addEventListener("DOMContentLoaded", initPages);
+/************* END *************/
