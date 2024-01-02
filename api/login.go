@@ -3,12 +3,13 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/pkgs/funcs"
-	"forum/pkgs/hashing"
 	"io"
 	"net/http"
 	"text/template"
 	"time"
+
+	"forum/pkgs/funcs"
+	"forum/pkgs/hashing"
 
 	"github.com/gofrs/uuid"
 )
@@ -50,6 +51,13 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Failed to unmarshal JSON", http.StatusBadRequest)
 			return
 		}
+
+		// Remove leading and trailing white spaces from the email and checks if it is empty
+		if err := checkEmail(&data.Email); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		
 		fmt.Println(data)
 		// get user id
 		get_user_id, err := funcs.SelectUserID(data.Email)
@@ -98,7 +106,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
 }
 
 func EXPIRED(userSession Session) {
