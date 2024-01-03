@@ -73,9 +73,23 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return
 		}
+
+		// // Check if the user already has an active session
+		// if sessionToken, hasSession := UserHasSession(get_user_id); hasSession {
+		// 	// Delete the old session to log out from the first browser
+		// 	delete(Sessions, sessionToken)
+		// }
+
+		// Check if the user already has an active session
 		if sessionToken, hasSession := UserHasSession(get_user_id); hasSession {
-			delete(Sessions, sessionToken)
+			// Log out the user from the first browser
+			logoutErr := LogOutBySessionToken(w, sessionToken)
+			if logoutErr != nil {
+				http.Error(w, "Failed to log out from the first browser", http.StatusInternalServerError)
+				return
+			}
 		}
+
 		// Check if passwords matches
 		hash_matched := hashing.CheckPasswordHash(data.Password, funcs.GetUserHash(get_user_id)) // ignore error for the sake of simplicity
 
@@ -133,4 +147,25 @@ func IsLoggedIn(user string) bool {
 		}
 	}
 	return false
+}
+
+func LogOutBySessionToken(w http.ResponseWriter, sessionToken string) error {
+	// Get the session from the Sessions map
+	if session, ok := Sessions[sessionToken]; ok {
+		// Remove the session from the Sessions map
+		delete(Sessions, sessionToken)
+		// Expire the cookie
+		cookie := &http.Cookie{
+			Name:    "session_token",
+			Value:   "",
+			Expires: time.Now().Add(-time.Hour),
+		}
+
+		// Set the cookie in the HTTP response
+		http.SetCookie(w, cookie)
+		w.Header().Add("Set-Cookie", "session_token=; Max-Age=0; HttpOnly")
+		fmt.Printf("User %d logged out!\n", session.userID)
+	}
+
+	return nil
 }
