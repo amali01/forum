@@ -60,31 +60,35 @@ const orgPostHTML = async (wrapper, prop) => {
         <div class="profileName">${prop.user_name}</div>
         <div class="postinfo">
           <div class="postDate">${prop.creation_date}</div>
-          <div class="commentsLink">comments</div>
-          <div class="likeBtn" onclick="LikeEvent(0, ${prop.post_id})">
+          <div class="commentsLink">comments ##count</div>
+
+          <div id="likeBtn_${prop.post_id}" class="likeBtn ${
+            prop.isLiked === 1 ? "liked" : ""
+          }" >
             <img src="${
               prop.isLiked === 1
-                ? " ../../static/assets/icons8-accept-30(1).png"
+                ? "../../static/assets/icons8-accept-30(1).png"
                 : "../../static/assets/icons8-accept-30.png"
-            }"
-              alt="Like">
+            }" alt="Like">
           </div>
           <!-- Show like counts -->
           <div id="likes_${prop.post_id}">
-            ${prop.post_likes}
+                ${prop.post_likes}
           </div>
-          <div class="dislikeBtn" onclick="disLikeEvent(0, ${prop.post_id})">
-            <img src="${
-              prop.isLiked === -1
-                ? " ../../static/assets/icons8-dislike-30(1).png"
-                : "../../static/assets/icons8-dislike-30.png"
-            }"
-              alt="Dislike">
-          </div>
+                <div id="dislikeBtn_${prop.post_id}" class="dislikeBtn ${
+                  prop.isLiked === -1 ? "disliked" : ""
+                }" >
+                    <img src="${
+                      prop.isLiked === -1
+                        ? "../../static/assets/icons8-dislike-30(1).png"
+                        : "../../static/assets/icons8-dislike-30.png"
+                    }" alt="Dislike">
+                </div>
           <!-- Show like counts -->
-          <div id="dislkes_${prop.post_id}">
-            ${prop.post_dislikes}
+          <div id="dislikes_${prop.post_id}">
+                ${prop.post_dislikes}
           </div>
+
         </div>
 
       </div>
@@ -105,6 +109,23 @@ const orgPostHTML = async (wrapper, prop) => {
         ${comments}
       </div>
     </div>`;
+      /********* Add click listeners ***************/
+      const likeButtons = document.querySelectorAll(".likeBtn");
+      const dislikeButtons = document.querySelectorAll(".dislikeBtn");
+      likeButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () =>
+          evalLogin(() => LikeEvent(index, btn.id.split("_")[1])),
+        );
+      });
+
+      dislikeButtons.forEach((btn, index) => {
+        console.log(index);
+        btn.addEventListener("click", () =>
+          evalLogin(() => disLikeEvent(index, btn.id.split("_")[1])),
+        );
+      });
+      /********* END of Adding click listeners ***************/
+  
 };
 
 const orgComments = async () => {
@@ -152,6 +173,119 @@ const orgComments = async () => {
   });
   return comdiv;
 };
+
+// const LikeEvent = async (index, postID) => {
+//   let likeBtn = document.querySelectorAll(".likeBtn")[index]; // selects like button
+//   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index]; // selects dislike button
+//   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
+//   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
+
+//   if (gotten_posts[index].isLiked === 1) {
+//     gotten_posts[index].isLiked = 0;
+//     likeBtn.classList.remove("liked");
+//     likeBtn.innerHTML =
+//       '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
+//     await sendReqPost(postID, 0);
+//   } else {
+//     gotten_posts[index].isLiked = 1;
+//     likeBtn.classList.add("liked");
+//     likeBtn.innerHTML =
+//       '<img src="../../static/assets/icons8-accept-30(1).png" alt="Like">';
+
+//     await sendReqPost(postID, 1);
+//   }
+
+//   if (dislikeBtn.classList.contains("disliked")) {
+//     dislikeBtn.classList.remove("disliked");
+//     dislikeBtn.innerHTML =
+//       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
+//   }
+//   /* fetch new like and dislike count and update the DOM */
+//   await get_like_dislike_count(postID).then((likes_dislikes) => {
+//     like_count_area.innerHTML = likes_dislikes.interactions.like_count;
+//     dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
+//   });
+// };
+
+// const disLikeEvent = async (index, postID) => {
+//   let likeBtn = document.querySelectorAll(".likeBtn")[index]; // selects like button
+//   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index]; // selects dislike button
+//   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
+//   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
+
+//   if (gotten_posts[index].isLiked === -1) {
+//     gotten_posts[index].isLiked = 0;
+//     dislikeBtn.classList.remove("disliked");
+//     dislikeBtn.innerHTML =
+//       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
+//     await sendReqPost(postID, 0);
+//   } else {
+//     gotten_posts[index].isLiked = -1;
+//     dislikeBtn.classList.add("disliked");
+//     dislikeBtn.innerHTML =
+//       '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
+
+//     await sendReqPost(postID, -1);
+//   }
+
+//   if (likeBtn.classList.contains("liked")) {
+//     likeBtn.classList.remove("liked");
+//     likeBtn.innerHTML =
+//       '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
+//   }
+//   /* fetch new like and dislike count and update the DOM */
+//   await get_like_dislike_count(postID).then((likes_dislikes) => {
+//     like_count_area.innerHTML = likes_dislikes.interactions.like_count;
+//     dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
+//   });
+// };
+
+// const get_like_dislike_count = async (postID) => {
+//   let interactions_obj = {};
+//   await fetch("../../api/postlikes", {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       post_id: postID,
+//     },
+//   })
+//     .then((resp) => {
+//       return resp.json();
+//     })
+//     .then((data) => {
+//       interactions_obj = data;
+//       console.log(interactions_obj);
+//     });
+
+//   return interactions_obj;
+// };
+
+// const sendRequest = async (url, data) => {
+//   await fetch(url, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
+// };
+
+// const sendReqPost = async (postID, likeDislike) => {
+//   await sendRequest("../../api/likes_post", { postID, likeDislike });
+// };
+
+// const sendReqComment = async (commentID, likeDislike) => {
+//   await sendRequest("../../api/likes_comment", { commentID, likeDislike });
+// };
+
+const initPostPage = async () => {
+  loadNav();
+  await readyPost();
+};
+
+window.addEventListener("load", initPostPage, true);
+
+/////////////////////////////////////////////////////////////////////
 
 const LikeEvent = async (index, postID) => {
   let likeBtn = document.querySelectorAll(".likeBtn")[index]; // selects like button
@@ -233,33 +367,20 @@ const get_like_dislike_count = async (postID) => {
     })
     .then((data) => {
       interactions_obj = data;
-      console.log(interactions_obj);
     });
 
   return interactions_obj;
 };
 
-const sendRequest = async (url, data) => {
-  await fetch(url, {
+const sendReqPost = async (PostID, LikeDislike) => {
+  await fetch("../../api/likes_post", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      PostID: parseInt(PostID, 10),
+      LikeDislike,
+    }),
   });
 };
-
-const sendReqPost = async (postID, likeDislike) => {
-  await sendRequest("../../api/likes_post", { postID, likeDislike });
-};
-
-const sendReqComment = async (commentID, likeDislike) => {
-  await sendRequest("../../api/likes_comment", { commentID, likeDislike });
-};
-
-const initPostPage = async () => {
-  loadNav();
-  await readyPost();
-};
-
-window.addEventListener("load", initPostPage, true);
