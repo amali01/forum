@@ -16,7 +16,7 @@ async function evalLogin(fn) {
 
 // App entry
 const render_index_page = async () => {
-  let nav = loadNav("/"); // loads navbar
+  let nav = await loadNav("/"); // loads navbar
   let body = document.body; // get the html body
   body.insertAdjacentHTML("beforebegin", nav); // attach nav bar to html body
 

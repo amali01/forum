@@ -12,12 +12,12 @@ const isloggedIn = async () => {
   return isSignedIn;
 };
 
-const loadNav = (home_path) => {
-  isloggedIn(); // check if user is logged in
+const loadNav = async (home_path) => {
+  await isloggedIn(); // check if user is logged in
   let nav = ``;
   let islogged = localStorage.getItem("isloggedIn");
   if (islogged === "true") {
-    nav += `
+    nav = `
       <nav>
         <a href="${home_path}">
           <div class="logo">Re4um</div>
@@ -84,7 +84,7 @@ const loadNav = (home_path) => {
       </nav>
     `;
   } else {
-    nav += `
+    nav = `
       <nav>
         <a href="${home_path}">
           <div class="logo">Re4um</div>
