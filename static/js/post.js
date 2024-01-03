@@ -423,7 +423,7 @@ const sendReqComm = async (CommID, LikeDislike) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      CommID: parseInt(CommID, 10),
+      CommentID: parseInt(CommID, 10),
       LikeDislike,
     }),
   });
