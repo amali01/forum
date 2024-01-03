@@ -130,20 +130,21 @@ const orgPostHTML = async (wrapper, prop) => {
       /********* Add click listeners for Comments ***************/
       const likeCommButtons = document.querySelectorAll(".likeCommBtn");
       const dislikeCommButtons = document.querySelectorAll(".dislikeCommBtn");
-      likeCommButtons.forEach((btn, index) => {
-        btn.addEventListener("click", () =>
-          evalLogin(() => LikeComm(index, btn.id.split("_")[1])),
-        );
+
+      likeCommButtons.forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const index = Array.from(likeCommButtons).indexOf(btn);
+          await evalLogin(() => LikeComm(index, btn.id.split("_")[1]));
+        });
       });
 
-      dislikeCommButtons.forEach((btn, index) => {
-        console.log(index);
-        btn.addEventListener("click", () =>
-          evalLogin(() => disLikeComm(index, btn.id.split("_")[1])),
-        );
+      dislikeCommButtons.forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const index = Array.from(dislikeCommButtons).indexOf(btn);
+          await evalLogin(() => disLikeComm(index, btn.id.split("_")[1]));
+        });
       });
       /********* END of Adding click listeners for Comments***************/
-
   
 };
 
@@ -331,25 +332,25 @@ const sendReqPost = async (PostID, LikeDislike) => {
 
 //------------------------Like & DisLike of comment --------------------//
 
-const LikeComm = async (index, CommID) => {
+const LikeComm = async (index, commID) => {
   let likeCommBtn = document.querySelectorAll(".likeCommBtn")[index]; // selects like button
   let dislikeCommBtn = document.querySelectorAll(".dislikeCommBtn")[index]; // selects dislike button
-  let like_count_area = document.getElementById(`Commlikes_${CommID}`); // selects like counts area from dom
-  let dislike_count_area = document.getElementById(`Commdislikes_${CommID}`);
+  let like_count_area = document.getElementById(`Commlikes_${commID}`); // selects like counts area from dom
+  let dislike_count_area = document.getElementById(`Commdislikes_${commID}`);
 
   if (gotten_comm[index].isLiked === 1) {
     gotten_comm[index].isLiked = 0;
     likeCommBtn.classList.remove("liked");
     likeCommBtn.innerHTML =
       '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
-    await sendReqComm(CommID, 0);
+    await sendReqComm(commID, 0);
   } else {
     gotten_comm[index].isLiked = 1;
     likeCommBtn.classList.add("liked");
     likeCommBtn.innerHTML =
       '<img src="../../static/assets/icons8-accept-30(1).png" alt="Like">';
 
-    await sendReqComm(CommID, 1);
+    await sendReqComm(commID, 1);
   }
 
   if (dislikeCommBtn.classList.contains("disliked")) {
@@ -357,32 +358,33 @@ const LikeComm = async (index, CommID) => {
     dislikeCommBtn.innerHTML =
       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
   }
-  /* fetch new like and dislike count and update the DOM */
-  await get_like_dislike_count(CommID).then((likes_dislikes) => {
-    like_count_area.innerHTML = likes_dislikes.interactions.like_count;
-    dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
-  });
+
+    /* fetch new like and dislike count and update the DOM */
+    await get_comm_like_dislike_count(commID).then((likes_dislikes) => {
+      like_count_area.innerHTML = likes_dislikes.interactions.like_count;
+      dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
+    });
 };
 
-const disLikeComm = async (index, CommID) => {
+const disLikeComm = async (index, commID) => {
   let likeCommBtn = document.querySelectorAll(".likeCommBtn")[index]; // selects like button
   let dislikeCommBtn = document.querySelectorAll(".dislikeCommBtn")[index]; // selects dislike button
-  let like_count_area = document.getElementById(`Commlikes_${CommID}`); // selects like counts area from dom
-  let dislike_count_area = document.getElementById(`Commdislikes_${CommID}`);
+  let like_count_area = document.getElementById(`Commlikes_${commID}`); // selects like counts area from dom
+  let dislike_count_area = document.getElementById(`Commdislikes_${commID}`);
 
   if (gotten_comm[index].isLiked === -1) {
     gotten_comm[index].isLiked = 0;
     dislikeCommBtn.classList.remove("disliked");
     dislikeCommBtn.innerHTML =
       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
-    await sendReqComm(CommID, 0);
+    await sendReqComm(commID, 0);
   } else {
     gotten_comm[index].isLiked = -1;
     dislikeCommBtn.classList.add("disliked");
     dislikeCommBtn.innerHTML =
       '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
 
-    await sendReqComm(CommID, -1);
+    await sendReqComm(commID, -1);
   }
 
   if (likeCommBtn.classList.contains("liked")) {
@@ -391,19 +393,19 @@ const disLikeComm = async (index, CommID) => {
       '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
   }
   /* fetch new like and dislike count and update the DOM */
-  await get_like_dislike_count(CommID).then((likes_dislikes) => {
+  await get_comm_like_dislike_count(commID).then((likes_dislikes) => {
     like_count_area.innerHTML = likes_dislikes.interactions.like_count;
     dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
   });
 };
 
-const get_comm_like_dislike_count = async (CommID) => {
+const get_comm_like_dislike_count = async (commID) => {
   let interactions_obj = {};
   await fetch("../../api/commlikes", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      comm_id: CommID,
+      comm_id: commID,
     },
   })
     .then((resp) => {
@@ -416,119 +418,15 @@ const get_comm_like_dislike_count = async (CommID) => {
   return interactions_obj;
 };
 
-const sendReqComm = async (CommID, LikeDislike) => {
+const sendReqComm = async (commID, LikeDislike) => {
   await fetch("../../api/likes_comment", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      CommentID: parseInt(CommID, 10),
+      CommentID: parseInt(commID, 10),
       LikeDislike,
     }),
   });
 };
-//////////////////////////////////////////////////////////////////////////
-// const LikeEvent = async (index, postID) => {
-//   let likeBtn = document.querySelectorAll(".likeBtn")[index]; // selects like button
-//   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index]; // selects dislike button
-//   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
-//   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
-
-//   if (gotten_posts[index].isLiked === 1) {
-//     gotten_posts[index].isLiked = 0;
-//     likeBtn.classList.remove("liked");
-//     likeBtn.innerHTML =
-//       '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
-//     await sendReqPost(postID, 0);
-//   } else {
-//     gotten_posts[index].isLiked = 1;
-//     likeBtn.classList.add("liked");
-//     likeBtn.innerHTML =
-//       '<img src="../../static/assets/icons8-accept-30(1).png" alt="Like">';
-
-//     await sendReqPost(postID, 1);
-//   }
-
-//   if (dislikeBtn.classList.contains("disliked")) {
-//     dislikeBtn.classList.remove("disliked");
-//     dislikeBtn.innerHTML =
-//       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
-//   }
-//   /* fetch new like and dislike count and update the DOM */
-//   await get_like_dislike_count(postID).then((likes_dislikes) => {
-//     like_count_area.innerHTML = likes_dislikes.interactions.like_count;
-//     dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
-//   });
-// };
-
-// const disLikeEvent = async (index, postID) => {
-//   let likeBtn = document.querySelectorAll(".likeBtn")[index]; // selects like button
-//   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index]; // selects dislike button
-//   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
-//   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
-
-//   if (gotten_posts[index].isLiked === -1) {
-//     gotten_posts[index].isLiked = 0;
-//     dislikeBtn.classList.remove("disliked");
-//     dislikeBtn.innerHTML =
-//       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
-//     await sendReqPost(postID, 0);
-//   } else {
-//     gotten_posts[index].isLiked = -1;
-//     dislikeBtn.classList.add("disliked");
-//     dislikeBtn.innerHTML =
-//       '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
-
-//     await sendReqPost(postID, -1);
-//   }
-
-//   if (likeBtn.classList.contains("liked")) {
-//     likeBtn.classList.remove("liked");
-//     likeBtn.innerHTML =
-//       '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
-//   }
-//   /* fetch new like and dislike count and update the DOM */
-//   await get_like_dislike_count(postID).then((likes_dislikes) => {
-//     like_count_area.innerHTML = likes_dislikes.interactions.like_count;
-//     dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
-//   });
-// };
-
-// const get_like_dislike_count = async (postID) => {
-//   let interactions_obj = {};
-//   await fetch("../../api/postlikes", {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       post_id: postID,
-//     },
-//   })
-//     .then((resp) => {
-//       return resp.json();
-//     })
-//     .then((data) => {
-//       interactions_obj = data;
-//       console.log(interactions_obj);
-//     });
-
-//   return interactions_obj;
-// };
-
-// const sendRequest = async (url, data) => {
-//   await fetch(url, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-// };
-
-// const sendReqPost = async (postID, likeDislike) => {
-//   await sendRequest("../../api/likes_post", { postID, likeDislike });
-// };
-
-// const sendReqComment = async (commentID, likeDislike) => {
-//   await sendRequest("../../api/likes_comment", { commentID, likeDislike });
-// };
