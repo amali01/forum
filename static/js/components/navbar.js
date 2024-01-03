@@ -116,13 +116,14 @@ const loadNav = (home_path) => {
             />
           </li>
           <li>
+          <a href="${home_path}">
             <img
               src="${home_path}static/assets/HomeIcon.svg"
               alt="HomeIcon"
               class="navicon"
               title="Back To Homepage"
-              onclick="location.href('/')"
             />
+            </a>
           </li>
           <li>
             <img
