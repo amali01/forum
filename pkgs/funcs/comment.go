@@ -42,7 +42,7 @@ type CommentResults struct {
 	Edited          bool   `json:"edited"`           // can be used later to show it the post been edited
 	CommentLikes    int    `json:"comment_likes"`    // can be fed from funcs.CountCommentLikes()
 	CommentDislikes int    `json:"comment_dislikes"` // can be fed from funcs.CountCommentLikes()
-
+	IsLiked         int    `json:"isLiked"`
 }
 
 // Func to get Comment from database
@@ -76,7 +76,7 @@ func GetComment(postID int) ([]CommentResults, error) {
 		LikesCount, _ := CountCommentLikes(comment.CommentID)
 		comment.CommentLikes = LikesCount.LikeCount
 		comment.CommentDislikes = LikesCount.DislikeCount
-		comment.CreationDate=comment.CreationDate[:10]
+		comment.CreationDate = comment.CreationDate[:10]
 
 		// Append the current result to the slice
 		result = append(result, comment)
