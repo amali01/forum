@@ -1,7 +1,6 @@
 package funcs
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 )
@@ -62,30 +61,38 @@ func CommentLikes(userID int, commentID int, action int) error {
 	}
 
 	//////////////////////////////////////////////////////////////////
-	// var existingAction int
-	var existingAction sql.NullInt64
+	var user_interaction_exists bool
+	// Checking if the user interacts in the database
+	query = "SELECT EXISTS (SELECT actions_type FROM comments_interactions WHERE comment_id = ? AND user_id = ?)"
+	if err := DB.QueryRow(query, commentID, userID).Scan(&user_interaction_exists); err != nil {
+		return err
+	}
 
-	// Checking if there is already an action (like/dislike) on the comment by the same user
-	query = "SELECT actions_type FROM comments_interactions WHERE comment_id = ? AND user_id = ?"
-	if err := DB.QueryRow(query, commentID, userID).Scan(&existingAction); err != nil {
-		if err == sql.ErrNoRows && int(existingAction.Int64) == 0 {
-			// Inserting the action (like/dislike) into the database
+	// Remove action from database when action is ZERO
+	if action == 0 {
+		query = "DELETE FROM comments_interactions WHERE comment_id = ? AND user_id = ?"
+		if _, err := DB.Exec(query, commentID, userID); err != nil {
+			return fmt.Errorf("failed to delete the Like/Dislike action")
+		}
+	} else if action == 1 || action == -1 {
+		if user_interaction_exists {
+			query = "UPDATE comments_interactions SET actions_type = ? WHERE comment_id = ? AND user_id = ?"
+			if _, err := DB.Exec(query, action, commentID, userID); err != nil {
+				return fmt.Errorf("failed to insert the Like/Dislike action")
+			}
+		} else {
+			// Inserting the action (like/dislike) data into the database
 			query = "INSERT INTO comments_interactions (comment_id, user_id, actions_type) VALUES (?, ?, ?)"
 			if _, err := DB.Exec(query, commentID, userID, action); err != nil {
 				return fmt.Errorf("failed to insert the Like/Dislike action")
 			}
+		}
+	} else {
+		return fmt.Errorf("Actions must be (1, 0, -1) only!")
+	}
 
-		} else if err != nil && int(existingAction.Int64) != 0 {
-			return fmt.Errorf("failed to check if the Like/Dislike action exist")
-		}
-	}
-	if existingAction.Valid && int(existingAction.Int64) != action || action == 0 {
-		query = "UPDATE comments_interactions SET actions_type = ? WHERE comment_id = ? AND user_id = ?"
-		if _, err := DB.Exec(query, action, commentID, userID); err != nil {
-			return fmt.Errorf("failed to update the Like/Dislike action")
-		}
-	}
 	return nil
+
 }
 
 type LikeCounts struct {
@@ -226,7 +233,7 @@ func Post_is_liked_by_user(act_id int, postID string) (int, error) {
 * This function will check if user have an action on specific Comment, and what type of action it got.
 * returns 1 when there is like or -1 when disliked or 0 when there is no action
  */
- func Comment_is_liked_by_user(act_id int, comm_id string) (int, error) {
+func Comment_is_liked_by_user(act_id int, comm_id string) (int, error) {
 	/********************* Below routine is for checking if there exist like or not ***************************/
 	var like_exist bool
 
