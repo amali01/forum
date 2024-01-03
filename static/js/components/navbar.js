@@ -1,7 +1,7 @@
-export const isloggedIn = async () => {
+const isloggedIn = async () => {
   let res = await fetch("/api/islogged");
   let ok = await res.text();
-  console.log(ok);
+  /* console.log(ok); */
   let isSignedIn;
   if (ok === "1") {
     isSignedIn = "true";
@@ -12,7 +12,8 @@ export const isloggedIn = async () => {
   return isSignedIn;
 };
 
-export const loadNav = (home_path) => {
+const loadNav = (home_path) => {
+  isloggedIn(); // check if user is logged in
   let nav = ``;
   let islogged = localStorage.getItem("isloggedIn");
   if (islogged === "true") {
@@ -156,3 +157,5 @@ export const loadNav = (home_path) => {
   // let body = document.body;
   // body.insertAdjacentHTML("beforebegin", nav);
 };
+
+export { isloggedIn, loadNav };
