@@ -11,7 +11,15 @@ const isloggedIn = async () => {
   localStorage.setItem("isloggedIn", isSignedIn);
   return isSignedIn;
 };
+function logout() {
+    // Set the isloggedIn status to false in localStorage
+    localStorage.setItem("isloggedIn", "false");
 
+    // Redirect to the logout URL
+    window.location.href = "/logout";
+  }
+
+  
 const loadNav = async (home_path) => {
   await isloggedIn(); // check if user is logged in
   let nav = ``;
@@ -159,5 +167,14 @@ const loadNav = async (home_path) => {
   // let body = document.body;
   // body.insertAdjacentHTML("beforebegin", nav);
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.addEventListener("click", (event) => {
+    const profileBtn = event.target.closest(".profileBtn");
+    if (profileBtn) {
+      logout();
+    }
+  });
+});
 
 export { isloggedIn, loadNav };
