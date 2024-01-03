@@ -221,3 +221,54 @@ func Post_is_liked_by_user(act_id int, postID string) (int, error) {
 	}
 	return -1, err
 }
+
+/*
+* This function will check if user have an action on specific Comment, and what type of action it got.
+* returns 1 when there is like or -1 when disliked or 0 when there is no action
+ */
+ func Comment_is_liked_by_user(act_id int, comm_id string) (int, error) {
+	/********************* Below routine is for checking if there exist like or not ***************************/
+	var like_exist bool
+
+	query := "SELECT EXISTS (SELECT actions_type FROM comments_interactions WHERE user_id = ? AND comment_id = ?)"
+	if err := DB.QueryRow(query, act_id, comm_id).Scan(&like_exist); err != nil {
+		return 0, err
+	}
+	if !like_exist {
+		return 0, fmt.Errorf("no like or dislike")
+	}
+	/********************* END ***************************/
+
+	/********************* Get the action ***************************/
+	// Your SQL query
+	query = "SELECT actions_type FROM comments_interactions WHERE user_id = ? AND comment_id = ?"
+
+	// Execute the query
+	rows, err := DB.Query(query, act_id, comm_id)
+	if err != nil {
+		return 0, err
+	}
+
+	defer rows.Close()
+
+	var column1 bool // Replace with the actual column types in your table
+	// Iterate over the result set
+	for rows.Next() {
+		if err := rows.Scan(&column1); err != nil {
+			log.Fatal(err)
+		}
+		// fmt.Printf("Column1: %t\n", column1) for debugging
+	}
+
+	// Check for errors from iterating over rows
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+	/********************* END ***************************/
+
+	// If action is true the return 1, or else return -1
+	if column1 {
+		return 1, err
+	}
+	return -1, err
+}
