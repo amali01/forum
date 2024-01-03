@@ -18,10 +18,10 @@ async function evalLogin(fn) {
     window.location.replace("/login");
   }
 }
-// Render navbar
-let nav = loadNav("../../"); // ../../ is to go to home /
-let body = document.body;
-body.insertAdjacentHTML("beforebegin", nav);
+// // Render navbar
+// let nav = loadNav("../../"); // ../../ is to go to home /
+// let body = document.body;
+// body.insertAdjacentHTML("beforebegin", nav);
 
 const readyPost = async () => {
   let Response = await fetch(`/api/post/${postID}`);
@@ -216,7 +216,12 @@ const orgComments = async () => {
 };
 //////////////////////////////////////////////////////////////////////
 const initPostPage = async () => {
-  loadNav();
+//  await loadNav();
+// Render navbar
+let nav = await loadNav("../../"); // ../../ is to go to home /
+let body = document.body;
+body.insertAdjacentHTML("beforebegin", nav);
+
   await readyPost();
 };
 
