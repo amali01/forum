@@ -34,13 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
   commentForm.addEventListener("submit", async(event) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
-    // Get the comment text from the textarea
-
-    let a = await isloggedIn()
-    if (a === "false") {
+    
+    let islogged = localStorage.getItem("isloggedIn");
+    if (islogged === "false") {
       window.location.replace('/login')
       return
     }
+    // Get the comment text from the textarea
 
     const commentText = document.getElementById("newCommentText").value;
 
