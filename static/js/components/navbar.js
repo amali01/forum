@@ -1,5 +1,25 @@
-import { isloggedIn } from "../helper_funcs/isLoggedIn.js";
+const isloggedIn = async () => {
+  let res = await fetch("/api/islogged");
+  let ok = await res.text();
+  /* console.log(ok); */
+  let isSignedIn;
+  if (ok === "1") {
+    isSignedIn = "true";
+  } else {
+    isSignedIn = "false";
+  }
+  localStorage.setItem("isloggedIn", isSignedIn);
+  return isSignedIn;
+};
+function logout() {
+    // Set the isloggedIn status to false in localStorage
+    localStorage.setItem("isloggedIn", "false");
 
+    // Redirect to the logout URL
+    window.location.href = "/logout";
+  }
+
+  
 const loadNav = async (home_path) => {
   await isloggedIn(); // check if user is logged in
   let nav = ``;
@@ -38,13 +58,14 @@ const loadNav = async (home_path) => {
             />
           </li>
           <li>
-            <img
-              src="${home_path}static/assets/HomeIcon.svg"
-              alt="HomeIcon"
-              class="navicon"
-              title="Back To Homepage"
-              onclick="location.href('/')"
-            />
+          <a href="${home_path}">
+          <img
+            src="${home_path}static/assets/HomeIcon.svg"
+            alt="HomeIcon"
+            class="navicon"
+            title="Back To Homepage"
+          />
+          </a>
           </li>
           <li>
             <img
@@ -104,13 +125,14 @@ const loadNav = async (home_path) => {
             />
           </li>
           <li>
+          <a href="${home_path}">
             <img
               src="${home_path}static/assets/HomeIcon.svg"
               alt="HomeIcon"
               class="navicon"
               title="Back To Homepage"
-              onclick="location.href('/')"
             />
+            </a>
           </li>
           <li>
             <img
@@ -145,5 +167,14 @@ const loadNav = async (home_path) => {
   // let body = document.body;
   // body.insertAdjacentHTML("beforebegin", nav);
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.addEventListener("click", (event) => {
+    const profileBtn = event.target.closest(".profileBtn");
+    if (profileBtn) {
+      logout();
+    }
+  });
+});
 
 export { isloggedIn, loadNav };

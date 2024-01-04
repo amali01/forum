@@ -7,7 +7,7 @@ const addComment = async (commentText) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        post_id: postID, // Assuming postID is in scope
+        post_id: postID,
         content: commentText,
       }),
     });
@@ -23,6 +23,8 @@ const addComment = async (commentText) => {
     const commentDiv = document.querySelector(".postcomments .comment");
     const newCommentHTML = await orgComments([newComment]);
     commentDiv.innerHTML += newCommentHTML;
+
+
   } catch (error) {
     console.error("Error adding comment:", error);
   }
@@ -34,21 +36,27 @@ document.addEventListener("DOMContentLoaded", () => {
   commentForm.addEventListener("submit", async(event) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
-    // Get the comment text from the textarea
-
-    let a = await isloggedIn()
-    if (a === "false") {
+    
+    let islogged = localStorage.getItem("isloggedIn");
+    if (islogged === "false") {
       window.location.replace('/login')
       return
     }
 
+    // Get the comment text from the textarea
     const commentText = document.getElementById("newCommentText").value;
 
     // Call the addComment function with the comment text
     addComment(commentText);
 
-    // Clear the textarea after adding the comment
+    // reloading the page to show the new comment
     location.reload();
+    // Clear the textarea after adding the comment
     document.getElementById("newCommentText").value = "";
   });
 });
+
+// get the post ID
+const postID = parseInt(
+  location.href.match(/post\/[0-9]+/)[0].replace("post/", ""),
+);

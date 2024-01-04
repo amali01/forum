@@ -6,6 +6,7 @@ import (
 	"forum/pkgs/funcs"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 type Post_Comment struct {
@@ -38,8 +39,16 @@ func Serve_comments_handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to unmarshal JSON", http.StatusBadRequest)
 		return
 	}
+	userSession, valid := ValidateUser(w, r)
 
 	comments, _ := funcs.GetComment(data.Post_id)
+
+	if valid {
+		for idx := range comments {
+			comments[idx].IsLiked, _ = funcs.Comment_is_liked_by_user(userSession.Get_UserID(), strconv.Itoa(comments[idx].CommentID))
+
+		}
+	}
 
 	comments_capsul := Comments_Container{
 		Comments: comments,

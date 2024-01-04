@@ -2,12 +2,15 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"forum/pkgs/funcs"
-	"forum/pkgs/hashing"
 	"io"
 	"net/http"
+	"strings"
 	"text/template"
+
+	"forum/pkgs/funcs"
+	"forum/pkgs/hashing"
 )
 
 func SignUp(w http.ResponseWriter, r *http.Request) {
@@ -47,6 +50,18 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// Remove leading and trailing white spaces from the email and checks if it is empty
+		if err := checkEmail(&data.Email); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// checks if the password have any whitespace in it 
+		if err := checkPass(&data.Password); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
 		// Hash the password before adding it
 		hash, _ := hashing.HashPassword(data.Password) // ignore error for the sake of simplicity
 
@@ -62,5 +77,23 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
+}
 
+// Remove leading and trailing white spaces from the email and checks if it is empty
+func checkEmail(email *string) error {
+	*email = strings.TrimSpace(*email)
+
+	if *email == "" {
+		return errors.New("email field cannot be empty")
+	}
+	return nil
+}
+
+// checkPass checks if the given password string contains any whitespace characters.
+// It returns true if there are whitespace characters, and false otherwise.
+func checkPass(pass *string) error {
+	if strings.ContainsAny(*pass, " \t\n\r\v\f") {
+		return errors.New("password cannot contain whitespace")
+	}
+	return nil
 }
