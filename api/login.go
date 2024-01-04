@@ -15,16 +15,6 @@ import (
 )
 
 func LogIn(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.Path)
-
-	// if User is already logged in, redirect to home page or another page
-	cookie, _ := r.Cookie("session_token")
-	fmt.Println(cookie)
-	if cookie != nil {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
-
 	// Get method, serve the page
 	if r.Method == http.MethodGet {
 		// Parse the template
