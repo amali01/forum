@@ -1,7 +1,9 @@
 import { loadNav, isloggedIn } from "./components/navbar.js";
+import { evalLogin } from "./helper_funcs/evalLogin.js";
+import { orgPostHTML } from "./components/postComponent.js";
 
 // globals
-let gotten_post ;
+let gotten_post;
 // let gotten_post_isLiked ;
 let gotten_comm = [];
 
@@ -11,14 +13,6 @@ const postID = parseInt(
 );
 console.log(postID);
 
-async function evalLogin(fn) {
-  let islogged = await isloggedIn();
-  if (islogged === "true") {
-    await fn();
-  } else {
-    window.location.replace("/login");
-  }
-}
 // // Render navbar
 // let nav = loadNav("../../"); // ../../ is to go to home /
 // let body = document.body;
@@ -33,12 +27,12 @@ const readyPost = async () => {
   gotten_post = postData;
   // console.log(gotten_post)
 
-  await orgPostHTML(postwrapper, postData);
+  gotten_comm = await orgPostHTML(postwrapper, postData);
   // .then(()=>{})
   /********* Add click listeners for post ***************/
   const likeButtons = document.querySelectorAll(".likeBtn");
   const dislikeButtons = document.querySelectorAll(".dislikeBtn");
-  
+
   likeButtons.forEach((btn, index) => {
     btn.addEventListener("click", () =>
       evalLogin(() => LikeEvent(index, btn.id.split("_")[1])),
@@ -71,158 +65,14 @@ const readyPost = async () => {
     });
   });
   /********* END of Adding click listeners for Comments***************/
-  
 };
 
-// function to add post divs to post wrapper
-/*
- * inputs:
- *    prop: json object, in this case it is post object
- *    wrapper: is the html tag that holds the rendered infrormations
- *    */
-
-const orgPostHTML = async (wrapper, prop) => {
-  let cats = ``;
-
-  console.log(prop);
-
-  console.log(prop.category);
-  prop.category.forEach((cat) => {
-    console.log(cat);
-    cats += `<div class="category">${cat}</div>`;
-  });
-
-  let comments = await orgComments();
-
-  wrapper.innerHTML += `
-    <div class="profilestuff">
-      <div class="pfpImage">
-        <img src="../../static/assets/reddit.png" alt="reddit lol" class="pimg">
-      </div>
-      <div class="profileinfo">
-        <div class="profileName">${prop.user_name}</div>
-        <div class="postinfo">
-          <div class="postDate">${prop.creation_date}</div>
-          <div class="commentsLink">comments ##count</div>
-
-          <div id="likeBtn_${prop.post_id}" class="likeBtn ${
-            prop.isLiked === 1 ? "liked" : ""
-          }" >
-            <img src="${
-              prop.isLiked === 1
-                ? "../../static/assets/icons8-accept-30(1).png"
-                : "../../static/assets/icons8-accept-30.png"
-            }" alt="Like">
-          </div>
-          <!-- Show like counts -->
-          <div id="likes_${prop.post_id}">
-                ${prop.post_likes}
-          </div>
-                <div id="dislikeBtn_${prop.post_id}" class="dislikeBtn ${
-                  prop.isLiked === -1 ? "disliked" : ""
-                }" >
-                    <img src="${
-                      prop.isLiked === -1
-                        ? "../../static/assets/icons8-dislike-30(1).png"
-                        : "../../static/assets/icons8-dislike-30.png"
-                    }" alt="Dislike">
-                </div>
-          <!-- Show like counts -->
-          <div id="dislikes_${prop.post_id}">
-                ${prop.post_dislikes}
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-    <div class="posttitle">${prop.title}</div>
-    <div class="postcats">
-      ${cats}
-    </div>
-    <div class="postcontent">
-      ${prop.text}
-    </div>
-    <hr>
-    <div class="commentAnnounce">
-      Comments
-    </div>
-    <div class="postcomments">
-      <div class="comment">
-        ${comments}
-      </div>
-    </div>`;  
-};
-
-const orgComments = async () => {
-  let comdiv = ``;
-  let Response = await fetch("/api/comments", {
-    method: "POST",
-    body: `
-        {
-            "post_id" : ${postID}
-        }
-        `,
-  });
-
-  let commentArray = await Response.json();
-  let i = 1;
-  commentArray.comments.forEach((com) => {
-    gotten_comm.push(com);
-    comdiv += `<div class="scomment">
-                        <div class="nameandlogo">
-                            <div class="pfpImage">
-                                <img src="../../static/assets/reddit.png" alt="reddit lol" class="pimg">
-                            </div>
-                            <div class="profileName">${com.user_name}</div>
-                            <div class="commentDate">${com.creation_date}</div>
-                        </div>
-                        <div class="commenttext">
-                            ${com.comment}
-                        </div>
-                        <div class="commentInfo">
-
-                              <div id="likeCommBtn_${com.comment_id}" class="likeCommBtn ${
-                                com.isLiked === 1 ? "liked" : ""
-                              }" >
-                                <img src="${
-                                  com.isLiked === 1
-                                    ? "../../static/assets/icons8-accept-30(1).png"
-                                    : "../../static/assets/icons8-accept-30.png"
-                                }" alt="Like">
-                              </div>
-                              <!-- Show like counts -->
-                              <div id="Commlikes_${com.comment_id}">
-                                    ${com.comment_likes}
-                              </div>
-                                    <div id="dislikeCommBtn_${com.comment_id}" class="dislikeCommBtn ${
-                                      com.isLiked === -1 ? "disliked" : ""
-                                    }" >
-                                        <img src="${
-                                          com.isLiked === -1
-                                            ? "../../static/assets/icons8-dislike-30(1).png"
-                                            : "../../static/assets/icons8-dislike-30.png"
-                                        }" alt="Dislike">
-                                    </div>
-                              <!-- Show like counts -->
-                              <div id="Commdislikes_${com.comment_id}">
-                                    ${com.comment_dislikes}
-                              </div>
-                        </div>
-                        </div>
-                    `;
-    i++;
-  });
-  
-  return comdiv;
-};
-//////////////////////////////////////////////////////////////////////
 const initPostPage = async () => {
-//  await loadNav();
-// Render navbar
-let nav = await loadNav("../../"); // ../../ is to go to home /
-let body = document.body;
-body.insertAdjacentHTML("beforebegin", nav);
+  //  await loadNav();
+  // Render navbar
+  let nav = await loadNav("../../"); // ../../ is to go to home /
+  let body = document.body;
+  body.insertAdjacentHTML("beforebegin", nav);
 
   await readyPost();
 };
@@ -238,9 +88,8 @@ const LikeEvent = async (index, postID) => {
   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index]; // selects dislike button
   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
-  console.log(gotten_post)
+  console.log(gotten_post);
   if (gotten_post.isLiked === 1) {
-    
     gotten_post.isLiked = 0;
     likeBtn.classList.remove("liked");
     likeBtn.innerHTML =
@@ -362,11 +211,11 @@ const LikeComm = async (index, commID) => {
       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
   }
 
-    /* fetch new like and dislike count and update the DOM */
-    await get_comm_like_dislike_count(commID).then((likes_dislikes) => {
-      like_count_area.innerHTML = likes_dislikes.interactions.like_count;
-      dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
-    });
+  /* fetch new like and dislike count and update the DOM */
+  await get_comm_like_dislike_count(commID).then((likes_dislikes) => {
+    like_count_area.innerHTML = likes_dislikes.interactions.like_count;
+    dislike_count_area.innerHTML = likes_dislikes.interactions.dislike_count;
+  });
 };
 
 const disLikeComm = async (index, commID) => {

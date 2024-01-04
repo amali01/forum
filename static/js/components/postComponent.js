@@ -5,7 +5,7 @@
  *    wrapper: is the html tag that holds the rendered infrormations
  *    */
 
-export const orgPostHTML = async (wrapper, prop, postID) => {
+export const orgPostHTML = async (wrapper, prop) => {
   let cats = ``;
 
   console.log(prop);
@@ -16,7 +16,7 @@ export const orgPostHTML = async (wrapper, prop, postID) => {
     cats += `<div class="category">${cat}</div>`;
   });
 
-  let comments = await orgComments(postID);
+  let [comments, gotten_comm] = await orgComments(prop.post_id);
 
   wrapper.innerHTML += `
     <div class="profilestuff">
@@ -76,9 +76,11 @@ export const orgPostHTML = async (wrapper, prop, postID) => {
         ${comments}
       </div>
     </div>`;
+
+  return gotten_comm;
 };
 
-export const orgComments = async (postID) => {
+const orgComments = async (postID) => {
   let comdiv = ``;
   let Response = await fetch("/api/comments", {
     method: "POST",
@@ -88,7 +90,7 @@ export const orgComments = async (postID) => {
         }
         `,
   });
-
+  let gotten_comm = [{}];
   let commentArray = await Response.json();
   let i = 1;
   commentArray.comments.forEach((com) => {
@@ -136,16 +138,11 @@ export const orgComments = async (postID) => {
                               <div id="Commdislikes_${com.comment_id}">
                                     ${com.comment_dislikes}
                               </div>
-
-
                         </div>
                         </div>
-                    </div>
-                    
-
                     `;
     i++;
   });
 
-  return comdiv;
+  return [comdiv, gotten_comm];
 };
