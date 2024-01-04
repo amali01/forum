@@ -1,8 +1,9 @@
 import { loadNav, isloggedIn } from "./components/navbar.js";
 
 // globals
-let gotten_posts = [{}];
-let gotten_comm = [{}];
+let gotten_post ;
+// let gotten_post_isLiked ;
+let gotten_comm = [];
 
 const postwrapper = document.getElementById("mPostWrapper");
 const postID = parseInt(
@@ -29,7 +30,48 @@ const readyPost = async () => {
     console.log("ERROR FETCHING DATA");
   }
   let postData = await Response.json();
+  gotten_post = postData;
+  // console.log(gotten_post)
+
   await orgPostHTML(postwrapper, postData);
+  // .then(()=>{})
+  /********* Add click listeners for post ***************/
+  const likeButtons = document.querySelectorAll(".likeBtn");
+  const dislikeButtons = document.querySelectorAll(".dislikeBtn");
+  
+  likeButtons.forEach((btn, index) => {
+    btn.addEventListener("click", () =>
+      evalLogin(() => LikeEvent(index, btn.id.split("_")[1])),
+    );
+  });
+
+  dislikeButtons.forEach((btn, index) => {
+    console.log(index);
+    btn.addEventListener("click", () =>
+      evalLogin(() => disLikeEvent(index, btn.id.split("_")[1])),
+    );
+  });
+  /********* END of Adding click listeners for post***************/
+
+  /********* Add click listeners for Comments ***************/
+  const likeCommButtons = document.querySelectorAll(".likeCommBtn");
+  const dislikeCommButtons = document.querySelectorAll(".dislikeCommBtn");
+
+  likeCommButtons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const index = Array.from(likeCommButtons).indexOf(btn);
+      await evalLogin(() => LikeComm(index, btn.id.split("_")[1]));
+    });
+  });
+
+  dislikeCommButtons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const index = Array.from(dislikeCommButtons).indexOf(btn);
+      await evalLogin(() => disLikeComm(index, btn.id.split("_")[1]));
+    });
+  });
+  /********* END of Adding click listeners for Comments***************/
+  
 };
 
 // function to add post divs to post wrapper
@@ -109,43 +151,7 @@ const orgPostHTML = async (wrapper, prop) => {
       <div class="comment">
         ${comments}
       </div>
-    </div>`;
-      /********* Add click listeners for post ***************/
-      const likeButtons = document.querySelectorAll(".likeBtn");
-      const dislikeButtons = document.querySelectorAll(".dislikeBtn");
-      likeButtons.forEach((btn, index) => {
-        btn.addEventListener("click", () =>
-          evalLogin(() => LikeEvent(index, btn.id.split("_")[1])),
-        );
-      });
-
-      dislikeButtons.forEach((btn, index) => {
-        console.log(index);
-        btn.addEventListener("click", () =>
-          evalLogin(() => disLikeEvent(index, btn.id.split("_")[1])),
-        );
-      });
-      /********* END of Adding click listeners for post***************/
-
-      /********* Add click listeners for Comments ***************/
-      const likeCommButtons = document.querySelectorAll(".likeCommBtn");
-      const dislikeCommButtons = document.querySelectorAll(".dislikeCommBtn");
-
-      likeCommButtons.forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const index = Array.from(likeCommButtons).indexOf(btn);
-          await evalLogin(() => LikeComm(index, btn.id.split("_")[1]));
-        });
-      });
-
-      dislikeCommButtons.forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const index = Array.from(dislikeCommButtons).indexOf(btn);
-          await evalLogin(() => disLikeComm(index, btn.id.split("_")[1]));
-        });
-      });
-      /********* END of Adding click listeners for Comments***************/
-  
+    </div>`;  
 };
 
 const orgComments = async () => {
@@ -226,7 +232,8 @@ body.insertAdjacentHTML("beforebegin", nav);
   await readyPost();
 };
 
-window.addEventListener("load", initPostPage, true);
+// window.addEventListener("load", initPostPage, true);
+document.addEventListener("DOMContentLoaded", initPostPage);
 
 //////////////////////////////////////////////////////////////////////
 //------------------------Like & DisLike of post --------------------//
@@ -236,15 +243,16 @@ const LikeEvent = async (index, postID) => {
   let dislikeBtn = document.querySelectorAll(".dislikeBtn")[index]; // selects dislike button
   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
-
-  if (gotten_posts[index].isLiked === 1) {
-    gotten_posts[index].isLiked = 0;
+  console.log(gotten_post)
+  if (gotten_post.isLiked === 1) {
+    
+    gotten_post.isLiked = 0;
     likeBtn.classList.remove("liked");
     likeBtn.innerHTML =
       '<img src="../../static/assets/icons8-accept-30.png" alt="Like">';
     await sendReqPost(postID, 0);
   } else {
-    gotten_posts[index].isLiked = 1;
+    gotten_post.isLiked = 1;
     likeBtn.classList.add("liked");
     likeBtn.innerHTML =
       '<img src="../../static/assets/icons8-accept-30(1).png" alt="Like">';
@@ -270,14 +278,14 @@ const disLikeEvent = async (index, postID) => {
   let like_count_area = document.getElementById(`likes_${postID}`); // selects like counts area from dom
   let dislike_count_area = document.getElementById(`dislikes_${postID}`);
 
-  if (gotten_posts[index].isLiked === -1) {
-    gotten_posts[index].isLiked = 0;
+  if (gotten_post.isLiked === -1) {
+    gotten_post.isLiked = 0;
     dislikeBtn.classList.remove("disliked");
     dislikeBtn.innerHTML =
       '<img src="../../static/assets/icons8-dislike-30.png" alt="Dislike">';
     await sendReqPost(postID, 0);
   } else {
-    gotten_posts[index].isLiked = -1;
+    gotten_post.isLiked = -1;
     dislikeBtn.classList.add("disliked");
     dislikeBtn.innerHTML =
       '<img src="../../static/assets/icons8-dislike-30(1).png" alt="Dislike">';
