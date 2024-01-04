@@ -208,13 +208,8 @@ const orgComments = async () => {
                               <div id="Commdislikes_${com.comment_id}">
                                     ${com.comment_dislikes}
                               </div>
-
-
                         </div>
                         </div>
-                    </div>
-                    
-
                     `;
     i++;
   });
