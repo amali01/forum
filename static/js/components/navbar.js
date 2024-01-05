@@ -1,25 +1,12 @@
-const isloggedIn = async () => {
-  let res = await fetch("/api/islogged");
-  let ok = await res.text();
-  /* console.log(ok); */
-  let isSignedIn;
-  if (ok === "1") {
-    isSignedIn = "true";
-  } else {
-    isSignedIn = "false";
-  }
-  localStorage.setItem("isloggedIn", isSignedIn);
-  return isSignedIn;
-};
+import { isloggedIn } from "./isloggedin.js";
 function logout() {
-    // Set the isloggedIn status to false in localStorage
-    localStorage.setItem("isloggedIn", "false");
+  // Set the isloggedIn status to false in localStorage
+  localStorage.setItem("isloggedIn", "false");
 
-    // Redirect to the logout URL
-    window.location.href = "/logout";
-  }
+  // Redirect to the logout URL
+  window.location.href = "/logout";
+}
 
-  
 const loadNav = async (home_path) => {
   await isloggedIn(); // check if user is logged in
   let nav = ``;

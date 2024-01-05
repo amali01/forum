@@ -1,4 +1,4 @@
-import { loadNav, isloggedIn } from "./components/navbar.js";
+import { loadNav } from "./components/navbar.js";
 import { evalLogin } from "./helper_funcs/evalLogin.js";
 import { orgPostHTML } from "./components/postComponent.js";
 
