@@ -27,7 +27,7 @@ export const orgPostHTML = async (wrapper, prop) => {
         <div class="profileName">${prop.user_name}</div>
         <div class="postinfo">
           <div class="postDate">${prop.creation_date}</div>
-          <div class="commentsLink">comments ##count</div>
+          <div class="commentsLink">Comments ${gotten_comm.length}</div>
 
           <div id="likeBtn_${prop.post_id}" class="likeBtn ${
             prop.isLiked === 1 ? "liked" : ""
