@@ -23,7 +23,7 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 	}
 	userSession, valid := ValidateUser(w, r)
 
-	if valid == false {
+	if !valid {
 		w.Write([]byte("Unauthorize access"))
 		return
 	}
@@ -42,6 +42,12 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Remove leading and trailing white spaces from the title,post content and checks if it is empty
+	if checkEmpty(w, &data.Post) || checkEmpty(w, &data.Title) {
+		io.WriteString(w, "Title and Post Content are required")
+		return
+	}
+	
 	categorysName := strings.TrimSpace(strings.Join(data.Categories, " "))
 	if len(categorysName) < 1 {
 		data.Categories = []string{"General"}
