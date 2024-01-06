@@ -3,10 +3,11 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"forum/pkgs/funcs"
 	"io"
 	"net/http"
 	"strings"
+
+	"forum/pkgs/funcs"
 )
 
 type Post struct {
@@ -43,11 +44,11 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Remove leading and trailing white spaces from the title,post content and checks if it is empty
-	if checkEmpty(w, &data.Post) || checkEmpty(w, &data.Title) {
+	if checkEmpty(&data.Post) || checkEmpty(&data.Title) {
 		io.WriteString(w, "Title and Post Content are required")
 		return
 	}
-	
+
 	categorysName := strings.TrimSpace(strings.Join(data.Categories, " "))
 	if len(categorysName) < 1 {
 		data.Categories = []string{"General"}
