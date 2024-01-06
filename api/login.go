@@ -8,11 +8,16 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/gofrs/uuid"
+
 	"forum/pkgs/funcs"
 	"forum/pkgs/hashing"
-
-	"github.com/gofrs/uuid"
 )
+
+type Successful_Login struct {
+	User_id int  `json:"user_id"`
+	Success bool `json:"success"`
+}
 
 func LogIn(w http.ResponseWriter, r *http.Request) {
 	// Get method, serve the page
@@ -52,12 +57,28 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Remove leading and trailing white spaces from the email and checks if it is empty
-		checkEmpty(w, &data.Email)
+		if checkEmpty(&data.Email) || checkPass(&data.Password) != nil {
+			successfulLogin := Successful_Login{
+				User_id: -1,
+				Success: false,
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(successfulLogin)
+
+			return
+		}
 
 		fmt.Println(data)
 		// get user id
 		get_user_id, err := funcs.SelectUserID(data.Email)
 		if err != nil {
+			successfulLogin := Successful_Login{
+				User_id: -1,
+				Success: false,
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(successfulLogin)
+
 			return
 		}
 
@@ -81,7 +102,14 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		hash_matched := hashing.CheckPasswordHash(data.Password, funcs.GetUserHash(get_user_id)) // ignore error for the sake of simplicity
 
 		if !hash_matched {
-			io.WriteString(w, "Pass doesn't match!")
+			//	io.WriteString(w, "Pass doesn't match!")
+			// send error data
+			successfulLogin := Successful_Login{
+				User_id: -1,
+				Success: false,
+			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(successfulLogin)
 			return
 		}
 		// Create a seesion for this user
@@ -109,8 +137,14 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		})
 
 		fmt.Printf("UUID: %s\n", userSession.SessionUUID)
+		// send welcome data
+		successfulLogin := Successful_Login{
+			User_id: userSession.userID,
+			Success: true,
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(successfulLogin)
 
-		io.WriteString(w, fmt.Sprintf("Welcome %d", userSession.userID))
 		// A go routine to indicate that the session is expired
 		go EXPIRED(userSession)
 	} else {
