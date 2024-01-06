@@ -45,6 +45,7 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 
 	// Remove leading and trailing white spaces from the title,post content and checks if it is empty
 	if checkEmpty(&data.Post) || checkEmpty(&data.Title) {
+		w.WriteHeader(http.StatusBadRequest)
 		io.WriteString(w, "Title and Post Content are required")
 		return
 	}
