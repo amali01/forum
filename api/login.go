@@ -52,10 +52,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Remove leading and trailing white spaces from the email and checks if it is empty
-		if err := checkEmail(&data.Email); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
+		checkEmpty(w, &data.Email)
 
 		fmt.Println(data)
 		// get user id

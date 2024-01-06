@@ -50,23 +50,24 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Remove leading and trailing white spaces from the email and checks if it is empty
-		if err := checkEmail(&data.Email); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+		// Remove leading and trailing white spaces from the email,user name and checks if it is empty
+		if checkEmpty(w, &data.Email) || checkEmpty(w, &data.Name) {
 			return
 		}
 
-		// checks if the password have any whitespace in it 
+		// checks if the password have any whitespace in it
 		if err := checkPass(&data.Password); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			w.WriteHeader(http.StatusBadRequest)
+			io.WriteString(w, err.Error())
 			return
 		}
 
 		// Hash the password before adding it
 		hash, _ := hashing.HashPassword(data.Password) // ignore error for the sake of simplicity
 
-		if funcs.AddUser(data.Name, data.Email, hash) != nil {
-			io.WriteString(w, "Add user error, try again")
+		if err := funcs.AddUser(data.Name, data.Email, hash); err != nil {
+			w.WriteHeader(http.StatusConflict)
+			io.WriteString(w, err.Error())
 			return
 		}
 
@@ -80,13 +81,15 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 // Remove leading and trailing white spaces from the email and checks if it is empty
-func checkEmail(email *string) error {
+func checkEmpty(w http.ResponseWriter, email *string) bool {
 	*email = strings.TrimSpace(*email)
 
 	if *email == "" {
-		return errors.New("email field cannot be empty")
+		w.WriteHeader(http.StatusBadRequest)
+		io.WriteString(w, "Username and email are required")
+		return true
 	}
-	return nil
+	return false
 }
 
 // checkPass checks if the given password string contains any whitespace characters.
