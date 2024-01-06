@@ -1,152 +1,6 @@
-const render_nav_bar = async () => {
-  let nav = ``;
-  let islogged = localStorage.getItem("isloggedIn");
-  if (islogged) {
-    nav += `
-      <nav>
-        <a href="/">
-          <div class="logo">Re4um</div>
-        </a>
-        <ul class="actionitems">
-          <li>
-            <a href="/create_post">
-              <img
-                src="/static/assets/plus-large-svgrepo-com.svg"
-                alt="add Icon"
-                class="navicon"
-                title="Create Post"
-              />
-            </a>
-          </li>
-          <li>
-            <img
-              src="/static/assets/information-circle-svgrepo-com.svg"
-              alt="about Page Icon"
-              class="navicon"
-              title="About"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/API.svg"
-              alt="API Icon"
-              class="navicon"
-              title="API documentation"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/HomeIcon.svg"
-              alt="HomeIcon"
-              class="navicon"
-              title="Back To Homepage"
-              onclick="location.href('/')"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/REgallery.svg"
-              alt="ReGallery (SOON!)"
-              class="navicon"
-              title="Regallery (SOON!)"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/chat.svg"
-              alt="chatIcon"
-              class="navicon"
-              title="chat (SOON)"
-            />
-          </li>
-        </ul>
-        <div>
-          <a href="/logout">
-            <button class="profile" id="profileBtn">
-              Sign Out
-            </button>
-          </a>
-        </div>
-      </nav>
-    `;
-  } else {
-    nav += `
-      <nav>
-        <a href="/">
-          <div class="logo">Re4um</div>
-        </a>
-        <ul class="actionitems">
-          <li>
-            <a href="/create_post">
-              <img
-                src="/static/assets/plus-large-svgrepo-com.svg"
-                alt="add Icon"
-                class="navicon"
-                title="Create Post"
-              />
-            </a>
-          </li>
-          <li>
-            <img
-              src="/static/assets/information-circle-svgrepo-com.svg"
-              alt="about Page Icon"
-              class="navicon"
-              title="About"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/API.svg"
-              alt="API Icon"
-              class="navicon"
-              title="API documentation"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/HomeIcon.svg"
-              alt="HomeIcon"
-              class="navicon"
-              title="Back To Homepage"
-              onclick="location.href('/')"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/REgallery.svg"
-              alt="ReGallery (SOON!)"
-              class="navicon"
-              title="Regallery (SOON!)"
-            />
-          </li>
-          <li>
-            <img
-              src="/static/assets/chat.svg"
-              alt="chatIcon"
-              class="navicon"
-              title="chat (SOON)"
-            />
-          </li>
-        </ul>
-        <div>
-          <a href="/login">
-            <button class="profile" id="profileBtn">
-              Sign In
-            </button>
-          </a>
-          <a href="/signup">
-            <button class="profile" id="profileBtn">
-              Sign Up
-            </button>
-          </a>
-        </div>
-      </nav>
-    `;
-  }
-  let body = document.body;
-  body.insertAdjacentHTML("beforebegin", nav);
-};
+import { loadNav } from "./components/navbar.js";
 
+// Loads categories selection buttons
 const loadOptions = async () => {
   const catdiv = document.getElementById("catHandler");
   console.log(catdiv);
@@ -172,14 +26,6 @@ const loadOptions = async () => {
   });
 };
 
-const loadPage = () => {
-  loadOptions();
-  render_nav_bar();
-};
-
-// document.addEventListener("load", loadPage, true);
-document.addEventListener("DOMContentLoaded", loadPage);
-
 const createPost = async () => {
   event.preventDefault();
   try {
@@ -193,7 +39,7 @@ const createPost = async () => {
 
     // handling cats
     let checkboxes = document.querySelectorAll(
-      'input[type="checkbox"]:checked'
+      'input[type="checkbox"]:checked',
     );
 
     if (checkboxes.length === 0) {
@@ -223,10 +69,24 @@ const createPost = async () => {
       let errdiv = document.getElementById("errdiv");
       errdiv.innerText = "ERROR CREATING POST";
       console.error(
-        `Failed to create post. Server returned ${response.status} status.`
+        `Failed to create post. Server returned ${response.status} status.`,
       );
     }
   } catch (error) {
     console.error("An error occurred while creating the post:", error);
   }
 };
+
+// App enrty point
+const loadPage = async () => {
+  loadOptions();
+  let nav = await loadNav("/");
+  let body = document.body;
+  body.insertAdjacentHTML("beforebegin", nav);
+
+  /* Add click listeners for button */
+  document.getElementById("postBtn").addEventListener("click", createPost);
+};
+
+// document.addEventListener("load", loadPage, true);
+document.addEventListener("DOMContentLoaded", loadPage);
