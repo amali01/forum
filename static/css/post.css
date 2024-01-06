@@ -3,9 +3,21 @@
 :root {
   --bg-color: #0C0F0A;
   --text-color: #ffffff;
-  --bg-nav-color: #0C0F0A;
+  --bg-nav-color: RGB(12,15,10,0.8);
   --main-font-family: "Rubik", monospace, sans-serif;
   --bg-component-color: #262d34;
+}
+
+.fixed-01 {
+  z-index: -1;
+  background: url("https://learn.reboot01.com/assets/img/01-trame.svg") center center / cover;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.15;
+  top: 0;
+  left: 0;
+  position: fixed;
 }
 
 nav {
@@ -71,8 +83,7 @@ nav {
   border: 0;
 }
 
-body,
-html {
+body {
   margin: 0;
   height: 100%;
   background-color: var(--bg-color);
