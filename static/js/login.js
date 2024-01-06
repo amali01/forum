@@ -1,41 +1,41 @@
-function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-
-  // Prepare the data to send to the backend
-  var data = {
-    id: profile.getId(), // Do not send to your backend! Use an ID token instead.
-    name: profile.getName(),
-    imageUrl: profile.getImageUrl(),
-    email: profile.getEmail(),
-  };
-
-  const url = "/login";
-
-  // Send the POST request using the fetch API
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Request failed");
-      }
-    })
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
+// function onSignIn(googleUser) {
+//   var profile = googleUser.getBasicProfile();
+//
+//   // Prepare the data to send to the backend
+//   var data = {
+//     id: profile.getId(), // Do not send to your backend! Use an ID token instead.
+//     name: profile.getName(),
+//     imageUrl: profile.getImageUrl(),
+//     email: profile.getEmail(),
+//   };
+//
+//   const url = "/login";
+//
+//   // Send the POST request using the fetch API
+//   fetch(url, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   })
+//     .then((response) => {
+//       if (response.ok) {
+//         return response.json();
+//       } else {
+//         throw new Error("Request failed");
+//       }
+//     })
+//     .then((data) => {
+//       console.log(data);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });
+// }
 
 function sendLoginRequest() {
-  event.preventDefault()
+  event.preventDefault();
   const url = "/login";
 
   let formData = new FormData(document.querySelector("form"));
@@ -54,18 +54,15 @@ function sendLoginRequest() {
     method: "POST",
     body: jsonString,
   })
-    .then((response) => {
-      if (response.ok) {
-        window.location.replace('/')
-        // return response.json();
+    .then((res) => res.json())
+    .then((out) => {
+      if (out.success) {
+        console.log("Output: ", out);
+
+        window.location.replace("/");
       } else {
-        throw new Error("Request failed");
+        alert("login error!");
       }
     })
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    .catch((err) => console.error(err));
 }
