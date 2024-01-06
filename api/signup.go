@@ -51,7 +51,9 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Remove leading and trailing white spaces from the email,user name and checks if it is empty
-		if checkEmpty(w, &data.Email) || checkEmpty(w, &data.Name) {
+		if checkEmpty(&data.Email) || checkEmpty(&data.Name) {
+			w.WriteHeader(http.StatusBadRequest)
+			io.WriteString(w, "Username and email are required")
 			return
 		}
 
@@ -81,12 +83,11 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 // Remove leading and trailing white spaces from the email and checks if it is empty
-func checkEmpty(w http.ResponseWriter, email *string) bool {
+func checkEmpty(email *string) bool {
 	*email = strings.TrimSpace(*email)
 
 	if *email == "" {
-		w.WriteHeader(http.StatusBadRequest)
-		io.WriteString(w, "Username and email are required")
+
 		return true
 	}
 	return false
