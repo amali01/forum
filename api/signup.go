@@ -52,21 +52,24 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 		// Remove leading and trailing white spaces from the email and checks if it is empty
 		if err := checkEmail(&data.Email); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			w.WriteHeader(http.StatusBadRequest)
+			io.WriteString(w, err.Error())
 			return
 		}
 
 		// checks if the password have any whitespace in it 
 		if err := checkPass(&data.Password); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			w.WriteHeader(http.StatusBadRequest)
+			io.WriteString(w, err.Error())
 			return
 		}
 
 		// Hash the password before adding it
 		hash, _ := hashing.HashPassword(data.Password) // ignore error for the sake of simplicity
 
-		if funcs.AddUser(data.Name, data.Email, hash) != nil {
-			io.WriteString(w, "Add user error, try again")
+		if err := funcs.AddUser(data.Name, data.Email, hash); err != nil {
+			w.WriteHeader(http.StatusConflict)
+			io.WriteString(w, err.Error())
 			return
 		}
 

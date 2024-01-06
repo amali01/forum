@@ -60,7 +60,8 @@ const toSignUp = async () => {
     });
 
     if (!Res.ok) {
-      form.insertAdjacentHTML("afterbegin", errdiv("User creation failed."));
+      const errorText = await Res.text();
+      form.insertAdjacentHTML("afterbegin", errdiv(errorText));
     } else {
       await followupLogin(email, pass);
     }
