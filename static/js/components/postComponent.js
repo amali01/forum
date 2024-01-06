@@ -90,7 +90,7 @@ const orgComments = async (postID) => {
         }
         `,
   });
-  let gotten_comm = [{}];
+  let gotten_comm = [];
   let commentArray = await Response.json();
   let i = 1;
   commentArray.comments.forEach((com) => {
