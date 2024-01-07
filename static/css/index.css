@@ -214,12 +214,13 @@ a {
 .user {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-around;
+    gap: 40px;
 }
 
 .userID {
     display: flex;
-    width: 200px;
+    /* width: 200px; */
     justify-content: space-between;
     align-items: center;
 }
