@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>{{ .Err }} {{ .Message}} </title>
-  <!-- ==Fav==Icon========== -->
-  <link rel="shortcut icon" type="image/x-icon" href="../static/assets/favicon.ico">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error 500</title>
+  </head>
+  <style>
+    body,
+    html {
+      margin: 0;
+      height: 100%;
+    }
 
-  <!-- <link rel="stylesheet" href="/css/error_page.css"> -->
-  <!-- <link rel="stylesheet" href="css/body.css"> -->
-</head>
-<body>
-  <!-- Display the error message and description -->
-  <h1>Error {{ .Err }}</h1>
-  <p>{{ .Message}}.</p>
-  <img style="height: 60vh; width:auto;" src="{{ .ImageURL }}" />
-</body>
+    body {
+      background-color: #0c0f0a;
+    }
+  </style>
+  <body>
+    <script
+      type="module"
+      src="https://unpkg.com/@splinetool/viewer@1.0.17/build/spline-viewer.js"
+    ></script>
+    <spline-viewer
+      url="{{ .ImageURL }}"
+    ></spline-viewer>
+  </body>
 </html>
