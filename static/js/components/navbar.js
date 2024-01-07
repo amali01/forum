@@ -31,17 +31,19 @@ const loadNav = async (home_path) => {
           <li>
             <img
               src="${home_path}static/assets/information-circle-svgrepo-com.svg"
-              alt="about Page Icon"
+              alt="about Page Icon (SOON!)"
               class="navicon"
-              title="About"
+              style="filter: invert(60%)"
+              title="About (SOON!)"
             />
           </li>
           <li>
             <img
               src="${home_path}static/assets/API.svg"
-              alt="API Icon"
+              alt="API Icon (SOON!)"
               class="navicon"
-              title="API documentation"
+              style="filter: invert(60%)"
+              title="API documentation (SOON!)"
             />
           </li>
           <li>
@@ -98,17 +100,19 @@ const loadNav = async (home_path) => {
           <li>
             <img
               src="${home_path}static/assets/information-circle-svgrepo-com.svg"
-              alt="about Page Icon"
+              alt="about Page Icon (SOON!)"
               class="navicon"
-              title="About"
+              style="filter: invert(60%)"
+              title="About (SOON!)"
             />
           </li>
           <li>
             <img
               src="${home_path}static/assets/API.svg"
-              alt="API Icon"
+              alt="API Icon (SOON!)"
               class="navicon"
-              title="API documentation"
+              style="filter: invert(60%)"
+              title="API documentation (SOON!)"
             />
           </li>
           <li>
