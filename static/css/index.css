@@ -143,7 +143,7 @@ a {
 .postWrapper {
     display: flex;
     align-items: flex-start;
-    gap: 20px;
+    justify-content: space-between;
 }
 
 .postImage {
@@ -214,7 +214,8 @@ a {
 .user {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    width: 785px;
     gap: 40px;
 }
 
@@ -300,4 +301,12 @@ a {
     font-size: 1.5rem;
     border: 0;
     background: none;
+}
+
+.vote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-left: 100px;
 }
