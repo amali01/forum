@@ -47,7 +47,7 @@ const toSignUp = async () => {
     form.insertAdjacentHTML("afterbegin", errdiv("Passwords don't match."));
   } else {
     let signUpData = {
-      uname: uname,
+      name: uname,
       email: email,
       password: pass,
     };
@@ -58,7 +58,7 @@ const toSignUp = async () => {
         "Content-Type": "application/json",
       },
     });
-
+// log.console(Res)
     if (!Res.ok) {
       const errorText = await Res.text();
       form.insertAdjacentHTML("afterbegin", errdiv(errorText));
