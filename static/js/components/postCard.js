@@ -35,6 +35,8 @@ export const post_cards_component = (post, i) => {
                           </div>
                       </div>
                   </div>
+              </div>
+              <div class="vote"> 
                     <div id="likeBtn_${post.post_id}" class="likeBtn ${
                       post.isLiked === 1 ? "liked" : ""
                     }" >

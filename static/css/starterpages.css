@@ -26,6 +26,11 @@ body {
   height: 100vh;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
 .logo {
   display: flex;
   flex-direction: column;
@@ -153,4 +158,12 @@ button:hover span:after {
   margin-top: 1em;
   margin-bottom: 1em;
   color: rgb(255, 0, 0);
+}
+
+.logoClass {
+  filter: invert(100%);
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  margin-bottom: 50px;
 }
