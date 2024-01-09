@@ -29,12 +29,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		/*
-		   // Define data to be passed to the template
-		   data := struct{ Name string }{
-		       Name: "Gopher",
-		   }*/
-
 		// Execute the template with the data
 		if err := tmpl.Execute(w, nil); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -62,9 +56,10 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				User_id: -1,
 				Success: false,
 			}
+			w.WriteHeader(http.StatusUnauthorized)
+
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(successfulLogin)
-
 			return
 		}
 
@@ -76,6 +71,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				User_id: -1,
 				Success: false,
 			}
+			w.WriteHeader(http.StatusUnauthorized)
 			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(successfulLogin)
 
