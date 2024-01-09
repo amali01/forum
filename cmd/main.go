@@ -20,9 +20,10 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	/********************* API endpoints ************************/
-	http.HandleFunc("/signup", api.SignUp)                               // Handle signup
-	http.HandleFunc("/login", api.LogIn)                                 // Handle login
-	http.HandleFunc("/api/create_post", api.Create_Post)                 // create post
+	http.HandleFunc("/signup", api.SignUp)               // Handle signup
+	http.HandleFunc("/login", api.LogIn)                 // Handle login
+	http.HandleFunc("/api/create_post", api.Create_Post) // create post
+
 	http.HandleFunc("/api/create_category", api.Create_Category_Handler) // create category
 	http.HandleFunc("/api/add_comment", api.AddCommentHandler)           // Handle Create comment
 	http.HandleFunc("/api/likes_post", api.LikesPostHandler)             // Handle Likes & Dislikes for Posts
@@ -52,6 +53,11 @@ func main() {
 		controllers.RenderUserPage(w, r, funcs.DB)
 	})
 	http.HandleFunc("/create_post/", func(w http.ResponseWriter, r *http.Request) {
+		_, valid := api.ValidateUser(w, r)
+		if !valid {
+			w.Write([]byte("Unauthorize access"))
+			return
+		}
 		controllers.RenderCreatePostPage(w, r)
 	})
 
