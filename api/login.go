@@ -57,7 +57,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Remove leading and trailing white spaces from the email and checks if it is empty
-		if checkEmpty(&data.Email) || checkPass(&data.Password) != nil {
+		if checkEmpty(&data.Email) || checkPassWS(data.Password) {
 			successfulLogin := Successful_Login{
 				User_id: -1,
 				Success: false,

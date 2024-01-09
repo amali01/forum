@@ -2,7 +2,7 @@ package api
 
 type SignUp_form struct {
 	Email    string
-	Name     string
+	Uname     string
 	Password string
 }
 

@@ -43,27 +43,44 @@ const toSignUp = async () => {
     return;
   }
 
+  // Check the length of the uname and pass variables
+  if (uname.length > 20) {
+    form.insertAdjacentHTML("afterbegin", errdiv("Username should be up to 20 characters long."));
+    return;
+  }
+
+  if (email.length > 30 ) {
+    form.insertAdjacentHTML("afterbegin", errdiv("Email should be up to 30 characters long."));
+    return;
+  }
+
   if (pass !== cpass) {
     form.insertAdjacentHTML("afterbegin", errdiv("Passwords don't match."));
-  } else {
-    let signUpData = {
-      uname: uname,
-      email: email,
-      password: pass,
-    };
-    let Res = await fetch("/signup", {
-      method: "POST",
-      body: JSON.stringify(signUpData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return;
+  } 
 
-    if (!Res.ok) {
-      const errorText = await Res.text();
-      form.insertAdjacentHTML("afterbegin", errdiv(errorText));
-    } else {
-      await followupLogin(email, pass);
-    }
+  if (pass.length < 6 || pass.length > 20) {
+    form.insertAdjacentHTML("afterbegin", errdiv("Password should be between 6 and 20 characters long."));
+    return;
+  }
+
+  let signUpData = {
+  uname: uname,
+  email: email,
+  password: pass,
+  };
+  let Res = await fetch("/signup", {
+    method: "POST",
+    body: JSON.stringify(signUpData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!Res.ok) {
+    const errorText = await Res.text();
+    form.insertAdjacentHTML("afterbegin", errdiv(errorText));
+  } else {
+    await followupLogin(email, pass);
   }
 };
