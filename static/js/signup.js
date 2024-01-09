@@ -68,22 +68,28 @@ const toSignUp = async () => {
   }
 
   let signUpData = {
-  uname: uname,
-  email: email,
-  password: pass,
+    email: emailInput.value.trim(),
+    uname: unameInput.value.trim(),
+    password: pass,
   };
-  let Res = await fetch("/signup", {
-    method: "POST",
-    body: JSON.stringify(signUpData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 
-  if (!Res.ok) {
-    const errorText = await Res.text();
-    form.insertAdjacentHTML("afterbegin", errdiv(errorText));
-  } else {
-    await followupLogin(email, pass);
+  try {
+    const response = await fetch("/signup", {
+      method: "POST",
+      body: JSON.stringify(signUpData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      form.insertAdjacentHTML("afterbegin", errdiv(errorText));
+    } else {
+      await followupLogin(emailInput.value.trim(), pass);
+    }
+  } catch (error) {
+    console.error(error);
   }
+
 };
