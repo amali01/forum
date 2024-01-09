@@ -43,6 +43,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Failed to unmarshal JSON", http.StatusBadRequest)
 			return
 		}
+		
 		if err := CheckSignUpData(&data); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			io.WriteString(w, err.Error())
