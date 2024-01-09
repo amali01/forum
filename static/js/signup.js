@@ -1,4 +1,4 @@
-const errdiv = (msg) => `<div class="signuperr">${msg}</div>`;
+const errdiv = (msg) => alert(`${msg}`);
 // send a followup login request to log the user in
 const followupLogin = async (email, pass) => {
   const jsonObject = {
