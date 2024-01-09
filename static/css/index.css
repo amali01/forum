@@ -187,6 +187,9 @@ a {
     align-items: flex-start;
     gap: 10px;
     width: 521px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 3.5em;
 
 }
 
