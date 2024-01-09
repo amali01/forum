@@ -200,7 +200,7 @@ select::-webkit-scrollbar {
 
 .err {
   color: red;
-  font-family: "IBM Plex Mono", monospace, sans-serif;
+  font-family: sans-serif;
   text-align: center;
   width: 100vw;
   margin-bottom: 10px;
