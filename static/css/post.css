@@ -617,7 +617,7 @@ hr {
   text-align: justify;
   white-space: pre-wrap;
   padding: 30px;
-  background-color: #0C0F0A;
+  /* background-color: #0C0F0A; */
   border-radius: 40px;
 }
 
