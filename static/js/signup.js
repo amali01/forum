@@ -46,56 +46,44 @@ const toSignUp = async () => {
     return;
   }
 
-  // Limit the length of the username and provide feedback
-  let uname = unameInput.value.trim();
+  // Check the length of the uname and pass variables
   if (uname.length > 20) {
-    form.insertAdjacentHTML(
-      "afterbegin",
-      errdiv("Username exceeds 20 characters. You can edit it.")
-    );
-    return; // Stop execution if a warning is displayed
+    form.insertAdjacentHTML("afterbegin", errdiv("Username should be up to 20 characters long."));
+    return;
   }
 
-  // Limit the length of the email and provide feedback
-  let email = emailInput.value.trim();
-  if (email.length > 30) {
-    form.insertAdjacentHTML(
-      "afterbegin",
-      errdiv("Email exceeds 30 characters. You can edit it.")
-    );
-    return; // Stop execution if a warning is displayed
-  }
-
-  // Limit the length of the password and provide feedback
-  if (pass.length > 50) {
-    form.insertAdjacentHTML(
-      "afterbegin",
-      errdiv("Password exceeds 50 characters. You can edit it.")
-    );
-    return; // Stop execution if a warning is displayed
+  if (email.length > 30 ) {
+    form.insertAdjacentHTML("afterbegin", errdiv("Email should be up to 30 characters long."));
+    return;
   }
 
   if (pass !== cpass) {
     form.insertAdjacentHTML("afterbegin", errdiv("Passwords don't match."));
-  } else {
-    let signUpData = {
-      name: uname,
-      email: email,
-      password: pass,
-    };
-    let Res = await fetch("/signup", {
-      method: "POST",
-      body: JSON.stringify(signUpData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return;
+  } 
 
-    if (!Res.ok) {
-      const errorText = await Res.text();
-      form.insertAdjacentHTML("afterbegin", errdiv(errorText));
-    } else {
-      await followupLogin(email, pass);
-    }
+  if (pass.length < 6 || pass.length > 20) {
+    form.insertAdjacentHTML("afterbegin", errdiv("Password should be between 6 and 20 characters long."));
+    return;
+  }
+
+  let signUpData = {
+  uname: uname,
+  email: email,
+  password: pass,
+  };
+  let Res = await fetch("/signup", {
+    method: "POST",
+    body: JSON.stringify(signUpData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!Res.ok) {
+    const errorText = await Res.text();
+    form.insertAdjacentHTML("afterbegin", errdiv(errorText));
+  } else {
+    await followupLogin(email, pass);
   }
 };

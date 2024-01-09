@@ -34,6 +34,27 @@ const createPost = async () => {
       Title: document.getElementById("Ptitle").value,
     };
 
+    // Check for empty title and post content
+    if (!formData.Post.trim() || !formData.Title.trim()) {
+      let errdiv = document.getElementById("errdiv");
+      errdiv.innerText = "Title and Post Content are required fields";
+      return;
+    }
+
+    // Check the length of the post content
+    if (formData.Post.length > 10000) {
+      let errdiv = document.getElementById("errdiv");
+      errdiv.innerText = "Post Content should be up to 10000 characters long";
+      return;
+    }
+
+    // Check the length of the title
+    if (formData.Title.length > 100) {
+      let errdiv = document.getElementById("errdiv");
+      errdiv.innerText = "Title should be up to 100 characters long";
+      return;
+    }
+
     // get selected cats
     let maincats = [];
 
@@ -66,8 +87,9 @@ const createPost = async () => {
       console.log("Post created successfully");
       window.location.replace("/");
     } else {
+      const errorText = await response.text();
       let errdiv = document.getElementById("errdiv");
-      errdiv.innerText = "ERROR CREATING POST";
+      errdiv.innerText = errorText;
       console.error(
         `Failed to create post. Server returned ${response.status} status.`,
       );
