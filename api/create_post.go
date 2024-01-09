@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -44,9 +45,9 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Remove leading and trailing white spaces from the title,post content and checks if it is empty
-	if checkEmpty(&data.Post) || checkEmpty(&data.Title) {
+	if err := CheckPostData(data); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		io.WriteString(w, "Title and Post Content are required")
+		io.WriteString(w, err.Error())
 		return
 	}
 
@@ -65,4 +66,23 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 
 	// w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK!"))
+}
+
+func CheckPostData(data Post) error {
+	// Check for empty title and post content
+	if checkEmpty(&data.Post) || checkEmpty(&data.Title) {
+		return errors.New("Title and Post Content are required fields")
+	}
+
+	// Check the length of the post content
+	if len(data.Post) > 10000 {
+		return errors.New("Post Content should be up to 10000 characters long")
+	}
+
+	// Check the length of the title
+	if len(data.Title) > 100 {
+		return errors.New("Title should be up to 100 characters long")
+	}
+
+	return nil
 }

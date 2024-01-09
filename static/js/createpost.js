@@ -34,6 +34,24 @@ const createPost = async () => {
       Title: document.getElementById("Ptitle").value,
     };
 
+    // Check for empty title and post content
+    if (!formData.Post.trim() || !formData.Title.trim()) {
+      console.log("Title and Post Content are required fields");
+      return;
+    }
+
+    // Check the length of the post content
+    if (formData.Post.length > 10000) {
+      console.log("Post Content should be up to 10000 characters long");
+      return;
+    }
+
+    // Check the length of the title
+    if (formData.Title.length > 100) {
+      console.log("Title should be up to 100 characters long");
+      return;
+    }
+
     // get selected cats
     let maincats = [];
 
