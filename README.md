@@ -80,20 +80,33 @@ go run . cmd/main.go
 ```
 
 ## Screenshots
-### Posts
-```
+### Home Page
+<p align="center">
+    <img src="./static/assets/HomePage.png" alt="Home Page" />
+</p>
 
-pic from the website once done 
-```
-### Comment
-```
+### Post Page
 
-pic from the website once done 
-```
+<p align="center">
+    <img src="./static/assets/PostPage.png" alt="Post Page" />
+</p>
+
+### Creat Post
+<p align="center">
+    <img src="./static/assets/CreatPost.png" alt="Creat Post" />
+</p>
+
+### Longin & Signup pages
+<p align="center">
+    <img src="./static/assets/Login.png" alt="Login" />
+    <img src="./static/assets/Login.png" alt="Signup" />
+</p>
+
+
 
 
 ## Instructions
-- 
+- Just signup and join the Re4um Family.
 
 ## Additional information
 - The project is written in Go.
