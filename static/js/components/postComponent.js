@@ -64,6 +64,7 @@ export const orgPostHTML = async (wrapper, prop) => {
     <div class="postcats">
       ${cats}
     </div>
+    <hr>
     <div class="postcontent">
       ${prop.text}
     </div>
