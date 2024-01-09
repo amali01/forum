@@ -122,6 +122,9 @@ go run . cmd/main.go
 
 ## Instructions
 - Just signup and join the Re4um Family.
+### To build docker image and run it
+- `docker build .`
+- `docker run -p 8080:8080 [image_id]`
 
 ## Additional information
 - The project is written in Go.
