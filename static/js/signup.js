@@ -30,17 +30,49 @@ const followupLogin = async (email, pass) => {
 // main signup request
 const toSignUp = async () => {
   // grab vars
-  let uname = document.getElementById("uname").value.trim();
-  let email = document.getElementById("email").value.trim();
+  let unameInput = document.getElementById("uname");
+  let emailInput = document.getElementById("email");
   let pass = document.getElementById("pass").value;
   let cpass = document.getElementById("cpass").value;
 
   const form = document.getElementById("signupform");
 
   // Check for empty or whitespace-only username and email
-  if (!uname || !email) {
-    form.insertAdjacentHTML("afterbegin", errdiv("Username and email are required."));
+  if (!unameInput.value.trim() || !emailInput.value.trim()) {
+    form.insertAdjacentHTML(
+      "afterbegin",
+      errdiv("Username and email are required.")
+    );
     return;
+  }
+
+  // Limit the length of the username and provide feedback
+  let uname = unameInput.value.trim();
+  if (uname.length > 20) {
+    form.insertAdjacentHTML(
+      "afterbegin",
+      errdiv("Username exceeds 20 characters. You can edit it.")
+    );
+    return; // Stop execution if a warning is displayed
+  }
+
+  // Limit the length of the email and provide feedback
+  let email = emailInput.value.trim();
+  if (email.length > 30) {
+    form.insertAdjacentHTML(
+      "afterbegin",
+      errdiv("Email exceeds 30 characters. You can edit it.")
+    );
+    return; // Stop execution if a warning is displayed
+  }
+
+  // Limit the length of the password and provide feedback
+  if (pass.length > 50) {
+    form.insertAdjacentHTML(
+      "afterbegin",
+      errdiv("Password exceeds 50 characters. You can edit it.")
+    );
+    return; // Stop execution if a warning is displayed
   }
 
   if (pass !== cpass) {
@@ -58,7 +90,7 @@ const toSignUp = async () => {
         "Content-Type": "application/json",
       },
     });
-// log.console(Res)
+
     if (!Res.ok) {
       const errorText = await Res.text();
       form.insertAdjacentHTML("afterbegin", errdiv(errorText));
