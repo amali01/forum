@@ -1,4 +1,4 @@
-<h1 align="center">Forum "4um"</h1>
+<h1 align="center">Forum "Re4um"</h1>
 
 
 <p align="center">
@@ -38,7 +38,7 @@ _make sure you are in project directory_
 go run . cmd/main.go
 ```
 1. Open http://localhost:8080/ in a browser .
-2. start going thro the website as a Gust or u singup to contene as user  . 
+2. start going thro the website as a Guest or sign up to continue as user .
 
 ### Directory Structure
 ```console
@@ -54,28 +54,43 @@ go run . cmd/main.go
 ├── controllers/
 │   ├── homepage.go
 │   ├── postPage.go
-│   └── ...
+│   └── ... 
 │
-├── funcs/
-│   ├── category.go
-│   ├── comment.go
-│   └── ...
-│
-├── hashing/
-│   └── hashing.go
-│
-├── static/
-│   ├── myInfo.go
-│   ├── myFlags.go
-│   └── ...
+├── pkgs/
+│   ├── funcs/
+│   │   ├── category.go
+│   │   ├── comment.go
+│   │   └── ...
+│   │
+│   └── hashing/
+│       └── hashing.go
 │
 ├── static/
 │   ├── myInfo.go
 │   ├── myFlags.go
 │   └── ...
+│
+├── static/
+│   ├── assets/
+│   │   └── ...
+│   ├── css/
+│   │   └── ...
+│   ├── html/
+│   │   └── ...
+│   └── js/
+│       ├── components/
+│       │   └── ...
+│       ├── helper_funcs/
+│       │   └── ...
+│       ├── components/
+│       │   └── ...
+│       ├── createComment.js
+│       └── ...
 |
+├── Dockerfile
+├── forum.db
 ├── go.mod
-├── readme.md
+├── README.md
 └── ...
 ```
 
