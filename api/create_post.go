@@ -44,7 +44,7 @@ func Create_Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Remove leading and trailing white spaces from the title,post content and checks if it is empty
+	// Remove leading and trailing white spaces from the title,post content and checks if it is empty and within the limits
 	if err := CheckPostData(data); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		io.WriteString(w, err.Error())
