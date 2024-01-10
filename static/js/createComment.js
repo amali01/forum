@@ -13,6 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Get the comment text from the textarea
     const commentText = document.getElementById("newCommentText").value;
 
+    // Check for empty title and post content
+    if (!commentText.trim()) {
+      alert("Comment con not be empty");
+      return;
+    }
+    
     // Check the length of the comment text
     if (commentText.length > 500) {
       alert("Comment cannot exceed 500 characters.");
