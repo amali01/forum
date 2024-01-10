@@ -69,17 +69,30 @@ const loadCats = async () => {
     child.classList.add("catlisting");
     child.id = `catlisting-${cat.category}`;
     child.addEventListener("click", () => {
-      filterToCat(cat.category);
+      filterBy("/api/category/" + cat.category);
     });
     child.innerText = cat.category;
     catwrapper.append(child);
   });
 };
 
-const filterToCat = async (cat) => {
+const filterByUser = async () => {
+  const createdByUser = document.getElementById("createdByUser");
+  createdByUser.addEventListener("click", () => {
+    filterBy("/api/created_by_user");
+    return;
+  });
+  const likedByUser = document.getElementById("likedByUser");
+  likedByUser.addEventListener("click", () => {
+    filterBy("/api/liked_by_user");
+    return;
+  });
+};
+
+const filterBy = async (path) => {
   const jsonContainer = document.getElementsByClassName("postcardwrapper")[0];
   jsonContainer.innerHTML = ``;
-  let response = await fetch("/api/category/" + cat);
+  let response = await fetch(path);
   let data = await response.json();
   let i = 0;
   data.posts.forEach((post) => {
@@ -110,16 +123,7 @@ const filterToCat = async (cat) => {
   /********* END of Adding click listeners ***************/
 };
 
-const filterByUser = async () => {
-  const createdByUser = document.getElementById("createdByUser");
-  createdByUser.addEventListener("click", () => {
-    dispayPostsCards("/api/created_by_user");
-  });
-  const likedByUser = document.getElementById("likedByUser");
-  likedByUser.addEventListener("click", () => {
-    dispayPostsCards("/api/liked_by_user");
-  });
-};
+
 
 // Fetches post data from the specified JSON file path and displays the posts
 const dispayPostsCards = async (path) => {
