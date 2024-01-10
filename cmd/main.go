@@ -12,7 +12,6 @@ import (
 
 func main() {
 	funcs.Init()
-	funcs.CreateAdmin(funcs.DB)
 
 	// Create a file server to serve static files (CSS, JS, images, etc.)
 	fs := http.FileServer(http.Dir("static"))

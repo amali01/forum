@@ -16,13 +16,21 @@ var DB *sql.DB
 
 func Init() {
 	// connect to the database
+	var New_DB bool
 	_, err := os.Stat(DBPath)
 	if os.IsNotExist(err) {
 		InitateDB(DBPath)
+		New_DB = true
 	}
+
 	DB, err = sql.Open("sqlite3", DBPath)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if New_DB {
+		//add admin accunt to the new Dara Base
+		CreateAdmin(DB)
 	}
 }
 
