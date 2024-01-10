@@ -97,24 +97,24 @@ go run . cmd/main.go
 ## Screenshots
 ### Home Page
 <p align="center">
-    <img src="./static/assets/HomePage.png" alt="Home Page" />
+    <img src="./static/assets/HomePage.png" alt="Home Page" hight="700px" width="1000px"  />
 </p>
 
 ### Post Page
 
 <p align="center">
-    <img src="./static/assets/PostPage.png" alt="Post Page" />
+    <img src="./static/assets/PostPage.png" alt="Post Page" hight="700px" width="1000px"  />
 </p>
 
 ### Creat Post
 <p align="center">
-    <img src="./static/assets/CreatPost.png" alt="Creat Post" />
+    <img src="./static/assets/CreatPost.png" alt="Creat Post" hight="700px" width="1000px"  />
 </p>
 
 ### Longin & Signup pages
 <p align="center">
-    <img src="./static/assets/Login.png" alt="Login" />
-    <img src="./static/assets/Login.png" alt="Signup" />
+    <img src="./static/assets/Login.png" alt="Login" hight="700px" width="1000px" />
+    <img src="./static/assets/Signup.png" alt="Signup" hight="700px" width="1000px" />
 </p>
 
 
