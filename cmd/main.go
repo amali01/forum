@@ -62,7 +62,7 @@ func main() {
 		controllers.RenderCreatePostPage(w, r)
 	})
 
-	fmt.Println("Server listening on port http://localhost:8080 ...")
+	fmt.Println("\033[1;32mServer listening on port http://localhost:8080 ...\033[0m")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
 	if err := funcs.DB.Close(); err != nil {

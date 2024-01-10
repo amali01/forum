@@ -52,6 +52,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 
 		// Remove leading and trailing white spaces from the email and checks if it is empty
 		if checkEmpty(&data.Email) || checkPassWS(data.Password) {
+			w.WriteHeader(http.StatusUnauthorized)
 			successfulLogin := Successful_Login{
 				User_id: -1,
 				Success: false,
@@ -67,6 +68,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		// get user id
 		get_user_id, err := funcs.SelectUserID(data.Email)
 		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
 			successfulLogin := Successful_Login{
 				User_id: -1,
 				Success: false,
@@ -100,6 +102,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		if !hash_matched {
 			//	io.WriteString(w, "Pass doesn't match!")
 			// send error data
+			w.WriteHeader(http.StatusUnauthorized)
 			successfulLogin := Successful_Login{
 				User_id: -1,
 				Success: false,
