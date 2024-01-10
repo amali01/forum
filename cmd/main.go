@@ -46,18 +46,8 @@ func main() {
 	/********************* END ************************/
 
 	// Render pages
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		controllers.RenderPage(w, r, funcs.DB)
-	})
-	http.HandleFunc("/post/", func(w http.ResponseWriter, r *http.Request) {
-		controllers.RenderPostPage(w, r, funcs.DB)
-	})
-
-	// for future update
-	// http.HandleFunc("/user/", func(w http.ResponseWriter, r *http.Request) {
-	// 	controllers.RenderUserPage(w, r, funcs.DB)
-	// })
-	
+	http.HandleFunc("/", controllers.RenderPage)
+	http.HandleFunc("/post/", controllers.RenderPostPage)
 	http.HandleFunc("/create_post/", func(w http.ResponseWriter, r *http.Request) {
 		_, valid := api.ValidateUser(w, r)
 		if !valid {

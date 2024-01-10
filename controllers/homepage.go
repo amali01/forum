@@ -1,13 +1,12 @@
 package controllers
 
 import (
-	"database/sql"
 	"html/template"
 	"net/http"
 )
 
 // main page Handler
-func RenderPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
+func RenderPage(w http.ResponseWriter, r *http.Request) {
 	// Check if the request path is not the root path
 	if r.URL.Path != "/" {
 		HTTPErrorHandler(w, r, http.StatusNotFound)
@@ -29,7 +28,7 @@ func RenderPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 		return
 	}
 
-	if err := tmpl.Execute(w, data); err != nil {
+	if err := tmpl.Execute(w, nil); err != nil {
 		HTTPErrorHandler(w, r, http.StatusInternalServerError)
 		return
 	}
