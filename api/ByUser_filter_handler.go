@@ -24,7 +24,7 @@ func ByUser_filter_handler(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/api/liked_by_user" {
 			onlyLiked = true
 		}
-		postIDs, err := funcs.GetUserPosts(userSession.Get_UserID(),onlyLiked)
+		postIDs, err := funcs.GetUserPosts(userSession.Get_UserID(), onlyLiked)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

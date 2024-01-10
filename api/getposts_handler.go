@@ -25,7 +25,6 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	if valid {
 		for idx := range posts_arr {
 			posts_arr[idx].IsLiked, _ = funcs.Post_is_liked_by_user(userSession.Get_UserID(), posts_arr[idx].Post_ID)
-
 		}
 	}
 

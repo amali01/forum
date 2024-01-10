@@ -36,15 +36,12 @@ func LikesPostHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		////////////////////////////////////////////////////////////////////////
-
 		err = funcs.PostLikes(userSession.Get_UserID(), data.PostID, data.LikeDislike)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
 			return
 		}
 		w.Write([]byte("OK!"))
-		////////////////////////////////////////////////////////////////////////
 
 	} else {
 		// Handle other HTTP methods or incorrect requests

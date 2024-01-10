@@ -18,7 +18,7 @@ func LikesCommentHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		userSession, valid := ValidateUser(w, r)
 
-		if valid == false {
+		if !valid {
 			w.Write([]byte("Unauthorize access"))
 			return
 		}
@@ -38,15 +38,12 @@ func LikesCommentHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		////////////////////////////////////////////////////////////////////////
-
 		err = funcs.CommentLikes(userSession.Get_UserID(), data.CommentID, data.LikeDislike)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
 			return
 		}
 		w.Write([]byte("OK!"))
-		////////////////////////////////////////////////////////////////////////
 
 	} else {
 		// Handle other HTTP methods or incorrect requests

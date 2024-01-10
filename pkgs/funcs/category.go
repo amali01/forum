@@ -38,7 +38,7 @@ func CreateCategory(userId int, categoryName string) error {
 	if catID != 0 {
 		return fmt.Errorf("this Category already exist")
 	}
-	///////////////////////////////////////////////////////////////////////////
+
 	query := "INSERT INTO category (category) VALUES (?)"
 	if _, err := DB.Exec(query, categoryName); err != nil {
 		return err

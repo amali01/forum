@@ -33,7 +33,6 @@ func RenderCategoryPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 		return
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////
 	posts_arr, _ := funcs.Get_posts_of_category(postIDs)
 
 	/* Used to encapsulate the struct into one struct that is used to construct JSON for sending to front-end */

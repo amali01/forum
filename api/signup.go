@@ -82,7 +82,7 @@ func checkPassWS(pass string) bool {
 func CheckSignUpData(data *SignUp_form) error {
 	// Remove leading and trailing white spaces from the email,user name and checks if it is empty
 	if checkEmpty(&data.Email) || checkEmpty(&data.Uname) {
-		return errors.New("Username and email are required")
+		return errors.New("username and email are required")
 	}
 
 	// checks if the password have any whitespace in it
@@ -92,16 +92,16 @@ func CheckSignUpData(data *SignUp_form) error {
 
 	// checks the length of the username
 	if len(data.Uname) > 20 {
-		return  errors.New("Username should be up to 20 characters long")
+		return  errors.New("username should be up to 20 characters long")
 	}
 
 	// checks the length of the email
 	if len(data.Email) > 30 {
-		return  errors.New("Email should be up to 30 characters long")
+		return  errors.New("email should be up to 30 characters long")
 	}
 
 	if len(data.Password) < 6 && len(data.Password) > 20 {
-		return  errors.New("Password should be between 6 and 20 characters long.")
+		return  errors.New("password should be between 6 and 20 characters long")
 	}
 	return nil
 }

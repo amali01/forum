@@ -22,7 +22,7 @@ func RenderPostPage(w http.ResponseWriter, r *http.Request, data *sql.DB) {
 		http.Error(w, "This Post do not exist", http.StatusBadRequest)
 		return
 	}
-	/////////////////////////////////////////////////////////////////////////////////////////
+
 	files := []string{
 		"static/html/post.html", // need to create a post page
 	}

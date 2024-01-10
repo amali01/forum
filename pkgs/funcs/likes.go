@@ -43,7 +43,7 @@ func PostLikes(userID int, postID int, action int) error {
 			}
 		}
 	} else {
-		return fmt.Errorf("Actions must be (1, 0, -1) only!")
+		return fmt.Errorf("actions must be (1, 0, -1) only")
 	}
 
 	return nil
@@ -60,7 +60,6 @@ func CommentLikes(userID int, commentID int, action int) error {
 		return fmt.Errorf("comment does not exist")
 	}
 
-	//////////////////////////////////////////////////////////////////
 	var user_interaction_exists bool
 	// Checking if the user interacts in the database
 	query = "SELECT EXISTS (SELECT actions_type FROM comments_interactions WHERE comment_id = ? AND user_id = ?)"
@@ -88,7 +87,7 @@ func CommentLikes(userID int, commentID int, action int) error {
 			}
 		}
 	} else {
-		return fmt.Errorf("Actions must be (1, 0, -1) only!")
+		return fmt.Errorf("actions must be (1, 0, -1) only")
 	}
 
 	return nil
@@ -110,8 +109,6 @@ func CountPostLikes(postID int) (LikeCounts, error) {
 	if !postExists {
 		return LikeCounts{}, fmt.Errorf("post does not exist")
 	}
-
-	//////////////////////////////////////////////////////////////////
 
 	var counts LikeCounts
 
@@ -149,8 +146,6 @@ func CountCommentLikes(commentID int) (LikeCounts, error) {
 	if !commentExists {
 		return LikeCounts{}, fmt.Errorf("comment does not exist")
 	}
-
-	//////////////////////////////////////////////////////////////////
 
 	var counts LikeCounts
 

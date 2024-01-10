@@ -28,7 +28,6 @@ func Categories_filter_handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "This Category do not exist", http.StatusBadRequest)
 		return
 	}
-	/////////////////////////////////////////////////////////////////////////////////////////
 
 	userSession, valid := ValidateUser(w, r)
 	posts_arr, _ := funcs.Get_posts_of_category(postIDs)
@@ -36,7 +35,6 @@ func Categories_filter_handler(w http.ResponseWriter, r *http.Request) {
 	if valid {
 		for idx := range posts_arr {
 			posts_arr[idx].IsLiked, _ = funcs.Post_is_liked_by_user(userSession.Get_UserID(), posts_arr[idx].Post_ID)
-
 		}
 	}
 

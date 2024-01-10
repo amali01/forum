@@ -45,8 +45,6 @@ func CreatePost(userID int, title string, categories []string, content string) e
 		return fmt.Errorf("message cannot be empty")
 	}
 
-	//////////////////////////////////////////////////////////////////
-
 	// Inserting post data into the database
 	query := "INSERT INTO posts (user_id, title, post) VALUES (?, ?, ?)"
 	result, err := DB.Exec(query, userID, title, content)

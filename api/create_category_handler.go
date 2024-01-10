@@ -21,7 +21,7 @@ func Create_Category_Handler(w http.ResponseWriter, r *http.Request) {
 	}
 	userSession, valid := ValidateUser(w, r)
 
-	if valid == false {
+	if !valid {
 		w.Write([]byte("Unauthorize access"))
 		return
 	}
@@ -41,14 +41,11 @@ func Create_Category_Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	////////////////////////////////////////////////////////////////////////
-
 	err = funcs.CreateCategory(userSession.Get_UserID(), data.Category)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s", err), http.StatusBadRequest)
 		return
 	}
 	w.Write([]byte("OK!"))
-	////////////////////////////////////////////////////////////////////////
 
 }

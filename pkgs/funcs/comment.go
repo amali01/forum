@@ -21,8 +21,6 @@ func CreateComment(userID int, postID int, content string) error {
 		return fmt.Errorf("post does not exist")
 	}
 
-	//////////////////////////////////////////////////////////////////
-
 	// Inserting the comment data into the database
 	query = "INSERT INTO comments (post_id,user_id,comment) VALUES (?,?,?);"
 	if _, err := DB.Exec(query, postID, userID, content); err != nil {
