@@ -68,8 +68,8 @@ export const orgPostHTML = async (wrapper, prop) => {
     <div class="postcontent">
       ${prop.text}
     </div>
-    <hr>
-    <div class="commentAnnounce">
+    <hr style="display: ${(gotten_comm.length < 1) ? 'none' : 'block'};">
+    <div class="commentAnnounce" style="display: ${(gotten_comm.length < 1) ? 'none' : 'block'};">
       Comments
     </div>
     <div class="postcomments">
