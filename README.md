@@ -27,7 +27,7 @@ Let's dive in and explore the exciting world of forums, where users connect, sha
 ## Getting Started
 You can run the Lem-In project with the following command:
 ```console
-git clone https://learn.reboot01.com/git/malsamma/forum
+git clone github.com/amali01/forum
 cd forum
 ```
 
@@ -137,8 +137,8 @@ go run . cmd/main.go
 
 
 ## Authors
-- emahfood 
-- amali 
-- malsamma
-- sahmed
-- akhaled
+- emahfoodh 
+- amali01 
+- msk17a
+- sahmedG
+- akhaled01
